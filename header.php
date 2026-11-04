@@ -25,20 +25,18 @@
 </div>
 
 <?php
-$ha_email              = carbon_get_theme_option( 'ha_email' ) ?: 'info@moha.gov.lk';
-$ha_ministry_name      = carbon_get_theme_option( 'ha_ministry_name' ) ?: __( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' );
-$ha_division_name      = carbon_get_theme_option( 'ha_division_name' ) ?: __( 'Home Affairs Division', 'homeaffairs' );
-$ha_emblem_id          = carbon_get_theme_option( 'ha_emblem' );
-$ha_emblem_url         = $ha_emblem_id ? wp_get_attachment_image_url( absint( $ha_emblem_id ), 'full' ) : '';
-if ( empty( $ha_emblem_url ) ) {
-    $ha_emblem_url = get_template_directory_uri() . '/assets/images/emblem-sri-lanka.svg';
-}
-$ha_gov_gateway_url      = carbon_get_theme_option( 'ha_gov_gateway_url' ) ?: 'https://www.gov.lk';
-$ha_gov_gateway_logo_url = carbon_get_theme_option( 'ha_gov_gateway_logo_url' ) ?: 'https://moha.gov.lk/web/images/gov.png';
-$ha_search_placeholder   = carbon_get_theme_option( 'ha_search_placeholder' ) ?: __( 'Search...', 'homeaffairs' );
-$cta_text                = carbon_get_theme_option( 'ha_cta_button_text' ) ?: __( 'Circuit Booking', 'homeaffairs' );
-$cta_icon                = function_exists( 'ha_get_theme_icon' ) ? ha_get_theme_icon( 'ha_cta_button_icon', 'fas fa-calendar-check' ) : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( carbon_get_theme_option( 'ha_cta_button_icon' ), 'fas fa-calendar-check' ) : 'fas fa-calendar-check' );
-$cta_link                = carbon_get_theme_option( 'ha_cta_button_link' ) ?: '#';
+$ha_email              = ha_get_theme_option( 'ha_email', 'info@moha.gov.lk' );
+$ha_ministry_name      = ha_get_theme_option( 'ha_ministry_name', __( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' ) );
+$ha_division_name      = ha_get_theme_option( 'ha_division_name', __( 'Home Affairs Division', 'homeaffairs' ) );
+$ha_emblem_url         = ha_get_theme_image_url( 'ha_emblem', 'full', get_template_directory_uri() . '/assets/images/emblem-sri-lanka.svg' );
+$ha_gov_gateway_url      = ha_get_theme_option( 'ha_gov_gateway_url', 'https://www.gov.lk' );
+$ha_gov_gateway_logo_url = ha_get_theme_option( 'ha_gov_gateway_logo_url', 'https://moha.gov.lk/web/images/gov.png' );
+$ha_search_placeholder   = ha_get_theme_option( 'ha_search_placeholder', __( 'Search...', 'homeaffairs' ) );
+$phone                   = ha_get_theme_option( 'ha_telephone', '+94 112 050 450' );
+$phone_url               = preg_replace( '/[^\d+]/', '', $phone );
+$cta_text                = ha_get_theme_option( 'ha_cta_button_text', __( 'Circuit Booking', 'homeaffairs' ) );
+$cta_icon                = ha_get_theme_icon( 'ha_cta_button_icon', 'fas fa-calendar-check' );
+$cta_link                = ha_get_theme_option( 'ha_cta_button_link', '#' );
 ?>
 
 <!-- ═══ TOPBAR ═══ -->
@@ -48,15 +46,7 @@ $cta_link                = carbon_get_theme_option( 'ha_cta_button_link' ) ?: '#
     
     <!-- Phone & Email -->
     <div class="flex items-center gap-2.5 sm:gap-4 topbar-contact min-w-0 shrink-0">
-      <?php
-      $phone = carbon_get_theme_option( 'ha_telephone' );
-      if ( ! empty( $phone ) ) {
-          $phone_url = preg_replace( '/[^\d+]/', '', $phone );
-          echo '<a href="tel:' . esc_attr( $phone_url ) . '" class="flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-phone-alt text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="topbar-phone font-medium text-[11px] sm:text-xs whitespace-nowrap">' . esc_html( $phone ) . '</span></a>';
-      } else {
-          echo '<a href="tel:+94112050450" class="flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-phone-alt text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="topbar-phone font-medium text-[11px] sm:text-xs whitespace-nowrap">+94 112 050 450</span></a>';
-      }
-      ?>
+      <a href="tel:<?php echo esc_attr( $phone_url ); ?>" class="flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-phone-alt text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="topbar-phone font-medium text-[11px] sm:text-xs whitespace-nowrap"><?php echo esc_html( $phone ); ?></span></a>
       <span class="hidden sm:block w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true"></span>
       <a href="mailto:<?php echo esc_attr( $ha_email ); ?>" class="hidden sm:flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-envelope text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="font-medium text-[11px] sm:text-xs"><?php echo esc_html( $ha_email ); ?></span></a>
     </div>

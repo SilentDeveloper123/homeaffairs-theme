@@ -125,6 +125,10 @@ function ha_attach_theme_options() {
                 ->set_attribute( 'placeholder', 'info@moha.gov.lk' ),
             Field::make( 'text', 'ha_fax', __( 'General / Hotline Fax', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', '+94 112 050 451' ),
+            Field::make( 'text', 'ha_website_url', __( 'Website URL / Label', 'homeaffairs' ) )
+                ->set_default_value( 'www.moha.gov.lk' )
+                ->set_attribute( 'placeholder', 'www.moha.gov.lk' )
+                ->set_help_text( __( 'Official website URL or display text shown in the footer contact block.', 'homeaffairs' ) ),
         ) )
         ->add_tab( __( 'Social Media', 'homeaffairs' ), array(
             Field::make( 'text', 'ha_social_facebook', __( 'Facebook URL', 'homeaffairs' ) )
@@ -280,6 +284,7 @@ function ha_get_option_keys() {
         'ha_telephone',
         'ha_email',
         'ha_fax',
+        'ha_website_url',
         'ha_social_facebook',
         'ha_social_x',
         'ha_social_youtube',

@@ -189,14 +189,147 @@ function ha_get_post_icon( $post_id, $field_name, $default = 'fas fa-info-circle
 }
 
 /**
- * Safely retrieve a theme option icon field with graceful fallback to raw option
+ * Get the Blog ID of the English version in the multisite network
+ *
+ * @return int Blog ID
+ */
+function ha_get_english_blog_id() {
+	static $en_blog_id = null;
+	if ( null !== $en_blog_id ) {
+		return $en_blog_id;
+	}
+	if ( is_multisite() ) {
+		$sites = get_sites( array( 'path' => '/moha/en/' ) );
+		if ( ! empty( $sites ) ) {
+			$en_blog_id = (int) $sites[0]->blog_id;
+			return $en_blog_id;
+		}
+		$all_sites = get_sites( array( 'number' => 10 ) );
+		foreach ( $all_sites as $s ) {
+			if ( rtrim( $s->path, '/' ) === '/moha/en' || str_ends_with( rtrim( $s->path, '/' ), '/en' ) ) {
+				$en_blog_id = (int) $s->blog_id;
+				return $en_blog_id;
+			}
+		}
+	}
+	$en_blog_id = 4;
+	return $en_blog_id;
+}
+
+/**
+ * Retrieve a theme option value with automatic fallback to the English version when empty
+ *
+ * @param string $key Option key without leading underscore
+ * @param mixed  $fallback Optional default fallback if empty across current and English sites
+ * @return mixed
+ */
+function ha_get_theme_option( $key, $fallback = '' ) {
+	$val = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $key ) : null;
+	if ( empty( $val ) ) {
+		$raw = get_option( '_' . $key );
+		if ( ! empty( $raw ) ) {
+			$val = $raw;
+		}
+	}
+
+	$has_val = ( null !== $val && '' !== $val && array() !== $val );
+	if ( $has_val ) {
+		return $val;
+	}
+
+	// If empty on current site, fallback to English site in multisite
+	if ( is_multisite() ) {
+		$current_id = get_current_blog_id();
+		$en_id      = ha_get_english_blog_id();
+		if ( $current_id !== $en_id ) {
+			switch_to_blog( $en_id );
+			$en_val = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $key ) : null;
+			if ( empty( $en_val ) ) {
+				$raw = get_option( '_' . $key );
+				if ( ! empty( $raw ) ) {
+					$en_val = $raw;
+				}
+			}
+			restore_current_blog();
+
+			if ( null !== $en_val && '' !== $en_val && array() !== $en_val ) {
+				return $en_val;
+			}
+		}
+	}
+
+	return $fallback;
+}
+
+/**
+ * Retrieve an image theme option URL with automatic fallback to the English version when empty
+ *
+ * @param string $key Option key without leading underscore
+ * @param string $size Image size (default 'full')
+ * @param string $fallback Fallback image URL
+ * @return string Image URL
+ */
+function ha_get_theme_image_url( $key, $size = 'full', $fallback = '' ) {
+	$img_val = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $key ) : null;
+	if ( empty( $img_val ) ) {
+		$raw = get_option( '_' . $key );
+		if ( ! empty( $raw ) ) {
+			$img_val = $raw;
+		}
+	}
+
+	if ( ! empty( $img_val ) ) {
+		if ( is_numeric( $img_val ) ) {
+			$url = wp_get_attachment_image_url( (int) $img_val, $size );
+			if ( ! empty( $url ) ) {
+				return $url;
+			}
+		} elseif ( is_string( $img_val ) && filter_var( $img_val, FILTER_VALIDATE_URL ) ) {
+			return $img_val;
+		}
+	}
+
+	// Fallback to English site if empty on current site
+	if ( is_multisite() ) {
+		$current_id = get_current_blog_id();
+		$en_id      = ha_get_english_blog_id();
+		if ( $current_id !== $en_id ) {
+			switch_to_blog( $en_id );
+			$en_img = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $key ) : null;
+			if ( empty( $en_img ) ) {
+				$raw = get_option( '_' . $key );
+				if ( ! empty( $raw ) ) {
+					$en_img = $raw;
+				}
+			}
+			$en_url = '';
+			if ( ! empty( $en_img ) ) {
+				if ( is_numeric( $en_img ) ) {
+					$en_url = wp_get_attachment_image_url( (int) $en_img, $size );
+				} elseif ( is_string( $en_img ) && filter_var( $en_img, FILTER_VALIDATE_URL ) ) {
+					$en_url = $en_img;
+				}
+			}
+			restore_current_blog();
+
+			if ( ! empty( $en_url ) ) {
+				return $en_url;
+			}
+		}
+	}
+
+	return $fallback;
+}
+
+/**
+ * Safely retrieve a theme option icon field with graceful fallback to raw option and English site
  *
  * @param string $field_name Option name without underscore
  * @param string $default Default CSS icon class
  * @return string CSS class string
  */
 function ha_get_theme_icon( $field_name, $default = 'fas fa-info-circle' ) {
-	$icon = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $field_name ) : null;
+	$icon = ha_get_theme_option( $field_name );
 	if ( empty( $icon ) ) {
 		$raw = get_option( '_' . $field_name );
 		if ( empty( $raw ) ) {
@@ -208,3 +341,4 @@ function ha_get_theme_icon( $field_name, $default = 'fas fa-info-circle' ) {
 	}
 	return ha_get_icon_class( $icon, $default );
 }
+

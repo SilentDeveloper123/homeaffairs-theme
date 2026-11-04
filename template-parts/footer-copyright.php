@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$ha_gic_url      = carbon_get_theme_option( 'ha_gic_url' ) ?: 'https://gic.gov.lk/';
-$ha_gic_logo_url = carbon_get_theme_option( 'ha_gic_logo_url' ) ?: 'https://moha.gov.lk/web/images/gic_en.gif';
+$ha_gic_url      = ha_get_theme_option( 'ha_gic_url', 'https://gic.gov.lk/' );
+$ha_gic_logo_url = ha_get_theme_option( 'ha_gic_logo_url', 'https://moha.gov.lk/web/images/gic_en.gif' );
 
-$ha_custom_last_update = carbon_get_theme_option( 'ha_last_update_date' );
+$ha_custom_last_update = ha_get_theme_option( 'ha_last_update_date' );
 if ( ! empty( $ha_custom_last_update ) ) {
     $last_update_date = $ha_custom_last_update;
     $last_update_iso  = $ha_custom_last_update;
@@ -22,19 +22,17 @@ if ( ! empty( $ha_custom_last_update ) ) {
         $last_update_iso  = date( 'c' );
     }
 }
+
+$copyright = ha_get_theme_option( 'ha_copyright_text' );
+if ( empty( $copyright ) ) {
+    $copyright = '&copy; ' . date( 'Y' ) . ' ' . get_bloginfo( 'name' ) . ' — ' . __( 'Sri Lanka. All Rights Reserved.', 'homeaffairs' );
+}
 ?>
 <div class="border-t border-white/10" role="contentinfo">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs text-gray-300">
     <!-- Left: Copyright and Last Update on one line -->
     <div class="flex items-center flex-wrap justify-center lg:justify-start gap-x-2 gap-y-1 text-center lg:text-left text-gray-300">
-      <span><?php
-      $copyright = carbon_get_theme_option( 'ha_copyright_text' );
-      if ( ! empty( $copyright ) ) {
-          echo esc_html( $copyright );
-      } else {
-          echo '&copy; ' . esc_html( date( 'Y' ) ) . ' ' . esc_html( get_bloginfo( 'name' ) ) . ' — ' . esc_html__( 'Sri Lanka. All Rights Reserved.', 'homeaffairs' );
-      }
-      ?></span>
+      <span><?php echo esc_html( $copyright ); ?></span>
       <span class="text-white/30 hidden sm:inline select-none" aria-hidden="true">&bull;</span>
       <span class="inline-flex items-center gap-1.5 whitespace-nowrap">
         <span class="text-gray-400"><?php esc_html_e( 'Last Update:', 'homeaffairs' ); ?></span>
