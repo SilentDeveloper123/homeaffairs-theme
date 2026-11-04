@@ -155,24 +155,19 @@ function ha_register_carbon_fields() {
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
 					Field::make( 'text', 'slide_subtitle', __( 'Slide Sub Title', 'homeaffairs' ) )
-						->set_default_value( 'HOME AFFAIRS DIVISION' )
 						->set_help_text( __( 'Small pill badge above the main title.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'slide_title', __( 'Slide Title', 'homeaffairs' ) )
-						->set_default_value( 'Seamless Governance from Central to Grassroots' )
 						->set_help_text( __( 'Primary headline text for this slide.', 'homeaffairs' ) ),
 
 					Field::make( 'textarea', 'slide_desc', __( 'Slide Description', 'homeaffairs' ) )
 						->set_rows( 3 )
-						->set_default_value( 'Empowering Regional Secretariats Across the Nation—Facilitating and coordinating Sri Lanka administrative ecosystem to deliver efficient, technology-driven public services.' )
 						->set_help_text( __( 'Supporting body copy displayed under the title.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'slide_btn_text', __( 'Slide Button Text', 'homeaffairs' ) )
-						->set_default_value( 'About Us' )
 						->set_help_text( __( 'Label for the action button (e.g. About Us, Explore More). Leave empty to hide button.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'slide_btn_url', __( 'Slide Button (Link)', 'homeaffairs' ) )
-						->set_default_value( '#' )
 						->set_help_text( __( 'Destination URL for this slide\'s button.', 'homeaffairs' ) ),
 
 					Field::make( 'radio', 'slide_btn_target', __( 'Button Target', 'homeaffairs' ) )
@@ -196,7 +191,6 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_special_notices', __( 'Special Notices Column', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_notices_title', __( 'Column Badge / Title', 'homeaffairs' ) )
-				->set_default_value( 'Special Notices' )
 				->set_help_text( __( 'Badge text shown at the top of the notices column.', 'homeaffairs' ) ),
 
 			Field::make( 'number', 'ha_home_notices_count', __( 'Number of Notices to Show', 'homeaffairs' ) )
@@ -211,7 +205,6 @@ function ha_register_carbon_fields() {
 				->set_help_text( __( 'Display notices from all categories or choose a specific category.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_notices_view_all_url', __( '"View all notices" Link URL', 'homeaffairs' ) )
-				->set_default_value( home_url( '/special-notices/' ) )
 				->set_help_text( __( 'Destination link for the "View all notices" link at bottom of column.', 'homeaffairs' ) ),
 		) );
 
@@ -231,11 +224,9 @@ function ha_register_carbon_fields() {
 				->set_layout( 'tabbed-horizontal' )
 				->add_fields( array(
 					Field::make( 'text', 'stat_title', __( 'Title', 'homeaffairs' ) )
-						->set_default_value( 'District Secretariats' )
 						->set_help_text( __( 'Metric title (e.g. Department, District Secretariats, GN Divisions).', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'stat_count', __( 'Count', 'homeaffairs' ) )
-						->set_default_value( '25' )
 						->set_help_text( __( 'Counter value (e.g. 1, 25, 331, 14,022, 100%).', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- stat_count ? stat_count + " - " : "" %><%- stat_title ? stat_title : "Stat " + ($_index + 1) %>' ),
@@ -248,15 +239,12 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_news_section', __( 'News & Announcements Section', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_news_title', __( 'Section Title', 'homeaffairs' ) )
-				->set_default_value( 'News & Announcements' )
 				->set_help_text( __( 'Main section heading.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_news_subtitle', __( 'Section Sub Title', 'homeaffairs' ) )
-				->set_default_value( 'Latest Updates' )
 				->set_help_text( __( 'Small pill badge above the section title.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_news_view_all_url', __( 'View All News Button Link (Link to Page)', 'homeaffairs' ) )
-				->set_default_value( home_url( '/news-announcements/' ) )
 				->set_help_text( __( 'Destination URL for the "View All News" button.', 'homeaffairs' ) ),
 
 			Field::make( 'select', 'ha_home_news_featured_category', __( 'Featured News Category (Main Card)', 'homeaffairs' ) )
@@ -272,28 +260,22 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_adv1_dt', __( 'Advertise Section 1 : Digital Transformations Column', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_adv1_dt_title', __( 'Title', 'homeaffairs' ) )
-				->set_default_value( 'Digital Transformation & Smart Services' )
 				->set_help_text( __( 'Main headline for the left highlight card.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv1_dt_subtitle', __( 'Sub Title', 'homeaffairs' ) )
-				->set_default_value( 'Smart e-Government Era' )
 				->set_help_text( __( 'Pill badge title above headline.', 'homeaffairs' ) ),
 
 			Field::make( 'textarea', 'ha_home_adv1_dt_desc', __( 'Description', 'homeaffairs' ) )
 				->set_rows( 3 )
-				->set_default_value( 'Empowering citizens with seamless online services, digital ID integration, and cloud-first governance.' )
 				->set_help_text( __( 'Body paragraph copy.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv1_dt_tags', __( 'Tags (separated by commas)', 'homeaffairs' ) )
-				->set_default_value( 'Paperless, Digital ID, 24/7 Portal' )
 				->set_help_text( __( 'Features or tags separated by commas (e.g. Paperless, Digital ID, 24/7 Portal).', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv1_dt_btn_text', __( 'Button Text', 'homeaffairs' ) )
-				->set_default_value( 'Explore Services' )
 				->set_help_text( __( 'Action button text label.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv1_dt_btn_url', __( 'Button Link (Link to Page)', 'homeaffairs' ) )
-				->set_default_value( home_url( '/services/' ) )
 				->set_help_text( __( 'Action button destination link.', 'homeaffairs' ) ),
 		) );
 
@@ -311,11 +293,9 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Upload project banner photograph. Recommended size is 1370px × 500px.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'banner_title', __( 'Banner Title / Alt Text', 'homeaffairs' ) )
-						->set_default_value( 'Government Project' )
 						->set_help_text( __( 'Descriptive title / accessibility alt attribute for the banner.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'banner_url', __( 'Banner Link (URL)', 'homeaffairs' ) )
-						->set_default_value( '#' )
 						->set_help_text( __( 'Destination URL when the banner is clicked.', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- banner_title ? banner_title : "Banner " + ($_index + 1) %>' ),
@@ -328,28 +308,23 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_qa1', __( 'Quick Access Section 1', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_qa1_title', __( 'Section Title', 'homeaffairs' ) )
-				->set_default_value( 'Quick Access' )
 				->set_help_text( __( 'Section heading text (default: Quick Access).', 'homeaffairs' ) ),
 
 			Field::make( 'complex', 'ha_home_qa1_items', __( 'Quick Access Section 1 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
 					Field::make( 'icon', 'qa_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
-						->set_default_value( 'file-alt' )
 						->add_fontawesome_options()
 						->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa_title', __( 'Title', 'homeaffairs' ) )
-						->set_default_value( 'Circulars' )
 						->set_help_text( __( 'Item headline label.', 'homeaffairs' ) ),
 
 					Field::make( 'textarea', 'qa_desc', __( 'Description', 'homeaffairs' ) )
 						->set_rows( 2 )
-						->set_default_value( 'Home Affairs directives' )
 						->set_help_text( __( 'Short descriptive line beneath the title.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa_url', __( 'Link', 'homeaffairs' ) )
-						->set_default_value( '#' )
 						->set_help_text( __( 'Destination page URL.', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- qa_title ? qa_title : "Item " + ($_index + 1) %>' ),
@@ -362,32 +337,25 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_adv2_rti', __( 'Advertise Section 2 : Right to Information Column', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_adv2_rti_title', __( 'Column Title', 'homeaffairs' ) )
-				->set_default_value( 'Right to Information' )
 				->set_help_text( __( 'Primary heading for the Right to Information column.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_rti_subtitle', __( 'Column Sub Title', 'homeaffairs' ) )
-				->set_default_value( 'Transparency Through Information' )
 				->set_help_text( __( 'Badge / Subtitle text above the title.', 'homeaffairs' ) ),
 
 			Field::make( 'textarea', 'ha_home_adv2_rti_desc', __( 'Column Description', 'homeaffairs' ) )
 				->set_rows( 3 )
-				->set_default_value( 'Access official government documents and public information, submit Right to Information (RTI) applications seamlessly, and track active disclosures effortlessly through our central transparent portal.' )
 				->set_help_text( __( 'Body copy describing Right to Information services.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_rti_label', __( 'Column Label Text', 'homeaffairs' ) )
-				->set_default_value( 'Act No. 12 of 2016' )
 				->set_help_text( __( 'Small legislative or reference label tag (e.g. Act No. 12 of 2016).', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_rti_btn_text', __( 'Column Button Text', 'homeaffairs' ) )
-				->set_default_value( 'Submit RTI Request' )
 				->set_help_text( __( 'Action button label.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_rti_btn_url', __( 'Column Button Link', 'homeaffairs' ) )
-				->set_default_value( home_url( '/rti/' ) )
 				->set_help_text( __( 'Destination URL for the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_rti_tagline', __( 'Column Tag Line', 'homeaffairs' ) )
-				->set_default_value( "Ensuring Citizens' Right to Information" )
 				->set_help_text( __( 'Footer tagline next to the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'image', 'ha_home_adv2_rti_image', __( 'Column Image Upload (Size : 1025px * 695px)', 'homeaffairs' ) )
@@ -402,32 +370,25 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_adv2_1905', __( 'Advertise Section 2 : Grievances Hotline - 1905 Column', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_adv2_1905_title', __( 'Column Title', 'homeaffairs' ) )
-				->set_default_value( 'Grievances Hotline - 1905' )
 				->set_help_text( __( 'Primary heading for the Grievances Hotline column.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_1905_subtitle', __( 'Column Sub Title', 'homeaffairs' ) )
-				->set_default_value( 'Report Complaints, Grievances & Issues' )
 				->set_help_text( __( 'Badge / Subtitle text above the title.', 'homeaffairs' ) ),
 
 			Field::make( 'textarea', 'ha_home_adv2_1905_desc', __( 'Column Description', 'homeaffairs' ) )
 				->set_rows( 3 )
-				->set_default_value( 'Inform us of your grievances regarding unsatisfactory services provided by institution which are under the ministry of public administration, provincial councils & local goverments.' )
 				->set_help_text( __( 'Body copy describing hotline services.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_1905_label', __( 'Column Label Text', 'homeaffairs' ) )
-				->set_default_value( 'Shortcode 1905' )
 				->set_help_text( __( 'Small highlight label tag (e.g. Shortcode 1905).', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_1905_btn_text', __( 'Column Button Text', 'homeaffairs' ) )
-				->set_default_value( 'View More' )
 				->set_help_text( __( 'Action button label.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_1905_btn_url', __( 'Column Button Link', 'homeaffairs' ) )
-				->set_default_value( home_url( '/1905-2/' ) )
 				->set_help_text( __( 'Destination URL for the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_adv2_1905_tagline', __( 'Column Tag Line', 'homeaffairs' ) )
-				->set_default_value( 'Direct Citizen Response & Issue Resolution' )
 				->set_help_text( __( 'Footer tagline next to the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'image', 'ha_home_adv2_1905_image', __( 'Column Image Upload (Size : 1025px * 695px)', 'homeaffairs' ) )
@@ -442,40 +403,32 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_qa3', __( 'Quick Access Section 3', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_qa3_title', __( 'Section Title', 'homeaffairs' ) )
-				->set_default_value( 'Information on Subsidies' )
 				->set_help_text( __( 'Main section heading text.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_qa3_subtitle', __( 'Section Sub Title', 'homeaffairs' ) )
-				->set_default_value( 'What We Offer' )
 				->set_help_text( __( 'Badge text above main section heading.', 'homeaffairs' ) ),
 
 			Field::make( 'complex', 'ha_home_qa3_items', __( 'Quick Access Section 3 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
 					Field::make( 'icon', 'qa3_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
-						->set_default_value( 'file-arrow-down' )
 						->add_fontawesome_options()
 						->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_title', __( 'Title', 'homeaffairs' ) )
-						->set_default_value( 'Publications & Downloads' )
 						->set_help_text( __( 'Card title.', 'homeaffairs' ) ),
 
 					Field::make( 'textarea', 'qa3_desc', __( 'Description', 'homeaffairs' ) )
 						->set_rows( 2 )
-						->set_default_value( 'Access official administrative reports, acts, guidelines, and downloadable forms.' )
 						->set_help_text( __( 'Card description text.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_btn_text', __( 'Link Button Text', 'homeaffairs' ) )
-						->set_default_value( 'View Publications' )
 						->set_help_text( __( 'Bottom button label text.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_url', __( 'Link', 'homeaffairs' ) )
-						->set_default_value( '#' )
 						->set_help_text( __( 'Destination URL for card and button.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_badge', __( 'Category Badge (Optional)', 'homeaffairs' ) )
-						->set_default_value( 'Resources' )
 						->set_help_text( __( 'Top-right small badge text (e.g. Resources, Education, Public Services).', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- qa3_title ? qa3_title : "Item " + ($_index + 1) %>' ),
@@ -488,25 +441,20 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_cta_banner', __( 'Call to Action Banner Section', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_cta_title', __( 'Section Title', 'homeaffairs' ) )
-				->set_default_value( 'Need Assistance with a Government Service?' )
 				->set_help_text( __( 'Main call to action heading.', 'homeaffairs' ) ),
 
 			Field::make( 'textarea', 'ha_home_cta_desc', __( 'Section Description', 'homeaffairs' ) )
 				->set_rows( 3 )
-				->set_default_value( 'Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we\'re here to help every citizen, every day.' )
 				->set_help_text( __( 'Supporting body copy displayed below heading.', 'homeaffairs' ) ),
 
 			Field::make( 'icon', 'ha_home_cta_btn_icon', __( 'Link Button Icon (Font Awesome)', 'homeaffairs' ) )
-				->set_default_value( 'phone-alt' )
 				->add_fontawesome_options()
 				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker for the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_cta_btn_text', __( 'Link Button Text', 'homeaffairs' ) )
-				->set_default_value( 'Contact Us' )
 				->set_help_text( __( 'Action button label.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_cta_btn_url', __( 'Link', 'homeaffairs' ) )
-				->set_default_value( home_url( '/contact/' ) )
 				->set_help_text( __( 'Action button destination URL.', 'homeaffairs' ) ),
 
 			Field::make( 'image', 'ha_home_cta_bg_image', __( 'Background Image (Optional)', 'homeaffairs' ) )
@@ -521,7 +469,6 @@ function ha_register_carbon_fields() {
 	$create_home_box( 'ha_container_related_orgs', __( 'Related Organizations Slider Section', 'homeaffairs' ) )
 		->add_fields( array(
 			Field::make( 'text', 'ha_home_orgs_title', __( 'Section Title', 'homeaffairs' ) )
-				->set_default_value( 'Related Organizations' )
 				->set_help_text( __( 'Heading for related organizations section.', 'homeaffairs' ) ),
 
 			Field::make( 'complex', 'ha_home_orgs_items', __( 'Slider Items', 'homeaffairs' ) )
@@ -532,11 +479,9 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Upload institution logo or national emblem (PNG or SVG recommended).', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'org_title', __( 'Title', 'homeaffairs' ) )
-						->set_default_value( 'Ministry of Public Administration, Provincial Councils and Local Government' )
 						->set_help_text( __( 'Full name of the related organization.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'org_url', __( 'Link', 'homeaffairs' ) )
-						->set_default_value( 'https://moha.gov.lk/' )
 						->set_help_text( __( 'Official web address of the organization.', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- org_title ? org_title : "Organization " + ($_index + 1) %>' ),
@@ -550,7 +495,6 @@ function ha_register_carbon_fields() {
 		->where( 'post_type', '=', 'special_notice' )
 		->add_fields( array(
 			Field::make( 'icon', 'notice_icon', __( 'Notice Icon (Font Awesome)', 'homeaffairs' ) )
-				->set_default_value( 'bullhorn' )
 				->add_fontawesome_options()
 				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 

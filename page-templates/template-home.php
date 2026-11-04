@@ -45,50 +45,16 @@ $ha_home_show_downloads      = function_exists( 'carbon_get_post_meta' ) ? ( car
 $ha_home_show_contact_banner = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_contact_banner' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_cta' ) ?: 'show' ) ) : 'show';
 $ha_home_show_institutions   = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_institutions' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_orgs' ) ?: 'show' ) ) : 'show';
 
-// Retrieve Hero Repeater Slides
+// Retrieve Hero Repeater Slides (No seeder fallback)
 $raw_slides = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_slides' ) : array();
-if ( ! empty( $raw_slides ) && is_array( $raw_slides ) ) {
-	$slides = $raw_slides;
-} else {
-	$slides = array(
-		array(
-			'slide_subtitle'   => __( 'HOME AFFAIRS DIVISION', 'homeaffairs' ),
-			'slide_title'      => __( 'Seamless Governance from Central to Grassroots', 'homeaffairs' ),
-			'slide_desc'       => __( 'Empowering Regional Secretariats Across the Nation—Facilitating and coordinating Sri Lanka administrative ecosystem to deliver efficient , technology-driven public services.', 'homeaffairs' ),
-			'slide_btn_text'   => __( 'About Us', 'homeaffairs' ),
-			'slide_btn_url'    => $ha_services,
-			'slide_btn_target' => '_self',
-			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-1.jpg',
-		),
-		array(
-			'slide_subtitle'   => __( 'REGIONAL ADMINISTRATIVE NETWORK', 'homeaffairs' ),
-			'slide_title'      => __( 'Connecting 25 Districts & 335 Divisional Secretariats', 'homeaffairs' ),
-			'slide_desc'       => __( 'Island-Wide Public Service Hubs — Seamlessly coordinating regional development, state functions, and civil administration across all 25 districts and 335 divisions.', 'homeaffairs' ),
-			'slide_btn_text'   => __( 'Explore Regional Network', 'homeaffairs' ),
-			'slide_btn_url'    => $ha_eservices,
-			'slide_btn_target' => '_self',
-			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-2.jpg',
-		),
-		array(
-			'slide_subtitle'   => __( 'CITIZEN SERVICES', 'homeaffairs' ),
-			'slide_title'      => __( 'Accessible Government Services for Every Household', 'homeaffairs' ),
-			'slide_desc'       => __( '14,022 GN Divisions Island-Wide — Dedicated Grama Niladhari officers working across the island to ensure transparent, accessible, and responsive support for every family.', 'homeaffairs' ),
-			'slide_btn_text'   => __( 'Find Your GN Officer', 'homeaffairs' ),
-			'slide_btn_url'    => $ha_institutions,
-			'slide_btn_target' => '_self',
-			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-3.jpg',
-		),
-	);
-}
+$slides     = ( ! empty( $raw_slides ) && is_array( $raw_slides ) ) ? $raw_slides : array();
 
 // Special Notices Column Options
 $notices_badge   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_title' ) : '';
-$notices_badge   = $notices_badge ?: __( 'Special Notices', 'homeaffairs' );
 $notices_count   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_count' ) : '3';
 $notices_count   = ! empty( $notices_count ) ? intval( $notices_count ) : 3;
 $notices_cat     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_category' ) : '';
 $notices_all_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_view_all_url' ) : '';
-$notices_all_url = $notices_all_url ?: home_url( '/special-notices/' );
 
 $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_notices || 'hide' !== $ha_home_show_ticker );
 ?>
@@ -105,10 +71,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   <div class="hero-slider-bg-stage">
     <?php foreach ( $slides as $i => $s ) :
       $active_cls = ( 0 === $i ) ? ' active' : '';
-      $img_url    = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $s['slide_image'] ) ? $s['slide_image'] : '' ) : '';
-      if ( empty( $img_url ) ) {
-        $img_url = $ha_uri . '/assets/images/main-slider/HomeSlide-' . ( ( $i % 3 ) + 1 ) . '.jpg';
-      }
+      $img_url    = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $s['slide_image'] ) ? $s['slide_image'] : '', 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 800, 400, 'Slide Image' ) : 'https://placehold.co/800x400?text=Slide+Image' ) : 'https://placehold.co/800x400?text=Slide+Image';
     ?>
       <div class="slide-bg<?php echo esc_attr( $active_cls ); ?>" style="background-image: url('<?php echo esc_url( $img_url ); ?>')"></div>
     <?php endforeach; ?>
@@ -338,39 +301,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
           <?php
             endwhile;
             wp_reset_postdata();
-          else :
-          ?>
-            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
-              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-              <span class="ticker-title font-medium text-white"><?php esc_html_e( '78th National Independence Day (04.02.2026)', 'homeaffairs' ); ?></span>
-              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '04 February 2026', 'homeaffairs' ); ?></span>
-            </a>
-            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
-              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Digital Signature System launched for secure document verification', 'homeaffairs' ); ?></span>
-              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '28 January 2026', 'homeaffairs' ); ?></span>
-            </a>
-            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
-              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Island-wide Grama Niladhari training programme commences next month', 'homeaffairs' ); ?></span>
-              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '20 January 2026', 'homeaffairs' ); ?></span>
-            </a>
-            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
-              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Online Circuit Bungalow Booking system now available 24/7', 'homeaffairs' ); ?></span>
-              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '15 January 2026', 'homeaffairs' ); ?></span>
-            </a>
-            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
-              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'New public administration reforms to be implemented from Q3 2026', 'homeaffairs' ); ?></span>
-              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '10 January 2026', 'homeaffairs' ); ?></span>
-            </a>
-          <?php endif; ?>
+          endif; ?>
         </div>
       </div>
       <div class="ticker-nav flex items-center gap-1 ml-3 shrink-0">
@@ -396,17 +327,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 
 <?php if ( "hide" !== $ha_home_show_stats ) :
-  $raw_stats = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_stats' ) : array();
-  if ( empty( $raw_stats ) || ! is_array( $raw_stats ) ) {
-    $stats_items = array(
-      array( 'stat_count' => '1',      'stat_title' => __( 'Department', 'homeaffairs' ) ),
-      array( 'stat_count' => '25',     'stat_title' => __( 'District Secretariats', 'homeaffairs' ) ),
-      array( 'stat_count' => '331',    'stat_title' => __( 'Divisional Secretariats', 'homeaffairs' ) ),
-      array( 'stat_count' => '14,022', 'stat_title' => __( 'GN Divisions', 'homeaffairs' ) ),
-    );
-  } else {
-    $stats_items = $raw_stats;
-  }
+  $raw_stats   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_stats' ) : array();
+  $stats_items = ( ! empty( $raw_stats ) && is_array( $raw_stats ) ) ? $raw_stats : array();
   $stat_cols = min( 4, max( 1, count( $stats_items ) ) );
 ?>
 <!-- ═══ MODERN COMPACT SLIM STATS BAR (MAROON & GOLD THEME) ═══ -->
@@ -414,7 +336,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-2 lg:grid-cols-<?php echo esc_attr( $stat_cols ); ?>">
       <?php foreach ( $stats_items as $stat ) :
-        $s_count = ! empty( $stat['stat_count'] ) ? $stat['stat_count'] : '0';
+        $s_count = ! empty( $stat['stat_count'] ) ? $stat['stat_count'] : '';
         $s_title = ! empty( $stat['stat_title'] ) ? $stat['stat_title'] : '';
       ?>
       <div class="stat-item py-2 sm:py-2.5 text-center px-2 group transition-all duration-300 hover:bg-gray-50/60">
@@ -433,74 +355,26 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     
 <?php if ( "hide" !== $ha_home_show_news ) :
   $news_sec_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
-  $news_sec_title    = $news_sec_title ?: __( 'News & Announcements', 'homeaffairs' );
   $news_sec_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
-  $news_sec_subtitle = $news_sec_subtitle ?: __( 'Latest Updates', 'homeaffairs' );
   $news_view_all     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
-  $news_view_all     = $news_view_all ?: home_url( '/news-announcements/' );
   
   $featured_cat_slug = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_category' ) : '';
   $featured_cat_slug = $featured_cat_slug ?: 'featured-news';
 
-  // Default fallback news data
-  $fallback_news = array(
-    array(
-      'title'      => __( '78th National Independence Day Celebrated with Grand Ceremony', 'homeaffairs' ),
-      'desc'       => __( 'The Ministry organized a landmark national celebration bringing together government officials, military personnel, and thousands of citizens across the island.', 'homeaffairs' ),
-      'cat'        => __( 'Featured News', 'homeaffairs' ),
-      'date'       => 'February 4, 2026',
-      'date_short' => 'Feb 04, 2026',
-      'image'      => $ha_uri . '/assets/images/news/Independence_Day_78th.jpg',
-      'link'       => $ha_news,
-      'is_pdf'     => false,
-    ),
-    array(
-      'title'      => __( 'National Digital Birth Certificate will be issued', 'homeaffairs' ),
-      'desc'       => __( 'Nationwide rollout of secure digital civil registration documents.', 'homeaffairs' ),
-      'cat'        => __( 'eGovernance', 'homeaffairs' ),
-      'date'       => 'Jan 20, 2026',
-      'date_short' => 'Jan 20, 2026',
-      'image'      => $ha_uri . '/assets/images/news/4.jpg',
-      'link'       => $ha_news,
-      'is_pdf'     => false,
-    ),
-    array(
-      'title'      => __( 'Island-Wide Anti-Drug Campaign', 'homeaffairs' ),
-      'desc'       => __( 'Collaborative initiative with District Secretariats for youth protection.', 'homeaffairs' ),
-      'cat'        => __( 'Anti-Drug Initiative', 'homeaffairs' ),
-      'date'       => 'Dec 12, 2025',
-      'date_short' => 'Dec 12, 2025',
-      'image'      => $ha_uri . '/assets/images/news/2.jpg',
-      'link'       => $ha_news,
-      'is_pdf'     => false,
-    ),
-    array(
-      'title'      => __( 'Circuit Bungalow Online Booking System Launch', 'homeaffairs' ),
-      'desc'       => __( 'Modern digital reservation platform for public servants and citizens.', 'homeaffairs' ),
-      'cat'        => __( 'Public Services', 'homeaffairs' ),
-      'date'       => 'Nov 05, 2025',
-      'date_short' => 'Nov 05, 2025',
-      'image'      => $ha_uri . '/assets/images/news/3.jpg',
-      'link'       => $ha_news,
-      'is_pdf'     => false,
-    ),
-    array(
-      'title'      => __( 'District Secretariat Capacity Building Workshop', 'homeaffairs' ),
-      'desc'       => __( 'Regional administrative officers convene for professional digital governance training.', 'homeaffairs' ),
-      'cat'        => __( 'Administration', 'homeaffairs' ),
-      'date'       => 'Oct 18, 2025',
-      'date_short' => 'Oct 18, 2025',
-      'image'      => $ha_uri . '/assets/images/news/1.jpg',
-      'link'       => $ha_news,
-      'is_pdf'     => false,
-    ),
-  );
-
-  // Helper function to build structured card data
+  // Helper function to build structured card data (no seeder fallback, placehold.co placeholder image)
   if ( ! function_exists( 'ha_prepare_news_item_data' ) ) {
-    function ha_prepare_news_item_data( $post_obj, $fallback = array() ) {
+    function ha_prepare_news_item_data( $post_obj ) {
       if ( ! $post_obj ) {
-        return $fallback;
+        return array(
+          'title'      => '',
+          'desc'       => '',
+          'cat'        => '',
+          'date'       => '',
+          'date_short' => '',
+          'image'      => 'https://placehold.co/1600x980?text=News+Image',
+          'link'       => '#',
+          'is_pdf'     => false,
+        );
       }
       $np_id    = is_object( $post_obj ) ? $post_obj->ID : (int) $post_obj;
       $custom_t = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_custom_title' ) : '';
@@ -508,13 +382,13 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
       $short_d  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_short_desc' ) : '';
       $desc     = $short_d ?: wp_trim_words( get_the_excerpt( $np_id ), 22 );
       $terms    = get_the_terms( $np_id, 'news_category' );
-      $cat_name = ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : ( ! empty( $fallback['cat'] ) ? $fallback['cat'] : __( 'News', 'homeaffairs' ) );
+      $cat_name = ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
       $img_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_featured_image' ) : '';
       if ( ! $img_url ) {
         $img_url = get_the_post_thumbnail_url( $np_id, 'ha-news-hero' );
       }
-      if ( ! $img_url && ! empty( $fallback['image'] ) ) {
-        $img_url = $fallback['image'];
+      if ( ! $img_url ) {
+        $img_url = 'https://placehold.co/1600x980?text=News+Image';
       }
       $file_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment' ) : '';
       $ext_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
@@ -558,7 +432,16 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   }
 
   $featured_id   = ! empty( $featured_posts ) ? $featured_posts[0]->ID : 0;
-  $featured_news = ! empty( $featured_posts ) ? ha_prepare_news_item_data( $featured_posts[0], $fallback_news[0] ) : $fallback_news[0];
+  $featured_news = ! empty( $featured_posts ) ? ha_prepare_news_item_data( $featured_posts[0] ) : array(
+    'title'      => '',
+    'desc'       => '',
+    'cat'        => '',
+    'date'       => '',
+    'date_short' => '',
+    'image'      => 'https://placehold.co/1600x980?text=News+Image',
+    'link'       => '#',
+    'is_pdf'     => false,
+  );
 
   // 2. OTHER CARDS: Display other recent news excluding Featured News
   $other_query_args = array(
@@ -581,19 +464,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
   $small_news = array();
   if ( ! empty( $other_posts ) ) {
-    foreach ( $other_posts as $idx => $op ) {
-      $fb = isset( $fallback_news[ $idx + 1 ] ) ? $fallback_news[ $idx + 1 ] : array();
-      $small_news[] = ha_prepare_news_item_data( $op, $fb );
-    }
-  }
-
-  // Backfill up to 4 items from fallback_news (indices 1 to 4)
-  $count_other = count( $small_news );
-  if ( $count_other < 4 ) {
-    for ( $i = $count_other + 1; $i <= 4; $i++ ) {
-      if ( isset( $fallback_news[ $i ] ) ) {
-        $small_news[] = $fallback_news[ $i ];
-      }
+    foreach ( $other_posts as $op ) {
+      $small_news[] = ha_prepare_news_item_data( $op );
     }
   }
 ?>
@@ -701,35 +573,18 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 <?php endif; ?>
    
 <?php if ( "hide" !== $ha_home_show_adv1_dt || "hide" !== $ha_home_show_adv1_banners ) :
-  // Section 6: Digital Transformations Column
+  // Section 6: Digital Transformations Column (no seeder fallback)
   $adv1_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_title' ) : '';
-  $adv1_title    = $adv1_title ?: __( 'Digital Transformation & Smart Services', 'homeaffairs' );
   $adv1_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_subtitle' ) : '';
-  $adv1_subtitle = $adv1_subtitle ?: __( 'Smart e-Government Era', 'homeaffairs' );
   $adv1_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_desc' ) : '';
-  $adv1_desc     = $adv1_desc ?: __( 'Empowering citizens with seamless online services, digital ID integration, and cloud-first governance.', 'homeaffairs' );
   $adv1_tags_raw = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_tags' ) : '';
-  $adv1_tags_raw = $adv1_tags_raw ?: 'Paperless, Digital ID, 24/7 Portal';
-  $adv1_tags     = array_filter( array_map( 'trim', explode( ',', $adv1_tags_raw ) ) );
+  $adv1_tags     = ! empty( $adv1_tags_raw ) ? array_filter( array_map( 'trim', explode( ',', $adv1_tags_raw ) ) ) : array();
   $adv1_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_btn_text' ) : '';
-  $adv1_btn_text = $adv1_btn_text ?: __( 'Explore Services', 'homeaffairs' );
   $adv1_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_btn_url' ) : '';
-  $adv1_btn_url  = $adv1_btn_url ?: $ha_services;
 
-  // Section 7: Government Projects Banners Slider
+  // Section 7: Government Projects Banners Slider (no seeder fallback)
   $raw_banners = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_banners' ) : array();
-  if ( empty( $raw_banners ) || ! is_array( $raw_banners ) ) {
-    $banners = array(
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/d.png',  'banner_title' => 'Government Banner 1', 'banner_url' => $ha_about ),
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/e.png',  'banner_title' => 'Government Banner 2', 'banner_url' => $ha_about ),
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/a.jpg',  'banner_title' => 'Government Banner 3', 'banner_url' => $ha_about ),
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/b.jpeg', 'banner_title' => 'Government Banner 4', 'banner_url' => $ha_about ),
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/c.jpeg', 'banner_title' => 'Government Banner 5', 'banner_url' => $ha_about ),
-      array( 'banner_image' => $ha_uri . '/assets/images/banner/d.png',  'banner_title' => 'Government Banner 6', 'banner_url' => $ha_about ),
-    );
-  } else {
-    $banners = $raw_banners;
-  }
+  $banners     = ( ! empty( $raw_banners ) && is_array( $raw_banners ) ) ? $raw_banners : array();
 ?>
  <!-- ═══ COMPACT CREATIVE HERO SHOWCASE SECTION (SECTIONS 6 & 7) ═══ -->
 <section class="py-8 lg:py-10 bg-gray-50 border-b border-gray-200/60">
@@ -812,9 +667,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
           <div class="swiper-wrapper h-full">
 
             <?php foreach ( $banners as $b ) :
-              $b_img   = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $b['banner_image'] ) ? $b['banner_image'] : '' ) : '';
-              if ( ! $b_img ) { $b_img = $ha_uri . '/assets/images/banner/d.png'; }
-              $b_title = ! empty( $b['banner_title'] ) ? $b['banner_title'] : __( 'Government Project', 'homeaffairs' );
+              $b_img   = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $b['banner_image'] ) ? $b['banner_image'] : '', 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 1370, 500, 'Banner Image' ) : 'https://placehold.co/1370x500?text=Banner+Image' ) : 'https://placehold.co/1370x500?text=Banner+Image';
+              $b_title = ! empty( $b['banner_title'] ) ? $b['banner_title'] : '';
               $b_url   = ! empty( $b['banner_url'] ) ? $b['banner_url'] : '#';
             ?>
             <div class="swiper-slide w-full h-full bg-white">
@@ -877,23 +731,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 <?php if ( "hide" !== $ha_home_show_services ) :
   $qa_section_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa1_title' ) : '';
-  $qa_section_title = $qa_section_title ?: __( 'Quick Access', 'homeaffairs' );
-
-  $raw_qa_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa1_items' ) : array();
-  if ( empty( $raw_qa_items ) || ! is_array( $raw_qa_items ) ) {
-    $qa_items = array(
-      array( 'qa_icon' => 'fas fa-file-alt',        'qa_title' => __( 'Circulars', 'homeaffairs' ),                  'qa_desc' => __( 'Home Affairs directives', 'homeaffairs' ),               'qa_url' => $ha_circulars ),
-      array( 'qa_icon' => 'fas fa-chart-simple',    'qa_title' => __( 'Exam Results', 'homeaffairs' ),              'qa_desc' => __( 'Verified departmental marks', 'homeaffairs' ),           'qa_url' => home_url( '/exam-results/' ) ),
-      array( 'qa_icon' => 'fas fa-arrows-rotate',   'qa_title' => __( 'Transfers', 'homeaffairs' ),                 'qa_desc' => __( 'Schedules and guidelines', 'homeaffairs' ),              'qa_url' => home_url( '/transfer-procedures/' ) ),
-      array( 'qa_icon' => 'fas fa-receipt',         'qa_title' => __( 'Procurement', 'homeaffairs' ),               'qa_desc' => __( 'Active government tenders', 'homeaffairs' ),             'qa_url' => home_url( '/procurements-notices/' ) ),
-      array( 'qa_icon' => 'fas fa-laptop-file',     'qa_title' => __( 'E Forms', 'homeaffairs' ),                   'qa_desc' => __( 'Downloadable application templates', 'homeaffairs' ),     'qa_url' => home_url( '/e-forms/' ) ),
-      array( 'qa_icon' => 'fas fa-house-user',      'qa_title' => __( 'Circuit Bungalows', 'homeaffairs' ),         'qa_desc' => __( 'Reservations and guidelines', 'homeaffairs' ),           'qa_url' => home_url( '/circuit-bungalows/' ) ),
-      array( 'qa_icon' => 'fas fa-map-location-dot','qa_title' => __( 'List of GN Division & Villages', 'homeaffairs' ), 'qa_desc' => __( 'Regional administrative directory', 'homeaffairs' ), 'qa_url' => home_url( '/gn-divisions/' ) ),
-      array( 'qa_icon' => 'fas fa-shield-halved',   'qa_title' => __( 'Internal Affairs Unit', 'homeaffairs' ),      'qa_desc' => __( 'Integrity & anti-corruption oversight', 'homeaffairs' ), 'qa_url' => home_url( '/internal-affairs-unit/' ) ),
-    );
-  } else {
-    $qa_items = $raw_qa_items;
-  }
+  $raw_qa_items     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa1_items' ) : array();
+  $qa_items         = ( ! empty( $raw_qa_items ) && is_array( $raw_qa_items ) ) ? $raw_qa_items : array();
 ?>
 <!-- ═══ 8. QUICK ACCESS SECTION 1 (COMPACT WITH ACCENT BORDER) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white border-t border-b border-slate-200/80 relative overflow-hidden">
@@ -947,43 +786,27 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 
 <?php if ( "hide" !== $ha_home_show_adv2_rti || "hide" !== $ha_home_show_adv2_1905 ) :
-  // Section 9: Right to Information Column
+  // Section 9: Right to Information Column (no seeder fallback)
   $adv2_rti_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_title' ) : '';
-  $adv2_rti_title    = $adv2_rti_title ?: __( 'Right to Information', 'homeaffairs' );
   $adv2_rti_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_subtitle' ) : '';
-  $adv2_rti_subtitle = $adv2_rti_subtitle ?: __( 'Transparency Through Information', 'homeaffairs' );
   $adv2_rti_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_desc' ) : '';
-  $adv2_rti_desc     = $adv2_rti_desc ?: __( 'Access official government documents and public information, submit Right to Information (RTI) applications seamlessly, and track active disclosures effortlessly through our central transparent portal.', 'homeaffairs' );
   $adv2_rti_label    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_label' ) : '';
-  $adv2_rti_label    = $adv2_rti_label ?: 'Act No. 12 of 2016';
   $adv2_rti_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_btn_text' ) : '';
-  $adv2_rti_btn_text = $adv2_rti_btn_text ?: __( 'Submit RTI Request', 'homeaffairs' );
   $adv2_rti_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_btn_url' ) : '';
-  $adv2_rti_btn_url  = $adv2_rti_btn_url ?: home_url( '/rti/' );
   $adv2_rti_tagline  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_tagline' ) : '';
-  $adv2_rti_tagline  = $adv2_rti_tagline ?: __( "Ensuring Citizens' Right to Information", 'homeaffairs' );
   $adv2_rti_img_raw  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_image' ) : '';
-  $adv2_rti_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_rti_img_raw ) : '';
-  if ( ! $adv2_rti_img ) { $adv2_rti_img = $ha_uri . '/assets/images/governance/RTI3.jpg'; }
+  $adv2_rti_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_rti_img_raw, 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 1025, 695, 'RTI Image' ) : 'https://placehold.co/1025x695?text=RTI+Image' ) : 'https://placehold.co/1025x695?text=RTI+Image';
 
-  // Section 10: Grievances Hotline - 1905 Column
+  // Section 10: Grievances Hotline - 1905 Column (no seeder fallback)
   $adv2_1905_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_title' ) : '';
-  $adv2_1905_title    = $adv2_1905_title ?: __( 'Grievances Hotline - 1905', 'homeaffairs' );
   $adv2_1905_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_subtitle' ) : '';
-  $adv2_1905_subtitle = $adv2_1905_subtitle ?: __( 'Report Complaints, Grievances & Issues', 'homeaffairs' );
   $adv2_1905_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_desc' ) : '';
-  $adv2_1905_desc     = $adv2_1905_desc ?: __( 'Inform us of your grievances regarding unsatisfactory services provided by institution which are under the ministry of public administration, provincial councils & local goverments.', 'homeaffairs' );
   $adv2_1905_label    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_label' ) : '';
-  $adv2_1905_label    = $adv2_1905_label ?: 'Shortcode 1905';
   $adv2_1905_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_btn_text' ) : '';
-  $adv2_1905_btn_text = $adv2_1905_btn_text ?: __( 'View More', 'homeaffairs' );
   $adv2_1905_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_btn_url' ) : '';
-  $adv2_1905_btn_url  = $adv2_1905_btn_url ?: home_url( '/1905-2/' );
   $adv2_1905_tagline  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_tagline' ) : '';
-  $adv2_1905_tagline  = $adv2_1905_tagline ?: __( 'Direct Citizen Response & Issue Resolution', 'homeaffairs' );
   $adv2_1905_img_raw  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_image' ) : '';
-  $adv2_1905_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_1905_img_raw ) : '';
-  if ( ! $adv2_1905_img ) { $adv2_1905_img = $ha_uri . '/assets/images/governance/19051.jpg'; }
+  $adv2_1905_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_1905_img_raw, 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 1025, 695, '1905 Hotline' ) : 'https://placehold.co/1025x695?text=1905+Hotline' ) : 'https://placehold.co/1025x695?text=1905+Hotline';
 ?>
 <!-- ═══ 9 & 10. ADVERTISE SECTION 2 (RTI & GRIEVANCES HOTLINE 1905) ═══ -->
 <section class="py-12 lg:py-16 bg-slate-50 border-t border-b border-gray-200/60">
@@ -1104,65 +927,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 <?php if ( "hide" !== $ha_home_show_downloads ) :
   $qa3_sec_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_title' ) : '';
-  $qa3_sec_title    = $qa3_sec_title ?: __( 'Information on Subsidies', 'homeaffairs' );
   $qa3_sec_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_subtitle' ) : '';
-  $qa3_sec_subtitle = $qa3_sec_subtitle ?: __( 'What We Offer', 'homeaffairs' );
-
-  $raw_qa3_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_items' ) : array();
-  if ( empty( $raw_qa3_items ) || ! is_array( $raw_qa3_items ) ) {
-    $qa3_items = array(
-      array(
-        'qa3_icon'     => 'fas fa-file-arrow-down',
-        'qa3_title'    => __( 'Publications & Downloads', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Access official administrative reports, acts, guidelines, and downloadable forms.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Publications', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/publications/' ),
-        'qa3_badge'    => 'Resources',
-      ),
-      array(
-        'qa3_icon'     => 'fas fa-user-graduate',
-        'qa3_title'    => __( 'Scholarships', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Explore local and international scholarship opportunities available for public officers.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Scholarships', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/scholarships/' ),
-        'qa3_badge'    => 'Education',
-      ),
-      array(
-        'qa3_icon'     => 'fas fa-handshake-angle',
-        'qa3_title'    => __( 'Services', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Explore citizen services, administrative assistance, permits, and support provided by Home Affairs.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Services', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/services/' ),
-        'qa3_badge'    => 'Public Services',
-      ),
-      array(
-        'qa3_icon'     => 'fas fa-flag',
-        'qa3_title'    => __( 'National Anthem & Flag', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Official guidelines, protocols, downloads, and rules regarding the National Flag and Anthem.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Details', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/national-anthem-flag-protocol/' ),
-        'qa3_badge'    => 'Symbols',
-      ),
-      array(
-        'qa3_icon'     => 'fas fa-calendar-days',
-        'qa3_title'    => __( 'Government Calendar', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Official public holidays, mercantile holidays, and administrative schedule for the year.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Calendar', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/government-calendar/' ),
-        'qa3_badge'    => 'Schedule',
-      ),
-      array(
-        'qa3_icon'     => 'fas fa-briefcase',
-        'qa3_title'    => __( 'Vacancies', 'homeaffairs' ),
-        'qa3_desc'     => __( 'Find current job openings, public recruitment notices, and career opportunities.', 'homeaffairs' ),
-        'qa3_btn_text' => __( 'View Vacancies', 'homeaffairs' ),
-        'qa3_url'      => home_url( '/vacancies/' ),
-        'qa3_badge'    => 'Careers',
-      ),
-    );
-  } else {
-    $qa3_items = $raw_qa3_items;
-  }
+  $raw_qa3_items    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_items' ) : array();
+  $qa3_items        = ( ! empty( $raw_qa3_items ) && is_array( $raw_qa3_items ) ) ? $raw_qa3_items : array();
 ?>
 <!-- ═══ 11. QUICK ACCESS SECTION 3 (KEY SERVICES & NOTICE BOARDS) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white relative overflow-hidden">
@@ -1192,7 +959,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         $q_icon     = function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( $q_icon_raw, 'fas fa-file-arrow-down' ) : $q_icon_raw;
         $q_title = ! empty( $item['qa3_title'] ) ? $item['qa3_title'] : '';
         $q_desc  = ! empty( $item['qa3_desc'] ) ? $item['qa3_desc'] : '';
-        $q_btn   = ! empty( $item['qa3_btn_text'] ) ? $item['qa3_btn_text'] : __( 'Learn More', 'homeaffairs' );
+        $q_btn   = ! empty( $item['qa3_btn_text'] ) ? $item['qa3_btn_text'] : '';
         $q_url   = ! empty( $item['qa3_url'] ) ? $item['qa3_url'] : '#';
         $q_badge = ! empty( $item['qa3_badge'] ) ? $item['qa3_badge'] : '';
       ?>
@@ -1231,17 +998,12 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 <?php if ( "hide" !== $ha_home_show_contact_banner ) :
   $cta_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_title' ) : '';
-  $cta_title    = $cta_title ?: __( 'Need Assistance with a Government Service?', 'homeaffairs' );
   $cta_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_desc' ) : '';
-  $cta_desc     = $cta_desc ?: __( "Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we're here to help every citizen, every day.", 'homeaffairs' );
   $cta_btn_icon = function_exists( 'ha_get_post_icon' ) ? ha_get_post_icon( $page_id, 'ha_home_cta_btn_icon', 'fas fa-phone-alt' ) : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( carbon_get_post_meta( $page_id, 'ha_home_cta_btn_icon' ), 'fas fa-phone-alt' ) : 'fas fa-phone-alt' );
   $cta_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_text' ) : '';
-  $cta_btn_text = $cta_btn_text ?: __( 'Contact Us', 'homeaffairs' );
   $cta_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_url' ) : '';
-  $cta_btn_url  = $cta_btn_url ?: ( ! empty( $ha_contact ) ? $ha_contact : home_url( '/contact/' ) );
   $cta_bg_raw   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_bg_image' ) : '';
-  $cta_bg       = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $cta_bg_raw ) : '';
-  if ( ! $cta_bg ) { $cta_bg = $ha_uri . '/assets/images/home-contact.jpg'; }
+  $cta_bg       = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $cta_bg_raw, 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 1920, 600, 'CTA Banner' ) : 'https://placehold.co/1920x600?text=CTA+Banner' ) : 'https://placehold.co/1920x600?text=CTA+Banner';
 ?>
 <!-- ═══ 12. CALL TO ACTION BANNER SECTION ═══ -->
 <section class="relative py-12 lg:py-16 text-center overflow-hidden bg-cover bg-center" style="background-image: url('<?php echo esc_url( $cta_bg ); ?>');">
@@ -1273,35 +1035,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 <?php if ( "hide" !== $ha_home_show_institutions ) :
   $orgs_title     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_orgs_title' ) : '';
-  $orgs_title     = $orgs_title ?: __( 'Related Organizations', 'homeaffairs' );
-
   $raw_orgs_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_orgs_items' ) : array();
-  if ( empty( $raw_orgs_items ) || ! is_array( $raw_orgs_items ) ) {
-    $orgs_items = array(
-      array(
-        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
-        'org_title' => __( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' ),
-        'org_url'   => 'https://moha.gov.lk/',
-      ),
-      array(
-        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
-        'org_title' => __( 'Public Service Commission', 'homeaffairs' ),
-        'org_url'   => 'https://psc.gov.lk/',
-      ),
-      array(
-        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
-        'org_title' => __( "Registrar General's Department", 'homeaffairs' ),
-        'org_url'   => 'https://www.rgd.gov.lk/',
-      ),
-      array(
-        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
-        'org_title' => __( 'Sri Lanka Institute of Development Administration', 'homeaffairs' ),
-        'org_url'   => 'https://slida.lk/',
-      ),
-    );
-  } else {
-    $orgs_items = $raw_orgs_items;
-  }
+  $orgs_items     = ( ! empty( $raw_orgs_items ) && is_array( $raw_orgs_items ) ) ? $raw_orgs_items : array();
 ?>
 <!-- ═══ 13. RELATED ORGANIZATIONS SLIDER SECTION ═══ -->
 <section class="py-12 lg:py-16 bg-white border-t border-b border-gray-100">
@@ -1320,8 +1055,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <?php foreach ( $orgs_items as $org ) :
         $o_logo_raw = ! empty( $org['org_logo'] ) ? $org['org_logo'] : '';
-        $o_logo     = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $o_logo_raw ) : '';
-        if ( ! $o_logo ) { $o_logo = $ha_uri . '/assets/images/emblem-sri-lanka.png'; }
+        $o_logo     = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $o_logo_raw, 'full', function_exists( 'ha_placeholder_image' ) ? ha_placeholder_image( 160, 160, 'Logo' ) : 'https://placehold.co/160x160?text=Logo' ) : 'https://placehold.co/160x160?text=Logo';
         $o_title    = ! empty( $org['org_title'] ) ? $org['org_title'] : '';
         $o_url      = ! empty( $org['org_url'] ) ? $org['org_url'] : '#';
       ?>

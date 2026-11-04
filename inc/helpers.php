@@ -68,13 +68,37 @@ function ha_pagination() {
  * @param string $size Image size
  * @return string Image URL
  */
-function ha_resolve_image_url( $image_val, $size = 'full' ) {
+/**
+ * Generate a placeholder image URL using placehold.co
+ *
+ * @param int $width Width in pixels
+ * @param int $height Height in pixels
+ * @param string $text Optional label text
+ * @return string Placeholder image URL
+ */
+function ha_placeholder_image( $width = 800, $height = 400, $text = '' ) {
+	$url = 'https://placehold.co/' . absint( $width ) . 'x' . absint( $height );
+	if ( ! empty( $text ) ) {
+		$url .= '?text=' . rawurlencode( $text );
+	}
+	return $url;
+}
+
+/**
+ * Safely resolve an image field value (URL string or attachment ID) to a full URL
+ *
+ * @param mixed $image_val URL string or attachment ID
+ * @param string $size Image size
+ * @param string $fallback_placeholder Optional placeholder URL if empty
+ * @return string Image URL
+ */
+function ha_resolve_image_url( $image_val, $size = 'full', $fallback_placeholder = '' ) {
 	if ( empty( $image_val ) ) {
-		return '';
+		return $fallback_placeholder;
 	}
 	if ( is_numeric( $image_val ) ) {
 		$url = wp_get_attachment_image_url( intval( $image_val ), $size );
-		return $url ?: '';
+		return $url ?: $fallback_placeholder;
 	}
 	return esc_url_raw( $image_val );
 }
