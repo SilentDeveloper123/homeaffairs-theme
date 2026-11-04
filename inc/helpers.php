@@ -95,3 +95,83 @@ function ha_resolve_file_url( $file_val ) {
 	}
 	return esc_url_raw( $file_val );
 }
+
+/**
+ * Safely resolve an icon field value (from Carbon Field Icon or legacy string) to a valid CSS class
+ *
+ * @param mixed $icon Stored icon value (string or array from Carbon Field Icon)
+ * @param string $default Default icon class if empty
+ * @return string CSS icon class string
+ */
+function ha_get_icon_class( $icon, $default = 'fas fa-info-circle' ) {
+	if ( is_array( $icon ) ) {
+		if ( ! empty( $icon['class'] ) ) {
+			return $icon['class'];
+		}
+		if ( ! empty( $icon['icon'] ) ) {
+			$prefix = ( ! empty( $icon['provider'] ) && 'dashicons' === $icon['provider'] ) ? 'dashicons dashicons-' : 'fas fa-';
+			return $prefix . ltrim( $icon['icon'], 'fa-' );
+		}
+		if ( ! empty( $icon['value'] ) ) {
+			$prefix = ( ! empty( $icon['provider'] ) && 'dashicons' === $icon['provider'] ) ? 'dashicons dashicons-' : 'fas fa-';
+			return $prefix . ltrim( $icon['value'], 'fa-' );
+		}
+	}
+	if ( is_string( $icon ) && ! empty( trim( $icon ) ) ) {
+		$icon = trim( $icon );
+		if ( strpos( $icon, 'fas ' ) === 0 || strpos( $icon, 'far ' ) === 0 || strpos( $icon, 'fab ' ) === 0 || strpos( $icon, 'dashicons ' ) === 0 ) {
+			return $icon;
+		}
+		if ( strpos( $icon, 'dashicons-' ) === 0 ) {
+			return 'dashicons ' . $icon;
+		}
+		if ( strpos( $icon, 'fa-' ) === 0 ) {
+			return 'fas ' . $icon;
+		}
+		return 'fas fa-' . $icon;
+	}
+	return $default;
+}
+
+/**
+ * Safely retrieve a post meta icon field with graceful fallback to raw post meta
+ *
+ * @param int $post_id Post ID
+ * @param string $field_name Field name without underscore
+ * @param string $default Default CSS icon class
+ * @return string CSS class string
+ */
+function ha_get_post_icon( $post_id, $field_name, $default = 'fas fa-info-circle' ) {
+	$icon = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, $field_name ) : null;
+	if ( empty( $icon ) ) {
+		$raw = get_post_meta( $post_id, '_' . $field_name, true );
+		if ( empty( $raw ) ) {
+			$raw = get_post_meta( $post_id, $field_name, true );
+		}
+		if ( ! empty( $raw ) ) {
+			$icon = $raw;
+		}
+	}
+	return ha_get_icon_class( $icon, $default );
+}
+
+/**
+ * Safely retrieve a theme option icon field with graceful fallback to raw option
+ *
+ * @param string $field_name Option name without underscore
+ * @param string $default Default CSS icon class
+ * @return string CSS class string
+ */
+function ha_get_theme_icon( $field_name, $default = 'fas fa-info-circle' ) {
+	$icon = function_exists( 'carbon_get_theme_option' ) ? carbon_get_theme_option( $field_name ) : null;
+	if ( empty( $icon ) ) {
+		$raw = get_option( '_' . $field_name );
+		if ( empty( $raw ) ) {
+			$raw = get_option( $field_name );
+		}
+		if ( ! empty( $raw ) ) {
+			$icon = $raw;
+		}
+	}
+	return ha_get_icon_class( $icon, $default );
+}

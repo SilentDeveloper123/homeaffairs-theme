@@ -3,7 +3,9 @@
     "description": "Home Affairs Division WordPress Theme",
     "type": "wordpress-theme",
     "require": {
-        "htmlburger/carbon-fields": "^3.6"
+        "htmlburger/carbon-fields": "^3.6",
+        "htmlburger/carbon-field-number": "^3.0",
+        "htmlburger/carbon-field-icon": "^3.1"
     },
     "config": {
         "vendor-dir": "vendor",

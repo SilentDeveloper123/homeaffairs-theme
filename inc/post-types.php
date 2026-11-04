@@ -230,8 +230,8 @@ add_action( 'manage_special_notice_posts_custom_column', 'ha_special_notice_colu
 function ha_special_notice_column_content( $column, $post_id ) {
 	switch ( $column ) {
 		case 'notice_icon':
-			$icon = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_icon' ) : '';
-			$icon = $icon ?: 'fas fa-bullhorn';
+			$icon = function_exists( 'ha_get_post_icon' ) ? ha_get_post_icon( $post_id, 'notice_icon', 'fas fa-bullhorn' ) : ( function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_icon' ) : 'fas fa-bullhorn' );
+			$icon = is_string( $icon ) ? $icon : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( $icon, 'fas fa-bullhorn' ) : 'fas fa-bullhorn' );
 			echo '<span style="font-size:18px;color:#800000;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f5f5f5;border-radius:4px;"><i class="' . esc_attr( $icon ) . '"></i></span>';
 			break;
 

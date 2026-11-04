@@ -204,8 +204,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         if ( $sn_query->have_posts() ) :
           while ( $sn_query->have_posts() ) : $sn_query->the_post();
             $notice_id    = get_the_ID();
-            $notice_icon  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_icon' ) : '';
-            $notice_icon  = $notice_icon ?: 'fas fa-bullhorn';
+            $notice_icon  = function_exists( 'ha_get_post_icon' ) ? ha_get_post_icon( $notice_id, 'notice_icon', 'fas fa-bullhorn' ) : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( carbon_get_post_meta( $notice_id, 'notice_icon' ), 'fas fa-bullhorn' ) : 'fas fa-bullhorn' );
             $custom_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_custom_title' ) : '';
             $n_title      = $custom_title ?: get_the_title();
             $n_short_desc = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_short_desc' ) : '';
@@ -911,7 +910,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <!-- 4-Column Responsive Grid (Tight Gap) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       <?php foreach ( $qa_items as $item ) :
-        $q_icon  = ! empty( $item['qa_icon'] ) ? $item['qa_icon'] : 'fas fa-file-alt';
+        $q_icon_raw = ! empty( $item['qa_icon'] ) ? $item['qa_icon'] : 'fas fa-file-alt';
+        $q_icon     = function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( $q_icon_raw, 'fas fa-file-alt' ) : $q_icon_raw;
         $q_title = ! empty( $item['qa_title'] ) ? $item['qa_title'] : '';
         $q_desc  = ! empty( $item['qa_desc'] ) ? $item['qa_desc'] : '';
         $q_url   = ! empty( $item['qa_url'] ) ? $item['qa_url'] : '#';
@@ -1188,7 +1188,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <!-- Grid (3 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <?php foreach ( $qa3_items as $item ) :
-        $q_icon  = ! empty( $item['qa3_icon'] ) ? $item['qa3_icon'] : 'fas fa-file-arrow-down';
+        $q_icon_raw = ! empty( $item['qa3_icon'] ) ? $item['qa3_icon'] : 'fas fa-file-arrow-down';
+        $q_icon     = function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( $q_icon_raw, 'fas fa-file-arrow-down' ) : $q_icon_raw;
         $q_title = ! empty( $item['qa3_title'] ) ? $item['qa3_title'] : '';
         $q_desc  = ! empty( $item['qa3_desc'] ) ? $item['qa3_desc'] : '';
         $q_btn   = ! empty( $item['qa3_btn_text'] ) ? $item['qa3_btn_text'] : __( 'Learn More', 'homeaffairs' );
@@ -1233,8 +1234,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   $cta_title    = $cta_title ?: __( 'Need Assistance with a Government Service?', 'homeaffairs' );
   $cta_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_desc' ) : '';
   $cta_desc     = $cta_desc ?: __( "Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we're here to help every citizen, every day.", 'homeaffairs' );
-  $cta_btn_icon = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_icon' ) : '';
-  $cta_btn_icon = $cta_btn_icon ?: 'fas fa-phone-alt';
+  $cta_btn_icon = function_exists( 'ha_get_post_icon' ) ? ha_get_post_icon( $page_id, 'ha_home_cta_btn_icon', 'fas fa-phone-alt' ) : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( carbon_get_post_meta( $page_id, 'ha_home_cta_btn_icon' ), 'fas fa-phone-alt' ) : 'fas fa-phone-alt' );
   $cta_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_text' ) : '';
   $cta_btn_text = $cta_btn_text ?: __( 'Contact Us', 'homeaffairs' );
   $cta_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_url' ) : '';

@@ -164,11 +164,12 @@ function ha_attach_theme_options() {
                 ->set_width( 70 )
                 ->set_attribute( 'placeholder', 'Circuit Booking' )
                 ->set_help_text( __( 'Label for the header CTA button (branding row on desktop, primary row on mobile).', 'homeaffairs' ) ),
-            Field::make( 'text', 'ha_cta_button_icon', __( 'Button Icon', 'homeaffairs' ) )
+            Field::make( 'icon', 'ha_cta_button_icon', __( 'Button Icon', 'homeaffairs' ) )
                 ->set_width( 30 )
-                ->set_default_value( 'fas fa-calendar-check' )
-                ->set_attribute( 'placeholder', 'Choose or type icon...' )
-                ->set_help_text( __( 'Search by icon name (e.g. "calendar", "house"). Uses Font Awesome 6.5.1 free icons.', 'homeaffairs' ) ),
+                ->set_default_value( 'calendar-check' )
+                ->add_fontawesome_options()
+                ->add_dashicons_options()
+                ->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome / Dashicons). Existing icon values are safely preserved.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_cta_button_link', __( 'Button Link', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', 'https://example.com/circuit-booking' )
                 ->set_help_text( __( 'Destination URL for the header CTA button.', 'homeaffairs' ) ),

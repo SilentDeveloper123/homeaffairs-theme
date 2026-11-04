@@ -37,7 +37,7 @@ $ha_gov_gateway_url      = carbon_get_theme_option( 'ha_gov_gateway_url' ) ?: 'h
 $ha_gov_gateway_logo_url = carbon_get_theme_option( 'ha_gov_gateway_logo_url' ) ?: 'https://moha.gov.lk/web/images/gov.png';
 $ha_search_placeholder   = carbon_get_theme_option( 'ha_search_placeholder' ) ?: __( 'Search...', 'homeaffairs' );
 $cta_text                = carbon_get_theme_option( 'ha_cta_button_text' ) ?: __( 'Circuit Booking', 'homeaffairs' );
-$cta_icon                = carbon_get_theme_option( 'ha_cta_button_icon' ) ?: 'fas fa-calendar-check';
+$cta_icon                = function_exists( 'ha_get_theme_icon' ) ? ha_get_theme_icon( 'ha_cta_button_icon', 'fas fa-calendar-check' ) : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( carbon_get_theme_option( 'ha_cta_button_icon' ), 'fas fa-calendar-check' ) : 'fas fa-calendar-check' );
 $cta_link                = carbon_get_theme_option( 'ha_cta_button_link' ) ?: '#';
 ?>
 

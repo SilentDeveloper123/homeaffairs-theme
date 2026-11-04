@@ -199,11 +199,11 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'Special Notices' )
 				->set_help_text( __( 'Badge text shown at the top of the notices column.', 'homeaffairs' ) ),
 
-			Field::make( 'text', 'ha_home_notices_count', __( 'Number of Notices to Show', 'homeaffairs' ) )
-				->set_default_value( '3' )
-				->set_attribute( 'type', 'number' )
-				->set_attribute( 'min', '1' )
-				->set_attribute( 'max', '10' )
+			Field::make( 'number', 'ha_home_notices_count', __( 'Number of Notices to Show', 'homeaffairs' ) )
+				->set_default_value( 3 )
+				->set_min( 1 )
+				->set_max( 10 )
+				->set_step( 1 )
 				->set_help_text( __( 'How many recent special notices to display in the hero column (default: 3).', 'homeaffairs' ) ),
 
 			Field::make( 'select', 'ha_home_notices_category', __( 'Filter by Category (Optional)', 'homeaffairs' ) )
@@ -334,9 +334,11 @@ function ha_register_carbon_fields() {
 			Field::make( 'complex', 'ha_home_qa1_items', __( 'Quick Access Section 1 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
-					Field::make( 'text', 'qa_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
-						->set_default_value( 'fas fa-file-alt' )
-						->set_help_text( __( 'Font Awesome icon class (e.g. fas fa-file-alt, fas fa-chart-simple, fas fa-arrows-rotate, fas fa-receipt).', 'homeaffairs' ) ),
+					Field::make( 'icon', 'qa_icon', __( 'Icon (Font Awesome / Dashicons)', 'homeaffairs' ) )
+						->set_default_value( 'file-alt' )
+						->add_fontawesome_options()
+						->add_dashicons_options()
+						->set_help_text( __( 'Select icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa_title', __( 'Title', 'homeaffairs' ) )
 						->set_default_value( 'Circulars' )
@@ -451,9 +453,11 @@ function ha_register_carbon_fields() {
 			Field::make( 'complex', 'ha_home_qa3_items', __( 'Quick Access Section 3 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
-					Field::make( 'text', 'qa3_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
-						->set_default_value( 'fas fa-file-arrow-down' )
-						->set_help_text( __( 'Font Awesome icon class (e.g. fas fa-file-arrow-down, fas fa-user-graduate, fas fa-handshake-angle, fas fa-flag).', 'homeaffairs' ) ),
+					Field::make( 'icon', 'qa3_icon', __( 'Icon (Font Awesome / Dashicons)', 'homeaffairs' ) )
+						->set_default_value( 'file-arrow-down' )
+						->add_fontawesome_options()
+						->add_dashicons_options()
+						->set_help_text( __( 'Select icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_title', __( 'Title', 'homeaffairs' ) )
 						->set_default_value( 'Publications & Downloads' )
@@ -494,9 +498,11 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we\'re here to help every citizen, every day.' )
 				->set_help_text( __( 'Supporting body copy displayed below heading.', 'homeaffairs' ) ),
 
-			Field::make( 'text', 'ha_home_cta_btn_icon', __( 'Link Button Icon (Font Awesome)', 'homeaffairs' ) )
-				->set_default_value( 'fas fa-phone-alt' )
-				->set_help_text( __( 'Font Awesome icon class for the button (e.g. fas fa-phone-alt, fas fa-envelope, fas fa-headset).', 'homeaffairs' ) ),
+			Field::make( 'icon', 'ha_home_cta_btn_icon', __( 'Link Button Icon', 'homeaffairs' ) )
+				->set_default_value( 'phone-alt' )
+				->add_fontawesome_options()
+				->add_dashicons_options()
+				->set_help_text( __( 'Select icon from the visual icon picker for the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_cta_btn_text', __( 'Link Button Text', 'homeaffairs' ) )
 				->set_default_value( 'Contact Us' )
@@ -546,9 +552,11 @@ function ha_register_carbon_fields() {
 	Container::make( 'post_meta', 'ha_container_special_notice_info', __( 'Special Notice Information', 'homeaffairs' ) )
 		->where( 'post_type', '=', 'special_notice' )
 		->add_fields( array(
-			Field::make( 'text', 'notice_icon', __( 'Font Awesome Icon', 'homeaffairs' ) )
-				->set_default_value( 'fas fa-bullhorn' )
-				->set_help_text( __( 'Type or choose a Font Awesome 6 icon class (e.g. fas fa-bullhorn, fas fa-graduation-cap, fas fa-laptop, fas fa-file-invoice, fas fa-bell).', 'homeaffairs' ) ),
+			Field::make( 'icon', 'notice_icon', __( 'Notice Icon', 'homeaffairs' ) )
+				->set_default_value( 'bullhorn' )
+				->add_fontawesome_options()
+				->add_dashicons_options()
+				->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'notice_custom_title', __( 'Custom Display Title (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Optional shorter headline for the homepage tile. If left blank, the main Post Title above will be used.', 'homeaffairs' ) ),
@@ -660,6 +668,43 @@ function ha_get_news_category_options() {
 			foreach ( $terms as $term ) {
 				$options[ $term->slug ] = $term->name;
 			}
+		}
+	}
+
+	return $options;
+}
+
+/**
+ * Ensure all modern theme icons are registered in Carbon Fields Icon picker options
+ */
+add_filter( 'carbon_field_icon_options', 'ha_extend_carbon_icon_options', 10, 2 );
+function ha_extend_carbon_icon_options( $options, $field_name = '' ) {
+	$theme_icons = array(
+		'phone-alt'        => array( 'name' => 'Phone Alt', 'class' => 'fas fa-phone-alt' ),
+		'chart-simple'     => array( 'name' => 'Chart Simple', 'class' => 'fas fa-chart-simple' ),
+		'arrows-rotate'    => array( 'name' => 'Arrows Rotate', 'class' => 'fas fa-arrows-rotate' ),
+		'laptop-file'      => array( 'name' => 'Laptop File', 'class' => 'fas fa-laptop-file' ),
+		'house-user'       => array( 'name' => 'House User', 'class' => 'fas fa-house-user' ),
+		'map-location-dot' => array( 'name' => 'Map Location Dot', 'class' => 'fas fa-map-location-dot' ),
+		'shield-halved'    => array( 'name' => 'Shield Halved', 'class' => 'fas fa-shield-halved' ),
+		'file-arrow-down'  => array( 'name' => 'File Arrow Down', 'class' => 'fas fa-file-arrow-down' ),
+		'handshake-angle'  => array( 'name' => 'Handshake Angle', 'class' => 'fas fa-handshake-angle' ),
+		'calendar-days'    => array( 'name' => 'Calendar Days', 'class' => 'fas fa-calendar-days' ),
+		'file-shield'      => array( 'name' => 'File Shield', 'class' => 'fas fa-file-shield' ),
+		'id-card'          => array( 'name' => 'ID Card', 'class' => 'fas fa-id-card' ),
+		'bolt'             => array( 'name' => 'Lightning Bolt', 'class' => 'fas fa-bolt' ),
+		'location-dot'     => array( 'name' => 'Location Dot', 'class' => 'fas fa-location-dot' ),
+	);
+
+	foreach ( $theme_icons as $id => $info ) {
+		if ( ! isset( $options[ $id ] ) ) {
+			$options[ $id ] = array(
+				'value'        => $id,
+				'name'         => $info['name'],
+				'class'        => $info['class'],
+				'search_terms' => array( $id, str_replace( '-', ' ', $id ) ),
+				'provider'     => 'fontawesome',
+			);
 		}
 	}
 
