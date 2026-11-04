@@ -5,6 +5,7 @@ composer.lock
 
 # Assets / Media
 assets/images/
+*.zip
 
 # OS files
 .DS_Store
