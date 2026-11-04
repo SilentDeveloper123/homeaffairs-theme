@@ -14,27 +14,33 @@ add_action( 'carbon_fields_register_fields', 'ha_register_carbon_fields' );
 function ha_register_carbon_fields() {
 
 	// ═══════════════════════════════════════════════════════════════════
-	// 1. HOME PAGE CONFIGURATION (template-home.php)
+	// HELPER: Attach Container to Home Page Template or Front Page
 	// ═══════════════════════════════════════════════════════════════════
 	$front_page_id = (int) get_option( 'page_on_front' );
 
-	$home_container = Container::make( 'post_meta', __( 'Home Page Configuration', 'homeaffairs' ) )
-		->where( 'post_template', '=', 'page-templates/template-home.php' );
+	$create_home_box = function( $id, $title ) use ( $front_page_id ) {
+		$container = Container::make( 'post_meta', $id, $title )
+			->where( 'post_template', '=', 'page-templates/template-home.php' );
 
-	if ( $front_page_id > 0 ) {
-		$home_container->or_where( 'post_id', '=', $front_page_id );
-	}
+		if ( $front_page_id > 0 ) {
+			$container->or_where( 'post_id', '=', $front_page_id );
+		}
 
-	$home_container
-		// ── Tab 1: Section Visibility (Show/Hide radio button for each section) ──
-		->add_tab( __( 'Section Visibility', 'homeaffairs' ), array(
+		return $container;
+	};
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 1. SECTION VISIBILITY CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_visibility', __( 'Home Page: Section Visibility', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'html', 'ha_vis_intro', __( 'Section Toggles', 'homeaffairs' ) )
 				->set_html( '<div style="padding:10px 14px;background:#f0f6fc;border-left:4px solid #0056b3;border-radius:3px;font-size:13px;line-height:1.5;">' .
 					'<strong>' . esc_html__( 'Section Visibility Controls:', 'homeaffairs' ) . '</strong> ' .
 					esc_html__( 'Use the radio buttons below to individually show or hide each section on the Home Page.', 'homeaffairs' ) .
 				'</div>' ),
 
-			Field::make( 'radio', 'ha_home_show_slider', __( '1. Main Slider (Hero Left Column)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_slider', __( 'Main Slider (Hero Left Column)', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -42,7 +48,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Controls visibility of the hero carousel slides on the left.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_notices', __( '2. Special Notices (Hero Right Column)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_notices', __( 'Special Notices (Hero Right Column)', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -50,7 +56,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Controls visibility of the Special Notices tiles column on the right.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_ticker', __( '3. Breaking News Ticker (Hero Overlay)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_ticker', __( 'Breaking News Ticker (Hero Overlay)', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -58,7 +64,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Controls visibility of the bottom breaking news ticker band.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_stats', __( '4. Stats Bar Section', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_stats', __( 'Stats Bar Section', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -66,7 +72,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the modern slim statistics counter bar.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_news', __( '5. News & Announcements Section', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_news', __( 'News & Announcements Section', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -74,7 +80,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the News & Announcements featured card and small cards grid.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_initiatives', __( '6 & 7. Advertise Section 1 (Digital Transformations & Banners)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_initiatives', __( 'Advertise Section 1 (Digital Transformations & Banners)', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -82,7 +88,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides Digital Transformation spotlight card and Government Projects Banners Slider.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_services', __( '8. Quick Access Section 1', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_services', __( 'Quick Access Section 1', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -121,10 +127,14 @@ function ha_register_carbon_fields() {
 				) )
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the government institution logos strip.', 'homeaffairs' ) ),
-		) )
+		) );
 
-		// ── Tab 2: Main Slider Repeater ──
-		->add_tab( __( 'Main Slider', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 2. MAIN SLIDER CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_main_slider', __( 'Main Slider', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'complex', 'ha_home_slides', __( 'Hero Carousel Slides', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
@@ -161,10 +171,14 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Upload slide background photograph. Recommended aspect ratio is 2:1 (Size: 800px × 400px or 1600px × 800px).', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- slide_title ? slide_title : "Slide " + ($_index + 1) %>' ),
-		) )
+		) );
 
-		// ── Tab 3: Special Notices Column Options ──
-		->add_tab( __( 'Special Notices Column', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 3. SPECIAL NOTICES COLUMN CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_special_notices', __( 'Special Notices Column', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'text', 'ha_home_notices_title', __( 'Column Badge / Title', 'homeaffairs' ) )
 				->set_default_value( 'Special Notices' )
 				->set_help_text( __( 'Badge text shown at the top of the notices column.', 'homeaffairs' ) ),
@@ -183,10 +197,14 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'ha_home_notices_view_all_url', __( '"View all notices" Link URL', 'homeaffairs' ) )
 				->set_default_value( home_url( '/special-notices/' ) )
 				->set_help_text( __( 'Destination link for the "View all notices" link at bottom of column.', 'homeaffairs' ) ),
-		) )
+		) );
 
-		// ── Tab 4: 4. Stats Bar Section ──
-		->add_tab( __( '4. Stats Bar', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 4. STATS BAR SECTION CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_stats_bar', __( 'Stats Bar Section', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'html', 'ha_stats_intro', __( 'Stats Bar Configuration', 'homeaffairs' ) )
 				->set_html( '<div style="padding:10px 14px;background:#f0f6fc;border-left:4px solid #0056b3;border-radius:3px;font-size:13px;line-height:1.5;">' .
 					'<strong>' . esc_html__( 'Stats Bar Section:', 'homeaffairs' ) . '</strong> ' .
@@ -205,10 +223,14 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Counter value (e.g. 1, 25, 331, 14,022, 100%).', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- stat_count ? stat_count + " - " : "" %><%- stat_title ? stat_title : "Stat " + ($_index + 1) %>' ),
-		) )
+		) );
 
-		// ── Tab 5: 5. News & Announcements Section ──
-		->add_tab( __( '5. News & Announcements', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 5. NEWS & ANNOUNCEMENTS SECTION CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_news_section', __( 'News & Announcements Section', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'text', 'ha_home_news_title', __( 'Section Title', 'homeaffairs' ) )
 				->set_default_value( 'News & Announcements' )
 				->set_help_text( __( 'Main section heading.', 'homeaffairs' ) ),
@@ -231,10 +253,14 @@ function ha_register_carbon_fields() {
 				->set_attribute( 'min', '1' )
 				->set_attribute( 'max', '12' )
 				->set_help_text( __( 'Total news items to display (1 featured main card + remaining small cards). Default: 5.', 'homeaffairs' ) ),
-		) )
+		) );
 
-		// ── Tab 6: 6. Advertise Section 1 : Digital Transformations Column ──
-		->add_tab( __( '6. Digital Transformations', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 6. ADVERTISE SECTION 1: DIGITAL TRANSFORMATIONS COLUMN CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_adv1_dt', __( 'Advertise Section 1 : Digital Transformations Column', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'text', 'ha_home_adv1_dt_title', __( 'Title', 'homeaffairs' ) )
 				->set_default_value( 'Digital Transformation & Smart Services' )
 				->set_help_text( __( 'Main headline for the left highlight card.', 'homeaffairs' ) ),
@@ -259,10 +285,14 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'ha_home_adv1_dt_btn_url', __( 'Button Link (Link to Page)', 'homeaffairs' ) )
 				->set_default_value( home_url( '/services/' ) )
 				->set_help_text( __( 'Action button destination link.', 'homeaffairs' ) ),
-		) )
+		) );
 
-		// ── Tab 7: 7. Advertise Section 1 : Government Projects Banners Slider ──
-		->add_tab( __( '7. Projects Banners Slider', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 7. ADVERTISE SECTION 1: GOVERNMENT PROJECTS BANNERS SLIDER CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_adv1_banners', __( 'Advertise Section 1 : Government Projects Banners Slider', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'complex', 'ha_home_adv1_banners', __( 'Government Projects Banners Slider', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
@@ -279,10 +309,14 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Destination URL when the banner is clicked.', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- banner_title ? banner_title : "Banner " + ($_index + 1) %>' ),
-		) )
+		) );
 
-		// ── Tab 8: 8. Quick Access Section 1 ──
-		->add_tab( __( '8. Quick Access Section 1', 'homeaffairs' ), array(
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 8. QUICK ACCESS SECTION 1 CONTAINER
+	// ═══════════════════════════════════════════════════════════════════
+	$create_home_box( 'ha_container_qa1', __( 'Quick Access Section 1', 'homeaffairs' ) )
+		->add_fields( array(
 			Field::make( 'text', 'ha_home_qa1_title', __( 'Section Title', 'homeaffairs' ) )
 				->set_default_value( 'Quick Access' )
 				->set_help_text( __( 'Section heading text (default: Quick Access).', 'homeaffairs' ) ),
@@ -312,9 +346,9 @@ function ha_register_carbon_fields() {
 
 
 	// ═══════════════════════════════════════════════════════════════════
-	// 2. SPECIAL NOTICES CUSTOM POST TYPE FIELDS
+	// SPECIAL NOTICES CUSTOM POST TYPE FIELDS
 	// ═══════════════════════════════════════════════════════════════════
-	Container::make( 'post_meta', __( 'Special Notice Information', 'homeaffairs' ) )
+	Container::make( 'post_meta', 'ha_container_special_notice_info', __( 'Special Notice Information', 'homeaffairs' ) )
 		->where( 'post_type', '=', 'special_notice' )
 		->add_fields( array(
 			Field::make( 'text', 'notice_icon', __( 'Font Awesome Icon', 'homeaffairs' ) )
@@ -346,9 +380,9 @@ function ha_register_carbon_fields() {
 
 
 	// ═══════════════════════════════════════════════════════════════════
-	// 3. NEWS & ANNOUNCEMENTS CUSTOM POST TYPE FIELDS
+	// NEWS & ANNOUNCEMENTS CUSTOM POST TYPE FIELDS
 	// ═══════════════════════════════════════════════════════════════════
-	Container::make( 'post_meta', __( 'News & Announcement Details', 'homeaffairs' ) )
+	Container::make( 'post_meta', 'ha_container_news_details', __( 'News & Announcement Details', 'homeaffairs' ) )
 		->where( 'post_type', '=', 'news_announcement' )
 		->add_fields( array(
 			Field::make( 'text', 'news_custom_title', __( 'Custom Display Title (Optional)', 'homeaffairs' ) )
@@ -438,7 +472,7 @@ function ha_get_news_category_options() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// 4. ADMIN ENHANCEMENTS: FONT AWESOME SELECTION & LIVE PREVIEW
+// ADMIN ENHANCEMENTS: FONT AWESOME SELECTION & LIVE PREVIEW
 // ═══════════════════════════════════════════════════════════════════
 add_action( 'admin_enqueue_scripts', 'ha_cpt_fields_admin_assets' );
 function ha_cpt_fields_admin_assets( $hook ) {
