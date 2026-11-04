@@ -901,157 +901,227 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 <?php endif; ?>
 
 
-<?php if ( "hide" !== $ha_home_show_leadership ) : ?>
-<!-- ═══ RTI BANNER & DYNAMIC TABS CIRCULARS WIDGET (COMPACT HEIGHT) ═══ -->
+<?php if ( "hide" !== $ha_home_show_leadership ) :
+  // Section 9: Right to Information Column
+  $adv2_rti_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_title' ) : '';
+  $adv2_rti_title    = $adv2_rti_title ?: __( 'Right to Information', 'homeaffairs' );
+  $adv2_rti_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_subtitle' ) : '';
+  $adv2_rti_subtitle = $adv2_rti_subtitle ?: __( 'Transparency Through Information', 'homeaffairs' );
+  $adv2_rti_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_desc' ) : '';
+  $adv2_rti_desc     = $adv2_rti_desc ?: __( 'Access official government documents and public information, submit Right to Information (RTI) applications seamlessly, and track active disclosures effortlessly through our central transparent portal.', 'homeaffairs' );
+  $adv2_rti_label    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_label' ) : '';
+  $adv2_rti_label    = $adv2_rti_label ?: 'Act No. 12 of 2016';
+  $adv2_rti_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_btn_text' ) : '';
+  $adv2_rti_btn_text = $adv2_rti_btn_text ?: __( 'Submit RTI Request', 'homeaffairs' );
+  $adv2_rti_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_btn_url' ) : '';
+  $adv2_rti_btn_url  = $adv2_rti_btn_url ?: home_url( '/rti/' );
+  $adv2_rti_tagline  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_tagline' ) : '';
+  $adv2_rti_tagline  = $adv2_rti_tagline ?: __( "Ensuring Citizens' Right to Information", 'homeaffairs' );
+  $adv2_rti_img_raw  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_image' ) : '';
+  $adv2_rti_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_rti_img_raw ) : '';
+  if ( ! $adv2_rti_img ) { $adv2_rti_img = $ha_uri . '/assets/images/governance/RTI3.jpg'; }
+
+  // Section 10: Grievances Hotline - 1905 Column
+  $adv2_1905_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_title' ) : '';
+  $adv2_1905_title    = $adv2_1905_title ?: __( 'Grievances Hotline - 1905', 'homeaffairs' );
+  $adv2_1905_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_subtitle' ) : '';
+  $adv2_1905_subtitle = $adv2_1905_subtitle ?: __( 'Report Complaints, Grievances & Issues', 'homeaffairs' );
+  $adv2_1905_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_desc' ) : '';
+  $adv2_1905_desc     = $adv2_1905_desc ?: __( 'Inform us of your grievances regarding unsatisfactory services provided by institution which are under the ministry of public administration, provincial councils & local goverments.', 'homeaffairs' );
+  $adv2_1905_label    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_label' ) : '';
+  $adv2_1905_label    = $adv2_1905_label ?: 'Shortcode 1905';
+  $adv2_1905_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_btn_text' ) : '';
+  $adv2_1905_btn_text = $adv2_1905_btn_text ?: __( 'View More', 'homeaffairs' );
+  $adv2_1905_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_btn_url' ) : '';
+  $adv2_1905_btn_url  = $adv2_1905_btn_url ?: home_url( '/1905-2/' );
+  $adv2_1905_tagline  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_tagline' ) : '';
+  $adv2_1905_tagline  = $adv2_1905_tagline ?: __( 'Direct Citizen Response & Issue Resolution', 'homeaffairs' );
+  $adv2_1905_img_raw  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_1905_image' ) : '';
+  $adv2_1905_img      = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $adv2_1905_img_raw ) : '';
+  if ( ! $adv2_1905_img ) { $adv2_1905_img = $ha_uri . '/assets/images/governance/19051.jpg'; }
+?>
+<!-- ═══ 9 & 10. ADVERTISE SECTION 2 (RTI & GRIEVANCES HOTLINE 1905) ═══ -->
 <section class="py-12 lg:py-16 bg-slate-50 border-t border-b border-gray-200/60">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-12 gap-5 items-stretch">
 
-      <!-- ─── LEFT: RTI HERO BANNER (COMPACT HEIGHT) ─── -->
-      <div class="lg:col-span-7 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/governance/RTI3.jpg' ); ?>'); background-size: cover; background-position: center;">
+      <!-- ─── 9. ADVERTISE SECTION 2: RTI HERO BANNER (Spans 7 Cols) ─── -->
+      <div class="lg:col-span-7 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_rti_img ); ?>'); background-size: cover; background-position: center;">
         
-            <!-- Ambient Dark Gradient Overlay for optimal contrast -->
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
+        <!-- Ambient Dark Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
 
         <!-- Upper Content -->
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="inline-flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-md text-secondary-light font-extrabold text-[10px] tracking-[1.5px] uppercase px-3 py-1 rounded-full border border-secondary-light/40 shadow-sm">
-              <i class="fas fa-scale-balanced text-secondary-light"></i> <?php esc_html_e( 'Transparency Through Information', 'homeaffairs' ); ?>
+              <i class="fas fa-scale-balanced text-secondary-light"></i> <?php echo esc_html( $adv2_rti_subtitle ); ?>
             </span>
+            <?php if ( $adv2_rti_label ) : ?>
             <span class="hidden sm:inline-block text-[11px] font-semibold text-white bg-slate-950/70 px-2.5 py-0.5 rounded border border-white/20 shadow-sm">
-              Act No. 12 of 2016
+              <?php echo esc_html( $adv2_rti_label ); ?>
             </span>
-            
+            <?php endif; ?>
           </div>
 
           <h2 class="text-xl sm:text-2xl lg:text-3xl font-black mb-2 leading-tight tracking-tight text-secondary-light">
-            <?php esc_html_e( 'Right to Information', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv2_rti_title ); ?>
           </h2>
 
           <p class="text-white text-xs max-w-lg leading-relaxed mb-4 font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
-            <?php esc_html_e( 'Access official government documents and public information, submit Right to Information (RTI) applications seamlessly, and track active disclosures effortlessly through our central transparent portal.', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv2_rti_desc ); ?>
           </p>
         </div>
 
         <!-- Lower Action Bar -->
         <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 mt-auto pt-3.5 border-t border-white/25">
-          <a href="<?php echo esc_url( home_url( '/rti/' ) ); ?>" class="bg-secondary hover:bg-secondary-dark text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2 shadow-lg transition-all duration-300 hover:translate-y-[-2px]">
-            <i class="fas fa-file-signature text-xs"></i> <?php esc_html_e( 'Submit RTI Request', 'homeaffairs' ); ?>
+          <?php if ( $adv2_rti_btn_text ) : ?>
+          <a href="<?php echo esc_url( $adv2_rti_btn_url ); ?>" class="bg-secondary hover:bg-secondary-dark text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2 shadow-lg transition-all duration-300 hover:translate-y-[-2px]">
+            <i class="fas fa-file-signature text-xs"></i> <?php echo esc_html( $adv2_rti_btn_text ); ?>
             <i class="fas fa-arrow-right text-[10px]"></i>
           </a>
+          <?php endif; ?>
 
+          <?php if ( $adv2_rti_tagline ) : ?>
           <div class="flex items-center gap-2.5">
-            <span class="text-[10px] font-bold text-white hidden sm:inline-block drop-shadow">Ensuring Citizens' Right to Information</span>
+            <span class="text-[10px] font-bold text-white hidden sm:inline-block drop-shadow"><?php echo esc_html( $adv2_rti_tagline ); ?></span>
             <div class="flex items-center gap-1">
               <span class="w-4 h-1.5 bg-secondary rounded-full shadow-sm"></span>
               <span class="w-1.5 h-1.5 bg-white/70 rounded-full"></span>
               <span class="w-1.5 h-1.5 bg-white/70 rounded-full"></span>
             </div>
           </div>
+          <?php endif; ?>
         </div>
       </div>
 
-      <!-- ─── RIGHT: 1905 ANTI-CORRUPTION HOTLINE BANNER (EXACT BRAND COLORS) ─── -->
-      <div class="lg:col-span-5 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/governance/19051.jpg' ); ?>'); background-size: cover; background-position: center;">
+      <!-- ─── 10. ADVERTISE SECTION 2: 1905 HOTLINE BANNER (Spans 5 Cols) ─── -->
+      <div class="lg:col-span-5 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_1905_img ); ?>'); background-size: cover; background-position: center;">
         
-          <!-- Ambient Dark Gradient Overlay for optimal contrast -->
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
-
+        <!-- Ambient Dark Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
 
         <!-- Upper Content -->
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="inline-flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-md text-secondary-light font-extrabold text-[10px] tracking-[1.5px] uppercase px-3 py-1 rounded-full border border-secondary-light/40 shadow-sm">
-              <i class="fas fa-shield-halved text-secondary-light"></i> <?php esc_html_e( 'Report Complaints, Grievances & Issues', 'homeaffairs' ); ?>
+              <i class="fas fa-shield-halved text-secondary-light"></i> <?php echo esc_html( $adv2_1905_subtitle ); ?>
             </span>
           
+            <?php if ( $adv2_1905_label ) : ?>
             <span class="hidden sm:inline-block text-[11px] font-semibold text-white bg-slate-950/70 px-2.5 py-0.5 rounded border border-white/20 shadow-sm">
-              Shortcode 1905
+              <?php echo esc_html( $adv2_1905_label ); ?>
             </span>
+            <?php endif; ?>
           </div>
 
           <h2 class="text-xl sm:text-2xl lg:text-3xl font-black mb-2 leading-tight tracking-tight text-secondary-light">
-            <?php esc_html_e( 'Grievances Hotline - 1905', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv2_1905_title ); ?>
           </h2>
 
           <p class="text-white text-xs max-w-lg leading-relaxed mb-4 font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
-            <?php esc_html_e('Inform us of your grievances regarding unsatisfactory services provided by institution which are under the ministry of public administration, provincial councils & local goverments.', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv2_1905_desc ); ?>
           </p>
         </div>
 
         <!-- Lower Action Bar -->
         <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 mt-auto pt-3.5 border-t border-white/25">
-          <a href="<?php echo esc_url( home_url( '/1905-2/' ) ); ?>" class="bg-secondary hover:bg-secondary-dark text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2 shadow-lg transition-all duration-300 hover:translate-y-[-2px]">
-            <i class="fas fa-info-circle"></i> <?php esc_html_e( 'View More', 'homeaffairs' ); ?>
+          <?php if ( $adv2_1905_btn_text ) : ?>
+          <a href="<?php echo esc_url( $adv2_1905_btn_url ); ?>" class="bg-secondary hover:bg-secondary-dark text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2 shadow-lg transition-all duration-300 hover:translate-y-[-2px]">
+            <i class="fas fa-info-circle"></i> <?php echo esc_html( $adv2_1905_btn_text ); ?>
             <i class="fas fa-arrow-right text-[10px]"></i>
           </a>
+          <?php endif; ?>
 
+          <?php if ( $adv2_1905_tagline ) : ?>
           <div class="flex items-center gap-2.5">
-            <span class="text-[10px] font-bold text-white hidden sm:inline-block drop-shadow">Direct Citizen Response & Issue Resolution</span>
+            <span class="text-[10px] font-bold text-white hidden sm:inline-block drop-shadow"><?php echo esc_html( $adv2_1905_tagline ); ?></span>
             <div class="flex items-center gap-1">
               <span class="w-4 h-1.5 bg-secondary rounded-full shadow-sm"></span>
               <span class="w-1.5 h-1.5 bg-white/70 rounded-full"></span>
               <span class="w-1.5 h-1.5 bg-white/70 rounded-full"></span>
             </div>
           </div>
+          <?php endif; ?>
         </div>
 
       </div>
+    </div>
   </div>
 </section>
-
-
-<!-- Tab Switching Script -->
-<script>
-  function switchTab(evt, tabName) {
-    let contents = document.getElementsByClassName("tab-content");
-    for (let i = 0; i < contents.length; i++) {
-      contents[i].classList.add("hidden");
-    }
-
-    let buttons = document.getElementsByClassName("tab-btn");
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove("bg-primary-dark", "text-white", "shadow-md");
-      buttons[i].classList.add("bg-slate-100", "text-slate-700", "hover:bg-primary-dark/10", "hover:text-primary-dark");
-      let icon = buttons[i].querySelector("i");
-      if(icon) {
-        icon.classList.remove("text-secondary");
-        icon.classList.add("text-slate-600");
-      }
-    }
-
-    document.getElementById(tabName).classList.remove("hidden");
-    evt.currentTarget.classList.remove("bg-slate-100", "text-slate-700", "hover:bg-primary-dark/10", "hover:text-primary-dark");
-    evt.currentTarget.classList.add("bg-primary-dark", "text-white", "shadow-md");
-    let activeIcon = evt.currentTarget.querySelector("i");
-    if(activeIcon) {
-      activeIcon.classList.remove("text-slate-600");
-      activeIcon.classList.add("text-secondary");
-    }
-  }
-</script>
 <?php endif; ?>
 
 
 
-<?php if ( "hide" !== $ha_home_show_downloads ) : ?>
-<!-- ═══ KEY SERVICES & NOTICE BOARDS (LUXURY MAROON & GOLD TOUCH) ═══ -->
+<?php if ( "hide" !== $ha_home_show_downloads ) :
+  $qa3_sec_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_title' ) : '';
+  $qa3_sec_title    = $qa3_sec_title ?: __( 'Information on Subsidies', 'homeaffairs' );
+  $qa3_sec_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_subtitle' ) : '';
+  $qa3_sec_subtitle = $qa3_sec_subtitle ?: __( 'What We Offer', 'homeaffairs' );
+
+  $raw_qa3_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa3_items' ) : array();
+  if ( empty( $raw_qa3_items ) || ! is_array( $raw_qa3_items ) ) {
+    $qa3_items = array(
+      array(
+        'qa3_icon'     => 'fas fa-file-arrow-down',
+        'qa3_title'    => __( 'Publications & Downloads', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Access official administrative reports, acts, guidelines, and downloadable forms.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Publications', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/publications/' ),
+        'qa3_badge'    => 'Resources',
+      ),
+      array(
+        'qa3_icon'     => 'fas fa-user-graduate',
+        'qa3_title'    => __( 'Scholarships', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Explore local and international scholarship opportunities available for public officers.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Scholarships', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/scholarships/' ),
+        'qa3_badge'    => 'Education',
+      ),
+      array(
+        'qa3_icon'     => 'fas fa-handshake-angle',
+        'qa3_title'    => __( 'Services', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Explore citizen services, administrative assistance, permits, and support provided by Home Affairs.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Services', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/services/' ),
+        'qa3_badge'    => 'Public Services',
+      ),
+      array(
+        'qa3_icon'     => 'fas fa-flag',
+        'qa3_title'    => __( 'National Anthem & Flag', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Official guidelines, protocols, downloads, and rules regarding the National Flag and Anthem.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Details', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/national-anthem-flag-protocol/' ),
+        'qa3_badge'    => 'Symbols',
+      ),
+      array(
+        'qa3_icon'     => 'fas fa-calendar-days',
+        'qa3_title'    => __( 'Government Calendar', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Official public holidays, mercantile holidays, and administrative schedule for the year.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Calendar', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/government-calendar/' ),
+        'qa3_badge'    => 'Schedule',
+      ),
+      array(
+        'qa3_icon'     => 'fas fa-briefcase',
+        'qa3_title'    => __( 'Vacancies', 'homeaffairs' ),
+        'qa3_desc'     => __( 'Find current job openings, public recruitment notices, and career opportunities.', 'homeaffairs' ),
+        'qa3_btn_text' => __( 'View Vacancies', 'homeaffairs' ),
+        'qa3_url'      => home_url( '/vacancies/' ),
+        'qa3_badge'    => 'Careers',
+      ),
+    );
+  } else {
+    $qa3_items = $raw_qa3_items;
+  }
+?>
+<!-- ═══ 11. QUICK ACCESS SECTION 3 (KEY SERVICES & NOTICE BOARDS) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white relative overflow-hidden">
 
-  <!-- 1. Smooth Soft Mesh Base Layer -->
+  <!-- Atmospheric Background Accents -->
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/[0.03] via-transparent to-secondary/[0.03] pointer-events-none"></div>
-
-  <!-- 2. High Transparency Maroon Top-Right Curve Glow -->
   <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-primary/[0.06] rounded-full blur-[120px] pointer-events-none"></div>
-
-  <!-- 3. High Transparency Gold Bottom-Left Curve Glow -->
   <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-secondary/[0.08] rounded-full blur-[120px] pointer-events-none"></div>
-
-  <!-- 4. Subtle Elegant Curved Wave Lines Overlay -->
-  <div class="absolute inset-0 opacity-[0.12] pointer-events-none mix-blend-overlay" 
-       style="background-image: radial-gradient(circle at 50% 50%, var(--color-primary) 1px, transparent 1px), radial-gradient(circle at 0% 100%, var(--color-secondary) 1px, transparent 1px); background-size: 40px 40px;">
-  </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     
@@ -1059,186 +1129,132 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <div class="text-center mb-6 lg:mb-8 scroll-animate">
       <span class="inline-flex items-center gap-1.5 text-primary font-bold text-[10px] sm:text-[11px] tracking-[2px] uppercase bg-primary/10 px-3 py-0.5 rounded-full mb-1.5 border border-primary/20">
         <i class="fas fa-layer-group text-[9px] text-primary"></i>
-        <?php esc_html_e( 'What We Offer', 'homeaffairs' ); ?>
+        <?php echo esc_html( $qa3_sec_subtitle ); ?>
       </span>
       <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-primary tracking-tight mb-1.5">
-        <?php esc_html_e( 'Information on Subsidies', 'homeaffairs' ); ?>
+        <?php echo esc_html( $qa3_sec_title ); ?>
       </h2>
     </div>
 
     <!-- Grid (3 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-      <!-- Card 1: Publications & Downloads -->
+      <?php foreach ( $qa3_items as $item ) :
+        $q_icon  = ! empty( $item['qa3_icon'] ) ? $item['qa3_icon'] : 'fas fa-file-arrow-down';
+        $q_title = ! empty( $item['qa3_title'] ) ? $item['qa3_title'] : '';
+        $q_desc  = ! empty( $item['qa3_desc'] ) ? $item['qa3_desc'] : '';
+        $q_btn   = ! empty( $item['qa3_btn_text'] ) ? $item['qa3_btn_text'] : __( 'Learn More', 'homeaffairs' );
+        $q_url   = ! empty( $item['qa3_url'] ) ? $item['qa3_url'] : '#';
+        $q_badge = ! empty( $item['qa3_badge'] ) ? $item['qa3_badge'] : '';
+      ?>
       <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
         <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div>
           <div class="flex items-center justify-between mb-3">
             <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-file-arrow-down"></i>
+              <i class="<?php echo esc_attr( $q_icon ); ?>"></i>
             </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Resources</span>
+            <?php if ( $q_badge ) : ?>
+            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">
+              <?php echo esc_html( $q_badge ); ?>
+            </span>
+            <?php endif; ?>
           </div>
           <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'Publications & Downloads', 'homeaffairs' ); ?>
+            <?php echo esc_html( $q_title ); ?>
           </h3>
+          <?php if ( $q_desc ) : ?>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Access official administrative reports, acts, guidelines, and downloadable forms.', 'homeaffairs' ); ?>
+            <?php echo esc_html( $q_desc ); ?>
           </p>
+          <?php endif; ?>
         </div>
-        <a href="<?php echo esc_url( home_url( '/publications/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Publications', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
+        <a href="<?php echo esc_url( $q_url ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
+          <?php echo esc_html( $q_btn ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
         </a>
       </div>
-
-      <!-- Card 2: Scholarships -->
-      <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-user-graduate"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Education</span>
-          </div>
-          <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'Scholarships', 'homeaffairs' ); ?>
-          </h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Explore local and international scholarship opportunities available for public officers.', 'homeaffairs' ); ?>
-          </p>
-        </div>
-        <a href="<?php echo esc_url( home_url( '/scholarships/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Scholarships', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
-        </a>
-      </div>
-
-      <!-- Card 3: Services -->
-      <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-handshake-angle"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Public Services</span>
-          </div>
-          <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'Services', 'homeaffairs' ); ?>
-          </h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Explore citizen services, administrative assistance, permits, and support provided by Home Affairs.', 'homeaffairs' ); ?>
-          </p>
-        </div>
-        <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Services', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
-        </a>
-      </div>
-
-      <!-- Card 4: National Anthem & Flag -->
-      <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-flag"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Symbols</span>
-          </div>
-          <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'National Anthem & Flag', 'homeaffairs' ); ?>
-          </h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Official guidelines, protocols, downloads, and rules regarding the National Flag and Anthem.', 'homeaffairs' ); ?>
-          </p>
-        </div>
-        <a href="<?php echo esc_url( home_url( '/national-anthem-flag-protocol/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Details', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
-        </a>
-      </div>
-
-      <!-- Card 5: Government Calendar -->
-      <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-calendar-days"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Schedule</span>
-          </div>
-          <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'Government Calendar', 'homeaffairs' ); ?>
-          </h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Official public holidays, mercantile holidays, and administrative schedule for the year.', 'homeaffairs' ); ?>
-          </p>
-        </div>
-        <a href="<?php echo esc_url( home_url( '/government-calendar/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Calendar', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
-        </a>
-      </div>
-
-      <!-- Card 6: Vacancies -->
-      <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="relative z-10 w-11 h-11 bg-primary/[0.05] border border-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:shadow-sm group-hover:scale-105 transition-all duration-300 shrink-0">
-              <i class="fas fa-briefcase"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400 group-hover:text-secondary-dark transition-colors uppercase tracking-wider">Careers</span>
-          </div>
-          <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-primary-dark transition-colors">
-            <?php esc_html_e( 'Vacancies', 'homeaffairs' ); ?>
-          </h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            <?php esc_html_e( 'Find current job openings, public recruitment notices, and career opportunities.', 'homeaffairs' ); ?>
-          </p>
-        </div>
-        <a href="<?php echo esc_url( home_url( '/vacancies/' ) ); ?>" class="text-primary group-hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-slate-100">
-          <?php esc_html_e( 'View Vacancies', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[10px]"></i>
-        </a>
-      </div>
-
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
 <?php endif; ?>
 
 
-<?php if ( "hide" !== $ha_home_show_contact_banner ) : ?>
-<!-- ═══ CTA SECTION (COMPACT HEIGHT - MATCHING HERO BANNER) ═══ -->
-<section class="relative py-12 lg:py-16 text-center overflow-hidden bg-cover bg-center" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/home-contact.jpg' ); ?>');">
+<?php if ( "hide" !== $ha_home_show_contact_banner ) :
+  $cta_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_title' ) : '';
+  $cta_title    = $cta_title ?: __( 'Need Assistance with a Government Service?', 'homeaffairs' );
+  $cta_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_desc' ) : '';
+  $cta_desc     = $cta_desc ?: __( "Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we're here to help every citizen, every day.", 'homeaffairs' );
+  $cta_btn_icon = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_icon' ) : '';
+  $cta_btn_icon = $cta_btn_icon ?: 'fas fa-phone-alt';
+  $cta_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_text' ) : '';
+  $cta_btn_text = $cta_btn_text ?: __( 'Contact Us', 'homeaffairs' );
+  $cta_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_btn_url' ) : '';
+  $cta_btn_url  = $cta_btn_url ?: ( ! empty( $ha_contact ) ? $ha_contact : home_url( '/contact/' ) );
+  $cta_bg_raw   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_cta_bg_image' ) : '';
+  $cta_bg       = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $cta_bg_raw ) : '';
+  if ( ! $cta_bg ) { $cta_bg = $ha_uri . '/assets/images/home-contact.jpg'; }
+?>
+<!-- ═══ 12. CALL TO ACTION BANNER SECTION ═══ -->
+<section class="relative py-12 lg:py-16 text-center overflow-hidden bg-cover bg-center" style="background-image: url('<?php echo esc_url( $cta_bg ); ?>');">
   
-  <!-- Subtle Dark Overlay for better contrast -->
+  <!-- Subtle Dark Overlay for contrast -->
   <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
 
   <!-- Content -->
   <div class="max-w-3xl mx-auto px-4 relative z-10">
 
     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2.5" style="color: var(--color-secondary-light) !important; -webkit-text-fill-color: var(--color-secondary-light) !important; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
-      <?php esc_html_e( 'Need Assistance with a Government Service?', 'homeaffairs' ); ?>
+      <?php echo esc_html( $cta_title ); ?>
     </h2>
 
-   
     <p class="text-white/90 text-xs sm:text-sm lg:text-base mb-5 max-w-2xl mx-auto font-medium">
-      <?php esc_html_e( 'Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we\'re here to help every citizen, every day.', 'homeaffairs' ); ?>
+      <?php echo esc_html( $cta_desc ); ?>
     </p>
 
-    
+    <?php if ( $cta_btn_text ) : ?>
     <div class="flex gap-2.5 sm:gap-3 justify-center flex-wrap">
-      
-     <a href="<?php echo esc_url( $ha_contact ); ?>" class="cta-btn inline-flex items-center gap-2 bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-6 py-2.5 rounded-full text-xs sm:text-sm shadow-md hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0 transition-all border border-secondary-light/30">
-  <i class="fas fa-phone-alt text-xs"></i> <?php esc_html_e( 'Contact Us', 'homeaffairs' ); ?>
-</a>
+      <a href="<?php echo esc_url( $cta_btn_url ); ?>" class="cta-btn inline-flex items-center gap-2 bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-6 py-2.5 rounded-full text-xs sm:text-sm shadow-md hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0 transition-all border border-secondary-light/30">
+        <i class="<?php echo esc_attr( $cta_btn_icon ); ?> text-xs"></i> <?php echo esc_html( $cta_btn_text ); ?>
+      </a>
     </div>
+    <?php endif; ?>
   </div>
 </section>
 <?php endif; ?>
 
-<?php if ( "hide" !== $ha_home_show_institutions ) : ?>
-<!-- ═══ RELATED ORGANIZATIONS / INSTITUTIONS ═══ -->
+<?php if ( "hide" !== $ha_home_show_institutions ) :
+  $orgs_title     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_orgs_title' ) : '';
+  $orgs_title     = $orgs_title ?: __( 'Related Organizations', 'homeaffairs' );
+
+  $raw_orgs_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_orgs_items' ) : array();
+  if ( empty( $raw_orgs_items ) || ! is_array( $raw_orgs_items ) ) {
+    $orgs_items = array(
+      array(
+        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
+        'org_title' => __( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' ),
+        'org_url'   => 'https://moha.gov.lk/',
+      ),
+      array(
+        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
+        'org_title' => __( 'Public Service Commission', 'homeaffairs' ),
+        'org_url'   => 'https://psc.gov.lk/',
+      ),
+      array(
+        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
+        'org_title' => __( "Registrar General's Department", 'homeaffairs' ),
+        'org_url'   => 'https://www.rgd.gov.lk/',
+      ),
+      array(
+        'org_logo'  => $ha_uri . '/assets/images/emblem-sri-lanka.png',
+        'org_title' => __( 'Sri Lanka Institute of Development Administration', 'homeaffairs' ),
+        'org_url'   => 'https://slida.lk/',
+      ),
+    );
+  } else {
+    $orgs_items = $raw_orgs_items;
+  }
+?>
+<!-- ═══ 13. RELATED ORGANIZATIONS SLIDER SECTION ═══ -->
 <section class="py-12 lg:py-16 bg-white border-t border-b border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
@@ -1246,46 +1262,27 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <div class="relative flex items-center justify-center mb-8">
       <div class="flex-grow border-t border-slate-200"></div>
       <h2 class="text-base sm:text-lg font-black text-primary px-6 bg-white uppercase tracking-wider">
-        <?php esc_html_e( 'Related Organizations', 'homeaffairs' ); ?>
+        <?php echo esc_html( $orgs_title ); ?>
       </h2>
       <div class="flex-grow border-t border-slate-200"></div>
     </div>
 
-    <!-- Horizontal Cards Grid (2 columns on mobile, 4 columns on large screens) -->
+    <!-- Cards Grid (2 cols mobile, 4 cols desktop) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-      <!-- Card 1: Ministry of Public Administration -->
-      <a href="https://moha.gov.lk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-left group">
-        <img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/emblem-sri-lanka.png' ); ?>" alt="<?php esc_attr_e( 'Sri Lanka Emblem', 'homeaffairs' ); ?>" class="w-10 h-10 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300">
+      <?php foreach ( $orgs_items as $org ) :
+        $o_logo_raw = ! empty( $org['org_logo'] ) ? $org['org_logo'] : '';
+        $o_logo     = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( $o_logo_raw ) : '';
+        if ( ! $o_logo ) { $o_logo = $ha_uri . '/assets/images/emblem-sri-lanka.png'; }
+        $o_title    = ! empty( $org['org_title'] ) ? $org['org_title'] : '';
+        $o_url      = ! empty( $org['org_url'] ) ? $org['org_url'] : '#';
+      ?>
+      <a href="<?php echo esc_url( $o_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-left group">
+        <img loading="lazy" decoding="async" src="<?php echo esc_url( $o_logo ); ?>" alt="<?php echo esc_attr( $o_title ); ?>" class="w-10 h-10 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300">
         <span class="text-xs sm:text-sm font-bold text-primary group-hover:text-secondary-dark transition-colors leading-snug">
-          <?php esc_html_e( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' ); ?>
+          <?php echo esc_html( $o_title ); ?>
         </span>
       </a>
-
-      <!-- Card 2: Public Service Commission -->
-      <a href="https://psc.gov.lk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-left group">
-        <img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/emblem-sri-lanka.png' ); ?>" alt="<?php esc_attr_e( 'Sri Lanka Emblem', 'homeaffairs' ); ?>" class="w-10 h-10 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300">
-        <span class="text-xs sm:text-sm font-bold text-primary group-hover:text-secondary-dark transition-colors leading-snug">
-          <?php esc_html_e( 'Public Service Commission', 'homeaffairs' ); ?>
-        </span>
-      </a>
-
-      <!-- Card 3: Registrar General's Department -->
-      <a href="https://www.rgd.gov.lk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-left group">
-        <img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/emblem-sri-lanka.png' ); ?>" alt="<?php esc_attr_e( 'Sri Lanka Emblem', 'homeaffairs' ); ?>" class="w-10 h-10 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300">
-        <span class="text-xs sm:text-sm font-bold text-primary group-hover:text-secondary-dark transition-colors leading-snug">
-          <?php esc_html_e( "Registrar General's Department", 'homeaffairs' ); ?>
-        </span>
-      </a>
-
-      <!-- Card 4: SLIDA -->
-      <a href="https://slida.lk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-left group">
-        <img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/emblem-sri-lanka.png' ); ?>" alt="<?php esc_attr_e( 'Sri Lanka Emblem', 'homeaffairs' ); ?>" class="w-10 h-10 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300">
-        <span class="text-xs sm:text-sm font-bold text-primary group-hover:text-secondary-dark transition-colors leading-snug">
-          <?php esc_html_e( 'Sri Lanka Institute of Development Administration', 'homeaffairs' ); ?>
-        </span>
-      </a>
-
+      <?php endforeach; ?>
     </div>
 
     <!-- Indicator Dots at the bottom -->

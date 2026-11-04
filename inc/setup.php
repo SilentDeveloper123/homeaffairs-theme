@@ -9,6 +9,7 @@ function ha_setup() {
     add_image_size( 'ha-news-hero', 1600, 980, true );
     add_image_size( 'ha-news-card', 600, 360, true );
     add_image_size( 'ha-banner-project', 1370, 500, true );
+    add_image_size( 'ha-adv2-banner', 1025, 695, true );
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
     add_theme_support( 'custom-logo', array(
         'height'      => 80,
