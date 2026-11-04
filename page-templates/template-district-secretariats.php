@@ -13,7 +13,7 @@ $img_base = get_template_directory_uri() . '/assets/images/districts/';
 
 $intro_title = "District Secretariats of Sri Lanka";
 $intro_text  = "Sri Lanka is divided into 25 districts, each administered by a District Secretariat headed by a District Secretary (also known as the Government Agent). These District Secretariats serve as the primary administrative link between the central government and the divisional secretariats, ensuring effective implementation of national policies, coordination of development activities, and delivery of public services at the district level.";
-$intro_text2 = "Each District Secretariat operates under the purview of the Ministry of Home Affairs, Public Administration & Disaster Management, working diligently to uphold the highest standards of governance, public service, and administrative efficiency across the island.";
+$intro_text2 = "Each District Secretariat operates under the purview of the Home Affairs Division, working diligently to uphold the highest standards of governance, public service, and administrative efficiency across the island.";
 
 $sidebar_title = "District Directory";
 $checking_label = "Checking...";

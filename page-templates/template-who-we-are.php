@@ -15,7 +15,7 @@ $breadcrumb_home = "Home";
 
 $tag_text    = "ABOUT THE DIVISION";
 $title       = "Overview";
-$subtitle    = "The heart of civil administration, coordination, and public service excellence within the Ministry of Home Affairs.";
+$subtitle    = "The heart of civil administration, coordination, and public service excellence within the Home Affairs Division.";
 
 // Overview / History Box Style Content Variables
 $overview_title = "Introduction of the Home Affairs Division";

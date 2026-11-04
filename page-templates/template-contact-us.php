@@ -32,7 +32,7 @@ get_template_part( 'template-parts/page-banner' );
 						</div>
 						<div>
 							<span class="block text-xs font-bold text-primary uppercase tracking-wider mb-0.5">Address</span>
-							<span class="text-sm text-gray-500 leading-relaxed">Ministry of Home Affairs, "Nila Madura",Elvitigala Mawatha, Narahenpita,Colombo 05, Sri Lanka
+							<span class="text-sm text-gray-500 leading-relaxed">Home Affairs Division, "Nila Madura",Elvitigala Mawatha, Narahenpita,Colombo 05, Sri Lanka
 						</div>
 					</div>
 					<div class="flex items-start gap-3">
@@ -76,7 +76,7 @@ get_template_part( 'template-parts/page-banner' );
 
 			<!-- Interactive Map -->
 			<div class="contact-map bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7985101683686!2d79.861175!3d6.916804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25915b99b11cf%3A0x8e0b7c3f7b0c5a1!2sIndependence%20Square%2C%20Colombo!5e0!3m2!1sen!2slk!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ministry of Home Affairs Location"></iframe>
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7985101683686!2d79.861175!3d6.916804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25915b99b11cf%3A0x8e0b7c3f7b0c5a1!2sIndependence%20Square%2C%20Colombo!5e0!3m2!1sen!2slk!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Home Affairs Division Location"></iframe>
 			</div>
 
 		</div>

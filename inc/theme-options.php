@@ -114,7 +114,7 @@ function ha_attach_theme_options() {
         ) )
         ->add_tab( __( 'Content', 'homeaffairs' ), array(
             Field::make( 'text', 'ha_copyright_text', __( 'Copyright Text', 'homeaffairs' ) )
-                ->set_default_value( '© ' . date( 'Y' ) . ' Ministry of Home Affairs — Sri Lanka. All Rights Reserved.' )
+                ->set_default_value( '© ' . date( 'Y' ) . ' Home Affairs Division — Sri Lanka. All Rights Reserved.' )
                 ->set_help_text( __( 'Copyright notice in the footer bar.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_last_update_date', __( 'Last Update Date', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', date( 'F j, Y' ) )
@@ -137,7 +137,7 @@ function ha_attach_theme_options() {
         ->add_tab( __( 'Contact', 'homeaffairs' ), array(
             Field::make( 'textarea', 'ha_address', __( 'Official Address', 'homeaffairs' ) )
                 ->set_rows( 3 )
-                ->set_help_text( __( 'Ministry address shown in the footer.', 'homeaffairs' ) ),
+                ->set_help_text( __( 'Division address shown in the footer.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_telephone', __( 'General / Hotline Telephone', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', '+94 112 050 450' ),
             Field::make( 'text', 'ha_email', __( 'General / Hotline Email', 'homeaffairs' ) )

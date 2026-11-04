@@ -9,12 +9,12 @@ get_header();
 
 get_template_part( 'template-parts/page-banner' );
 
-$tag_text       = "MINISTRY HERITAGE";
+$tag_text       = "DIVISION HERITAGE";
 $page_title     = "History & Former Ministers";
 
 $intro_title    = "Civil Administration & History";
 $intro_text     = "The subject of Home Affairs, which stands as the nucleus of civil administration in Sri Lanka, has been deeply intertwined with the country's governance history. From the early Chief Secretary’s Office under the British administration to the highly decentralized network of District and Divisional Secretariats today, this division has undergone immense transformation.";
-$intro_text2    = "Formally instituted under the Donoughmore Constitution in 1931, the Ministry of Home Affairs assumed pivotal responsibilities post-independence, steering rural governance, regional administration, civil registrations, and community development across the island.";
+$intro_text2    = "Formally instituted under the Donoughmore Constitution in 1931, the Home Affairs Division assumed pivotal responsibilities post-independence, steering rural governance, regional administration, civil registrations, and community development across the island.";
 
 $ministers_title = "Former Ministers";
 $ministers = [

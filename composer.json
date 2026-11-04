@@ -1,6 +1,6 @@
 {
     "name": "homeaffairs/theme",
-    "description": "Ministry of Home Affairs WordPress Theme",
+    "description": "Home Affairs Division WordPress Theme",
     "type": "wordpress-theme",
     "require": {
         "htmlburger/carbon-fields": "^3.6"

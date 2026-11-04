@@ -164,7 +164,7 @@ $provinces = [
 $all_bungalows = [];
 foreach ( $provinces as $p ) {
     foreach ( $p['bungalows'] as $b ) {
-        if (!isset($b['description'])) $b['description'] = 'Comfortable circuit bungalow managed by the Ministry of Home Affairs for public sector officers.';
+        if (!isset($b['description'])) $b['description'] = 'Comfortable circuit bungalow managed by the Home Affairs Division for public sector officers.';
         if (!isset($b['gallery']) || empty($b['gallery'])) $b['gallery'] = [$b['image']];
         if (!isset($b['rooms']) || empty($b['rooms'])) {
             $b['rooms'] = [

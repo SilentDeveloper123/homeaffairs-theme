@@ -50,7 +50,7 @@ get_header(); ?>
           <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-steel flex items-center justify-center text-white text-2xl shrink-0"><i class="fas fa-user-tie" aria-hidden="true"></i></div>
           <div>
             <h4 class="font-bold text-primary text-sm"><?php esc_html_e( 'Media Unit', 'homeaffairs' ); ?></h4>
-            <p class="text-gray-600 text-xs mt-1"><?php esc_html_e( 'Ministry of Home Affairs, Public Administration & Disaster Management', 'homeaffairs' ); ?></p>
+            <p class="text-gray-600 text-xs mt-1"><?php esc_html_e( 'Home Affairs Division', 'homeaffairs' ); ?></p>
           </div>
         </div>
         <?php if ( comments_open() || get_comments_number() ) : ?>

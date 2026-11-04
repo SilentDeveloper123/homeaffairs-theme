@@ -16,7 +16,7 @@ get_template_part( 'template-parts/page-banner' );
 
 
 $intro_title = "Grama Niladhari Offices Directory";
-$intro_text  = "With a view to ensure an administrative system at rural level on par with public policies, Grama Niladhari Division which is under Home Affairs Division of the Ministry of Home Affairs implements all administrative functions of Grama Niladharis performing their duties in 14,022 GN Divisions under 332 Divisional Secretary’s Division all over the island.";
+$intro_text  = "With a view to ensure an administrative system at rural level on par with public policies, Grama Niladhari Division which is under Home Affairs Division implements all administrative functions of Grama Niladharis performing their duties in 14,022 GN Divisions under 332 Divisional Secretary’s Division all over the island.";
 
 
 $provinces = [

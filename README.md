@@ -1,6 +1,6 @@
-# Home Affairs Theme — Ministry of Home Affairs, Sri Lanka
+# Home Affairs Theme — Home Affairs Division, Sri Lanka
 
-WordPress theme for the **Ministry of Home Affairs, Public Administration & Disaster Management — Sri Lanka**. Converted from the static MOHA HTML template set. Maroon/gold color scheme.
+WordPress theme for the **Home Affairs Division**. Converted from the static MOHA HTML template set. Maroon/gold color scheme.
 
 - **Root**: `C:\xampp\htdocs\moha\wp-content\themes\homeaffairs-theme`
 - **Live**: `http://localhost/moha/` — multisite (root `/moha/`, `/moha/en/` EN, `/moha/si/` SI, `/moha/ta/` TA; DB `mohadb`)

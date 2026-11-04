@@ -8,8 +8,8 @@ Template Name: Landing Page
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo esc_html__( 'Ministry of Home Affairs — Sri Lanka', 'homeaffairs' ); ?></title>
-<meta name="description" content="<?php esc_attr_e( 'Official website of the Ministry of Home Affairs, Public Administration &amp; Disaster Management — Sri Lanka', 'homeaffairs' ); ?>">
+<title><?php echo esc_html__( 'Home Affairs Division — Sri Lanka', 'homeaffairs' ); ?></title>
+<meta name="description" content="<?php esc_attr_e( 'Official website of the Home Affairs Division, Public Administration &amp; Disaster Management — Sri Lanka', 'homeaffairs' ); ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Noto+Serif+Tamil:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">

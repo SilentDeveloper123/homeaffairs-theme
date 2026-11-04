@@ -1,6 +1,6 @@
 # AGENTS.md — Home Affairs WordPress Theme
 
-**Project**: Ministry of Home Affairs, Public Administration & Disaster Management — Sri Lanka WordPress theme.
+**Project**: Home Affairs Division, Public Administration & Disaster Management — Sri Lanka WordPress theme.
 **Root**: `C:\xampp\htdocs\moha\wp-content\themes\homeaffairs-theme` (XAMPP WordPress 7.0.7 multisite: `/moha/`, `/moha/en/`, `/moha/si/`, `/moha/ta/`; DB `mohadb`).
 
 ## Read These First

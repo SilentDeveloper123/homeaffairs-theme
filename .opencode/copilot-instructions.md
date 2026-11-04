@@ -2,7 +2,7 @@
 
 ## Project Context
 
-- **Project**: Ministry of Home Affairs, Public Administration & Disaster Management — Sri Lanka WordPress Theme
+- **Project**: Home Affairs Division, Public Administration & Disaster Management — Sri Lanka WordPress Theme
 - **Type**: WordPress theme converted from static HTML templates
 - **Root**: `C:\xampp\htdocs\moha\wp-content\themes\homeaffairs-theme`
 - **Local install**: XAMPP WordPress 7.0.7 multisite — `http://localhost/moha/` (root), `/moha/en/` (English, blog ID 4, prefix `wp_4_`), `/moha/si/` (Sinhala), `/moha/ta/` (Tamil). DB: `mohadb`, default prefix `wp_`

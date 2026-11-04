@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Template Name: 1905 Public Complaints & Media Services
- * Description: Public Complaints, Media Services, and Public Grievance Management System (Hotline 1905) for Ministry of Home Affairs.
+ * Description: Public Complaints, Media Services, and Public Grievance Management System (Hotline 1905) for Home Affairs Division.
  */
 
 get_header();
@@ -12,7 +12,7 @@ get_template_part( 'template-parts/page-banner' );
 
 
 
-// Covered Institutions List under Ministry of Home Affairs / Public Administration
+// Covered Institutions List under Home Affairs Division
 $covered_institutions = [
     [
         'title' => 'Ministry Headquarters & Divisions',
@@ -290,7 +290,7 @@ $faqs = [
                 </p>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-700 space-y-1">
                     <p class="font-bold text-primary-dark">Public Complaints Unit,</p>
-                    <p>Ministry of Home Affairs,</p>
+                    <p>Home Affairs Division,</p>
                     <p>Independence Square, Colombo 07.</p>
                 </div>
             </div>
