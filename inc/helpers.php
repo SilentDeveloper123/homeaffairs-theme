@@ -60,3 +60,38 @@ function ha_pagination() {
     echo '</div>';
   }
 }
+
+/**
+ * Safely resolve an image field value (URL string or attachment ID) to a full URL
+ *
+ * @param mixed $image_val URL string or attachment ID
+ * @param string $size Image size
+ * @return string Image URL
+ */
+function ha_resolve_image_url( $image_val, $size = 'full' ) {
+	if ( empty( $image_val ) ) {
+		return '';
+	}
+	if ( is_numeric( $image_val ) ) {
+		$url = wp_get_attachment_image_url( intval( $image_val ), $size );
+		return $url ?: '';
+	}
+	return esc_url_raw( $image_val );
+}
+
+/**
+ * Safely resolve a file field value (URL string or attachment ID) to a full URL
+ *
+ * @param mixed $file_val URL string or attachment ID
+ * @return string File URL
+ */
+function ha_resolve_file_url( $file_val ) {
+	if ( empty( $file_val ) ) {
+		return '';
+	}
+	if ( is_numeric( $file_val ) ) {
+		$url = wp_get_attachment_url( intval( $file_val ) );
+		return $url ?: '';
+	}
+	return esc_url_raw( $file_val );
+}

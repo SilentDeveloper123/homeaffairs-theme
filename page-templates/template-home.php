@@ -23,173 +23,292 @@ $ha_special_notices = esc_url( home_url( '/special-notices/' ) );
 $ha_scholarships = esc_url( home_url( '/scholarships/' ) );
 $ha_exam_results = esc_url( home_url( '/exam-results/' ) );
 
-get_header(); ?>
+get_header();
 
+// Carbon Fields Section Visibility & Data for Home Page
+$page_id = get_the_ID();
+if ( ! $page_id ) {
+	$page_id = (int) get_option( 'page_on_front' );
+}
+
+$ha_home_show_slider         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_slider' ) : 'show';
+$ha_home_show_notices        = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_notices' ) : 'show';
+$ha_home_show_ticker         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_ticker' ) : 'show';
+$ha_home_show_stats          = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_stats' ) : 'show';
+$ha_home_show_news           = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_news' ) : 'show';
+$ha_home_show_initiatives    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_initiatives' ) : 'show';
+$ha_home_show_services       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_services' ) : 'show';
+$ha_home_show_leadership     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_leadership' ) : 'show';
+$ha_home_show_downloads      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_downloads' ) : 'show';
+$ha_home_show_contact_banner = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_contact_banner' ) : 'show';
+$ha_home_show_institutions   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_institutions' ) : 'show';
+
+// Retrieve Hero Repeater Slides
+$raw_slides = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_slides' ) : array();
+if ( ! empty( $raw_slides ) && is_array( $raw_slides ) ) {
+	$slides = $raw_slides;
+} else {
+	$slides = array(
+		array(
+			'slide_subtitle'   => __( 'HOME AFFAIRS DIVISION', 'homeaffairs' ),
+			'slide_title'      => __( 'Seamless Governance from Central to Grassroots', 'homeaffairs' ),
+			'slide_desc'       => __( 'Empowering Regional Secretariats Across the Nation—Facilitating and coordinating Sri Lanka administrative ecosystem to deliver efficient , technology-driven public services.', 'homeaffairs' ),
+			'slide_btn_text'   => __( 'About Us', 'homeaffairs' ),
+			'slide_btn_url'    => $ha_services,
+			'slide_btn_target' => '_self',
+			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-1.jpg',
+		),
+		array(
+			'slide_subtitle'   => __( 'REGIONAL ADMINISTRATIVE NETWORK', 'homeaffairs' ),
+			'slide_title'      => __( 'Connecting 25 Districts & 335 Divisional Secretariats', 'homeaffairs' ),
+			'slide_desc'       => __( 'Island-Wide Public Service Hubs — Seamlessly coordinating regional development, state functions, and civil administration across all 25 districts and 335 divisions.', 'homeaffairs' ),
+			'slide_btn_text'   => __( 'Explore Regional Network', 'homeaffairs' ),
+			'slide_btn_url'    => $ha_eservices,
+			'slide_btn_target' => '_self',
+			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-2.jpg',
+		),
+		array(
+			'slide_subtitle'   => __( 'CITIZEN SERVICES', 'homeaffairs' ),
+			'slide_title'      => __( 'Accessible Government Services for Every Household', 'homeaffairs' ),
+			'slide_desc'       => __( '14,022 GN Divisions Island-Wide — Dedicated Grama Niladhari officers working across the island to ensure transparent, accessible, and responsive support for every family.', 'homeaffairs' ),
+			'slide_btn_text'   => __( 'Find Your GN Officer', 'homeaffairs' ),
+			'slide_btn_url'    => $ha_institutions,
+			'slide_btn_target' => '_self',
+			'slide_image'      => $ha_uri . '/assets/images/main-slider/HomeSlide-3.jpg',
+		),
+	);
+}
+
+// Special Notices Column Options
+$notices_badge   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_title' ) : '';
+$notices_badge   = $notices_badge ?: __( 'Special Notices', 'homeaffairs' );
+$notices_count   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_count' ) : '3';
+$notices_count   = ! empty( $notices_count ) ? intval( $notices_count ) : 3;
+$notices_cat     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_category' ) : '';
+$notices_all_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_view_all_url' ) : '';
+$notices_all_url = $notices_all_url ?: home_url( '/special-notices/' );
+
+$hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_notices || 'hide' !== $ha_home_show_ticker );
+?>
+
+<?php if ( $hero_visible ) : ?>
 <!-- ═══ HERO SLIDER (COMPACT HEIGHT MAROON & GOLD THEME) ═══ -->
 <section id="main-content" tabindex="-1" class="pt-8 pb-14 lg:pt-10 lg:pb-16 hero-slider main-slider relative overflow-hidden bg-primary-dark">
   
   <!-- Atmospheric Gradient Overlay (Washes over ::after underlayer and blends across section) -->
   <div class="hero-gradient-overlay"></div>
 
+  <?php if ( 'hide' !== $ha_home_show_slider ) : ?>
   <!-- Slider Background Stage (Right Area on Desktop with Middle Blend, No Full-Width Photo) -->
   <div class="hero-slider-bg-stage">
-    <div class="slide-bg active" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/main-slider/HomeSlide-1.jpg' ); ?>')"></div>
-    <div class="slide-bg" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/main-slider/HomeSlide-2.jpg' ); ?>')"></div>
-    <div class="slide-bg" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/main-slider/HomeSlide-3.jpg' ); ?>')"></div>
+    <?php foreach ( $slides as $i => $s ) :
+      $active_cls = ( 0 === $i ) ? ' active' : '';
+      $img_url    = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $s['slide_image'] ) ? $s['slide_image'] : '' ) : '';
+      if ( empty( $img_url ) ) {
+        $img_url = $ha_uri . '/assets/images/main-slider/HomeSlide-' . ( ( $i % 3 ) + 1 ) . '.jpg';
+      }
+    ?>
+      <div class="slide-bg<?php echo esc_attr( $active_cls ); ?>" style="background-image: url('<?php echo esc_url( $img_url ); ?>')"></div>
+    <?php endforeach; ?>
   </div>
+  <?php endif; ?>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch justify-between">
       
+      <?php if ( 'hide' !== $ha_home_show_slider ) : ?>
       <!-- Left Content / Slides -->
-      <div class="w-full lg:w-[60%] xl:w-[62%] min-w-0 flex flex-col justify-between">
+      <div class="w-full <?php echo ( 'hide' === $ha_home_show_notices ) ? 'lg:w-full' : 'lg:w-[60%] xl:w-[62%]'; ?> min-w-0 flex flex-col justify-between">
         <div class="hero-slides relative">
           
-          <!-- Slide 1 -->
-          <div class="hero-slide active">
-            <div class="inline-flex items-center gap-1.5 bg-secondary/20 text-secondary-light text-[9px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full mb-2 backdrop-blur-md border border-secondary/30">
-              <i class="fas fa-landmark text-[8px] text-secondary"></i> <?php esc_html_e( 'HOME AFFAIRS DIVISION', 'homeaffairs' ); ?>
-            </div>
+          <?php foreach ( $slides as $i => $s ) :
+            $active_cls = ( 0 === $i ) ? ' active' : '';
+            $subtitle   = ! empty( $s['slide_subtitle'] ) ? $s['slide_subtitle'] : '';
+            $title      = ! empty( $s['slide_title'] ) ? $s['slide_title'] : '';
+            $desc       = ! empty( $s['slide_desc'] ) ? $s['slide_desc'] : '';
+            $btn_text   = ! empty( $s['slide_btn_text'] ) ? $s['slide_btn_text'] : '';
+            $btn_url    = ! empty( $s['slide_btn_url'] ) ? $s['slide_btn_url'] : '';
+            $btn_target = ! empty( $s['slide_btn_target'] ) ? $s['slide_btn_target'] : '_self';
+          ?>
+          <!-- Slide <?php echo $i + 1; ?> -->
+          <div class="hero-slide<?php echo esc_attr( $active_cls ); ?>">
+            <?php if ( $subtitle ) : ?>
+              <div class="inline-flex items-center gap-1.5 bg-secondary/20 text-secondary-light text-[9px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full mb-2 backdrop-blur-md border border-secondary/30">
+                <i class="fas fa-landmark text-[8px] text-secondary"></i> <?php echo esc_html( $subtitle ); ?>
+              </div>
+            <?php endif; ?>
       
-            <h1 class="text-lg sm:text-xl lg:text-2xl font-bold !text-white leading-snug mb-2 tracking-tight">
-              <?php esc_html_e( 'Seamless Governance from Central to Grassroots', 'homeaffairs' ); ?>
-            </h1>
+            <?php if ( $title ) : ?>
+              <h1 class="text-lg sm:text-xl lg:text-2xl font-bold !text-white leading-snug mb-2 tracking-tight">
+                <?php echo esc_html( $title ); ?>
+              </h1>
+            <?php endif; ?>
 
-            <p class="text-[11px] sm:text-xs text-secondary-light/85 max-w-lg mb-4 leading-relaxed font-normal">
-              <?php esc_html_e( 'Empowering Regional Secretariats Across the Nation—Facilitating and coordinating Sri Lanka administrative ecosystem to deliver efficient , technology-driven public services.', 'homeaffairs' ); ?>
-            </p>
+            <?php if ( $desc ) : ?>
+              <p class="text-[11px] sm:text-xs text-secondary-light/85 max-w-lg mb-4 leading-relaxed font-normal">
+                <?php echo esc_html( $desc ); ?>
+              </p>
+            <?php endif; ?>
 
-            <div class="flex gap-2.5 justify-start flex-wrap">
-              <a href="<?php echo $ha_services; ?>" class="bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-4 py-2 rounded-lg text-xs inline-flex items-center gap-2 transition-all shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
-                <i class="fas fa-users-cog text-[10px]"></i> <?php esc_html_e( 'About Us', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[9px]"></i>
-              </a>
-            </div>
+            <?php if ( $btn_text && $btn_url ) : ?>
+              <div class="flex gap-2.5 justify-start flex-wrap">
+                <a href="<?php echo esc_url( $btn_url ); ?>" target="<?php echo esc_attr( $btn_target ); ?>" class="bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-4 py-2 rounded-lg text-xs inline-flex items-center gap-2 transition-all shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
+                  <i class="fas fa-users-cog text-[10px]"></i> <?php echo esc_html( $btn_text ); ?> <i class="fas fa-arrow-right text-[9px]"></i>
+                </a>
+              </div>
+            <?php endif; ?>
           </div>
-
-          <!-- Slide 2 -->
-          <div class="hero-slide">
-            <div class="inline-flex items-center gap-1.5 bg-secondary/20 text-secondary-light text-[9px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full mb-2 backdrop-blur-md border border-secondary/30">
-              <i class="fas fa-laptop-code text-[8px] text-secondary"></i> <?php esc_html_e( 'REGIONAL ADMINISTRATIVE NETWORK', 'homeaffairs' ); ?>
-            </div>
-
-            <h1 class="text-lg sm:text-xl lg:text-2xl font-bold !text-white leading-snug mb-2 tracking-tight">
-              <?php esc_html_e( 'Connecting 25 Districts & 335 Divisional Secretariats', 'homeaffairs' ); ?>
-            </h1>
-
-            <p class="text-[11px] sm:text-xs text-secondary-light/85 max-w-lg mb-4 leading-relaxed font-normal">
-              <?php esc_html_e( 'Island-Wide Public Service Hubs — Seamlessly coordinating regional development, state functions, and civil administration across all 25 districts and 335 divisions.', 'homeaffairs' ); ?>
-            </p>
-
-            <div class="flex gap-2.5 justify-start flex-wrap">
-              <a href="<?php echo $ha_eservices; ?>" class="bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-4 py-2 rounded-lg text-xs inline-flex items-center gap-2 transition-all shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
-                <i class="fas fa-map-marked-alt text-[10px]"></i> <?php esc_html_e( 'Explore Regional Network', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[9px]"></i>
-              </a>
-            </div>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="hero-slide">
-            <div class="inline-flex items-center gap-1.5 bg-secondary/20 text-secondary-light text-[9px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full mb-2 backdrop-blur-md border border-secondary/30">
-              <i class="fas fa-network-wired text-[8px] text-secondary"></i> <?php esc_html_e( 'CITIZEN SERVICES', 'homeaffairs' ); ?>
-            </div>
-
-            <h1 class="text-lg sm:text-xl lg:text-2xl font-bold !text-white leading-snug mb-2 tracking-tight">
-              <?php esc_html_e( 'Accessible Government Services for Every Household', 'homeaffairs' ); ?>
-            </h1>
-
-            <p class="text-[11px] sm:text-xs text-secondary-light/85 max-w-lg mb-4 leading-relaxed font-normal">
-              <?php esc_html_e( '14,022 GN Divisions Island-Wide — Dedicated Grama Niladhari officers working across the island to ensure transparent, accessible, and responsive support for every family.', 'homeaffairs' ); ?>
-            </p>
-
-            <div class="flex gap-2.5 justify-start flex-wrap">
-              <a href="<?php echo $ha_institutions; ?>" class="bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-4 py-2 rounded-lg text-xs inline-flex items-center gap-2 transition-all shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
-                <i class="fas fa-location-dot text-[10px]"></i> <?php esc_html_e( 'Find Your GN Officer', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[9px]"></i>
-              </a>
-            </div>
-          </div>
+          <?php endforeach; ?>
 
         </div>
 
+        <?php if ( count( $slides ) > 1 ) : ?>
         <!-- Pagination Dots -->
         <div class="flex items-center gap-2 mt-4" role="tablist" aria-label="<?php esc_attr_e( 'Slide pagination', 'homeaffairs' ); ?>">
-          <button type="button" class="hero-dot active" aria-label="<?php esc_attr_e( 'Slide 1', 'homeaffairs' ); ?>"></button>
-          <button type="button" class="hero-dot" aria-label="<?php esc_attr_e( 'Slide 2', 'homeaffairs' ); ?>"></button>
-          <button type="button" class="hero-dot" aria-label="<?php esc_attr_e( 'Slide 3', 'homeaffairs' ); ?>"></button>
+          <?php foreach ( $slides as $i => $s ) : ?>
+            <button type="button" class="hero-dot<?php echo ( 0 === $i ) ? ' active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Slide %d', 'homeaffairs' ), $i + 1 ) ); ?>"></button>
+          <?php endforeach; ?>
         </div>
+        <?php endif; ?>
       </div>
+      <?php endif; ?>
 
+      <?php if ( 'hide' !== $ha_home_show_notices ) : ?>
       <!-- Right Special Notices Tiles (Exact Original Sizes with White Text) -->
-      <div class="hero-special-tiles hero-special-titles flex flex-col gap-1.5 w-full lg:w-60 shrink-0 lg:ml-auto justify-center z-10">
+      <div class="hero-special-tiles hero-special-titles flex flex-col gap-1.5 w-full <?php echo ( 'hide' === $ha_home_show_slider ) ? 'lg:max-w-md mx-auto' : 'lg:w-60 lg:ml-auto'; ?> shrink-0 justify-center z-10">
         <div class="flex items-center gap-2 mb-0.5">
           <span class="special-notices-badge text-white border border-secondary/30 text-[8px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-md shadow-sm">
-            <i class="fas fa-bullhorn text-[7px] text-secondary"></i> <?php esc_html_e( 'Special Notices', 'homeaffairs' ); ?>
+            <i class="fas fa-bullhorn text-[7px] text-secondary"></i> <?php echo esc_html( $notices_badge ); ?>
           </span>
         </div>
 
-        <!-- Notice Item 1 -->
-        <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
-           class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
-          <div class="flex items-start gap-2">
-            <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
-              <i class="fas fa-graduation-cap text-white group-hover:text-white text-[9px]"></i>
-            </div>
-            <div class="min-w-0">
-              <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
-                <?php esc_html_e( 'Short Term Training - Singapore 2026', 'homeaffairs' ); ?>
-              </strong>
-              <span class="tile-date text-[8.5px] text-white/80 block">
-                <?php esc_html_e( 'Training programme for officers', 'homeaffairs' ); ?>
-              </span>
-            </div>
-          </div>
-        </a>
+        <?php
+        $sn_args = array(
+          'post_type'      => 'special_notice',
+          'posts_per_page' => $notices_count,
+          'post_status'    => 'publish',
+        );
+        if ( ! empty( $notices_cat ) ) {
+          $sn_args['tax_query'] = array(
+            array(
+              'taxonomy' => 'notice_category',
+              'field'    => 'slug',
+              'terms'    => $notices_cat,
+            ),
+          );
+        }
+        $sn_query = new WP_Query( $sn_args );
 
-        <!-- Notice Item 2 -->
-        <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
-           class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
-          <div class="flex items-start gap-2">
-            <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
-              <i class="fas fa-laptop text-white group-hover:text-white text-[9px]"></i>
+        if ( $sn_query->have_posts() ) :
+          while ( $sn_query->have_posts() ) : $sn_query->the_post();
+            $notice_id    = get_the_ID();
+            $notice_icon  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_icon' ) : '';
+            $notice_icon  = $notice_icon ?: 'fas fa-bullhorn';
+            $custom_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_custom_title' ) : '';
+            $n_title      = $custom_title ?: get_the_title();
+            $n_desc       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_desc' ) : '';
+            if ( empty( $n_desc ) ) {
+              $n_desc = get_the_excerpt();
+            }
+            $n_file      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_attachment' ) : '';
+            $n_url       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_url' ) : '';
+            $n_link      = ! empty( $n_file ) ? $n_file : ( ! empty( $n_url ) ? $n_url : get_permalink() );
+            $is_download = ! empty( $n_file );
+        ?>
+          <a href="<?php echo esc_url( $n_link ); ?>" <?php echo $is_download ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> 
+             class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
+            <div class="flex items-start gap-2">
+              <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
+                <i class="<?php echo esc_attr( $notice_icon ); ?> text-white group-hover:text-white text-[9px]"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
+                  <?php echo esc_html( $n_title ); ?>
+                </strong>
+                <?php if ( $n_desc ) : ?>
+                  <span class="tile-date text-[8.5px] text-white/80 block line-clamp-1">
+                    <?php echo esc_html( $n_desc ); ?>
+                  </span>
+                <?php endif; ?>
+              </div>
+              <?php if ( $is_download ) : ?>
+                <span class="shrink-0 text-secondary-light/70 group-hover:text-secondary text-[8px] mt-0.5"><i class="fas fa-file-pdf"></i></span>
+              <?php endif; ?>
             </div>
-            <div class="min-w-0">
-              <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
-                <?php esc_html_e( 'Computer Application Assistant 2026', 'homeaffairs' ); ?>
-              </strong>
-              <span class="tile-date text-[8.5px] text-white/80 block">
-                <?php esc_html_e( 'Recruitment examination', 'homeaffairs' ); ?>
-              </span>
+          </a>
+        <?php
+          endwhile;
+          wp_reset_postdata();
+        else :
+          // Static default notices when no CPT posts have been published yet
+        ?>
+          <!-- Notice Item 1 -->
+          <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
+             class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
+            <div class="flex items-start gap-2">
+              <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
+                <i class="fas fa-graduation-cap text-white group-hover:text-white text-[9px]"></i>
+              </div>
+              <div class="min-w-0">
+                <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
+                  <?php esc_html_e( 'Short Term Training - Singapore 2026', 'homeaffairs' ); ?>
+                </strong>
+                <span class="tile-date text-[8.5px] text-white/80 block">
+                  <?php esc_html_e( 'Training programme for officers', 'homeaffairs' ); ?>
+                </span>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
 
-        <!-- Notice Item 3 -->
-        <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
-           class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
-          <div class="flex items-start gap-2">
-            <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
-              <i class="fas fa-file-invoice text-white group-hover:text-white text-[9px]"></i>
+          <!-- Notice Item 2 -->
+          <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
+             class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
+            <div class="flex items-start gap-2">
+              <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
+                <i class="fas fa-laptop text-white group-hover:text-white text-[9px]"></i>
+              </div>
+              <div class="min-w-0">
+                <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
+                  <?php esc_html_e( 'Computer Application Assistant 2026', 'homeaffairs' ); ?>
+                </strong>
+                <span class="tile-date text-[8.5px] text-white/80 block">
+                  <?php esc_html_e( 'Recruitment examination', 'homeaffairs' ); ?>
+                </span>
+              </div>
             </div>
-            <div class="min-w-0">
-              <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
-                <?php esc_html_e( 'Ministry Procurement Plan 2026', 'homeaffairs' ); ?>
-              </strong>
-              <span class="tile-date text-[8.5px] text-white/80 block">
-                <?php esc_html_e( 'Annual procurement schedule', 'homeaffairs' ); ?>
-              </span>
+          </a>
+
+          <!-- Notice Item 3 -->
+          <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
+             class="tile border border-secondary/20 border-l-2 border-l-secondary rounded p-2 backdrop-blur-md transition-all group shadow-sm">
+            <div class="flex items-start gap-2">
+              <div class="tile-icon w-5 h-5 bg-primary-dark/80 rounded flex items-center justify-center shrink-0 group-hover:bg-secondary transition-all">
+                <i class="fas fa-file-invoice text-white group-hover:text-white text-[9px]"></i>
+              </div>
+              <div class="min-w-0">
+                <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
+                  <?php esc_html_e( 'Ministry Procurement Plan 2026', 'homeaffairs' ); ?>
+                </strong>
+                <span class="tile-date text-[8.5px] text-white/80 block">
+                  <?php esc_html_e( 'Annual procurement schedule', 'homeaffairs' ); ?>
+                </span>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        <?php endif; ?>
 
         <!-- View All Link -->
-        <a href="<?php echo esc_url( home_url( '/special-notices/' ) ); ?>" 
+        <a href="<?php echo esc_url( $notices_all_url ); ?>" 
            class="view-all-notices text-primary hover:text-primary font-bold text-[9.5px] transition-colors inline-flex items-center gap-1 mt-0.5 px-0.5">
           <?php esc_html_e( 'View all notices', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[7.5px] text-primary"></i>
         </a>
       </div>
+      <?php endif; ?>
 
     </div>
   </div>
 
+  <?php if ( 'hide' !== $ha_home_show_ticker ) : ?>
   <!-- Breaking News Overlay -->
   <div class="news-ticker news-ticker--overlay absolute inset-x-0 bottom-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-9 sm:h-10">
@@ -234,7 +353,9 @@ get_header(); ?>
       </div>
     </div>
   </div>
+  <?php endif; ?>
 
+  <?php if ( 'hide' !== $ha_home_show_slider && count( $slides ) > 1 ) : ?>
   <!-- Navigation Arrows -->
   <button type="button" class="hero-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-primary-dark/80 text-white flex items-center justify-center hover:bg-secondary hover:text-primary-dark transition-all backdrop-blur-md border border-secondary/20">
     <i class="fas fa-chevron-left text-[9px]"></i>
@@ -242,10 +363,13 @@ get_header(); ?>
   <button type="button" class="hero-next absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-7 rounded-full bg-primary-dark/80 text-white flex items-center justify-center hover:bg-secondary hover:text-primary-dark transition-all backdrop-blur-md border border-secondary/20">
     <i class="fas fa-chevron-right text-[9px]"></i>
   </button>
+  <?php endif; ?>
 </section>
+<?php endif; // end hero_visible ?>
 
 
 
+<?php if ( "hide" !== $ha_home_show_stats ) : ?>
 <!-- ═══ MODERN COMPACT SLIM STATS BAR (MAROON & GOLD THEME) ═══ -->
 <div class="stats-bar bg-white border-b-2 border-solid border-primary">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,9 +409,11 @@ get_header(); ?>
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 
     
+<?php if ( "hide" !== $ha_home_show_news ) : ?>
 <!-- ═══ NEWS & ANNOUNCEMENTS SECTION (OPTIMIZED 12-COL GRID) ═══ -->
 <section class="pt-10 pb-0 lg:pt-12 lg:pb-0 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -449,7 +575,9 @@ get_header(); ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
    
+<?php if ( "hide" !== $ha_home_show_initiatives ) : ?>
  <!-- ═══ COMPACT CREATIVE HERO SHOWCASE SECTION ═══ -->
 <section class="py-8 lg:py-10 bg-gray-50 border-b border-gray-200/60">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -625,10 +753,12 @@ get_header(); ?>
     });
   });
 </script>
+<?php endif; ?>
 
 
 
 
+<?php if ( "hide" !== $ha_home_show_services ) : ?>
 <!-- ═══ DOWNLOADS / QUICK RESOURCES (COMPACT WITH YELLOW BORDER) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white border-t border-b border-slate-200/80 relative overflow-hidden">
   
@@ -832,8 +962,10 @@ get_header(); ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 
+<?php if ( "hide" !== $ha_home_show_leadership ) : ?>
 <!-- ═══ RTI BANNER & DYNAMIC TABS CIRCULARS WIDGET (COMPACT HEIGHT) ═══ -->
 <section class="py-12 lg:py-16 bg-slate-50 border-t border-b border-gray-200/60">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -963,9 +1095,11 @@ get_header(); ?>
     }
   }
 </script>
+<?php endif; ?>
 
 
 
+<?php if ( "hide" !== $ha_home_show_downloads ) : ?>
 <!-- ═══ KEY SERVICES & NOTICE BOARDS (LUXURY MAROON & GOLD TOUCH) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white relative overflow-hidden">
 
@@ -1134,8 +1268,10 @@ get_header(); ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 
+<?php if ( "hide" !== $ha_home_show_contact_banner ) : ?>
 <!-- ═══ CTA SECTION (COMPACT HEIGHT - MATCHING HERO BANNER) ═══ -->
 <section class="relative py-12 lg:py-16 text-center overflow-hidden bg-cover bg-center" style="background-image: url('<?php echo esc_url( $ha_uri . '/assets/images/home-contact.jpg' ); ?>');">
   
@@ -1163,7 +1299,9 @@ get_header(); ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
+<?php if ( "hide" !== $ha_home_show_institutions ) : ?>
 <!-- ═══ RELATED ORGANIZATIONS / INSTITUTIONS ═══ -->
 <section class="py-12 lg:py-16 bg-white border-t border-b border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -1223,5 +1361,6 @@ get_header(); ?>
 
   </div>
 </section>
+<?php endif; ?>
 
 <?php get_footer(); ?>

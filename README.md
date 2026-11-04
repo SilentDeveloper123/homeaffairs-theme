@@ -28,7 +28,9 @@ homeaffairs-theme/
 ├── comments.php               # Custom comment list + form
 ├── sidebar.php                # Widgetized sidebar
 ├── inc/
-│   ├── setup.php              # Theme support, 5 nav menu locations
+│   ├── setup.php              # Theme support, image sizes (800x400), 5 nav menu locations
+│   ├── post-types.php         # Custom Post Types (Special Notices) & Taxonomies (Notice Categories)
+│   ├── custom-fields.php      # Carbon Fields definitions for Home Page & Special Notices
 │   ├── theme-options.php      # Carbon Fields (9 tabs, bidirectional sync, export/import)
 │   ├── enqueue.php            # Assets (local — no CDN at runtime)
 │   ├── widgets.php            # 5 sidebar/widget areas
