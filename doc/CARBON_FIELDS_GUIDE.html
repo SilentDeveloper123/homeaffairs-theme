@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carbon Fields Developer Guide & Implementation Manual — Ministry of Home Affairs</title>
+<style>
+  :root {
+    --primary: #591521;
+    --primary-dark: #4b121c;
+    --primary-darker: #3b0e16;
+    --primary-light: #801e2f;
+    --secondary: #dfa21f;
+    --secondary-light: #e7b750;
+    --secondary-dark: #b78519;
+    --bg-dark: #441019;
+    --warm-white: #fcfbfa;
+    --card-bg: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --code-bg: #1e1e2e;
+    --code-text: #cdd6f4;
+    --tag-bg: #f1f5f9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--warm-white);
+    color: var(--text-main);
+    line-height: 1.65;
+    font-size: 14.5px;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 36px 40px 80px;
+  }
+
+  /* ── COVER HEADER ── */
+  .cover {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary) 65%, var(--primary-light) 100%);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 44px 40px;
+    margin-bottom: 36px;
+    box-shadow: 0 10px 25px rgba(89, 21, 33, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(223, 162, 31, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: var(--primary-darker);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .cover h1 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .cover p.subtitle {
+    color: var(--secondary-light);
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .cover .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .cover .meta-grid span strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .toc h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--secondary);
+    display: inline-block;
+    padding-bottom: 4px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .toc-item {
+    font-size: 13.5px;
+  }
+  .toc-item a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+  .toc-item a:hover {
+    color: var(--secondary-dark);
+    text-decoration: underline;
+  }
+  .toc-desc {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: 18px;
+  }
+
+  /* ── SECTION STYLING ── */
+  .section {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 34px 36px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .section-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary-dark);
+    background: rgba(223, 162, 31, 0.12);
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  h2.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+  }
+  h3.subsection-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 24px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.subsection-title::before {
+    content: "";
+    width: 4px;
+    height: 18px;
+    background: var(--secondary);
+    border-radius: 2px;
+    display: inline-block;
+  }
+  p {
+    margin-bottom: 14px;
+    color: var(--text-main);
+  }
+
+  /* ── CALLOUT / ALERT BOXES ── */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 16px 0 20px;
+    font-size: 13.5px;
+    border-left: 4px solid;
+    line-height: 1.55;
+  }
+  .callout-info {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1e40af;
+  }
+  .callout-warning {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+  .callout-danger {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+  }
+  .callout-success {
+    background: #f0fdf4;
+    border-color: #22c55e;
+    color: #166534;
+  }
+  .callout strong {
+    font-weight: 700;
+  }
+
+  /* ── CODE SNIPPETS ── */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin: 14px 0 20px;
+    border: 1px solid #313244;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12.5px;
+  }
+  p code, li code, td code {
+    background: #f1f5f9;
+    color: #b91c1c;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    font-size: 12px;
+  }
+  .code-title {
+    background: #181825;
+    color: #a6adc8;
+    padding: 6px 14px;
+    border-radius: 8px 8px 0 0;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: monospace;
+    margin-bottom: -14px;
+    display: inline-block;
+    border: 1px solid #313244;
+    border-bottom: none;
+  }
+
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 24px;
+    font-size: 13.5px;
+  }
+  th {
+    background: #f8fafc;
+    color: var(--primary);
+    font-weight: 700;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border-color);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  /* ── STEP LISTS ── */
+  .step-list {
+    list-style: none;
+    margin: 16px 0 22px;
+    counter-reset: step-counter;
+  }
+  .step-list li {
+    position: relative;
+    padding-left: 36px;
+    margin-bottom: 16px;
+  }
+  .step-list li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 24px;
+    height: 24px;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── PRINT & PDF SPECIFICS ── */
+  @page {
+    size: A4;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+  @media print {
+    body {
+      background: #ffffff;
+      color: #000000;
+      font-size: 12px;
+    }
+    .container {
+      padding: 0;
+      max-width: 100%;
+    }
+    .cover {
+      box-shadow: none;
+      border: 1px solid #ccc;
+      page-break-after: avoid;
+    }
+    .section {
+      border: 1px solid #ddd;
+      box-shadow: none;
+      page-break-inside: avoid;
+      margin-bottom: 20px;
+      padding: 20px 24px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+      background: #f8fafc !important;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1 !important;
+      font-size: 10.5px;
+    }
+    .code-title {
+      background: #e2e8f0 !important;
+      color: #334155 !important;
+      border-color: #cbd5e1 !important;
+    }
+    p code, li code, td code {
+      color: #000 !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ COVER HEADER ═══ -->
+  <header class="cover">
+    <div class="cover-badge">Developer Reference Manual</div>
+    <h1>Carbon Fields Implementation & Best Practices</h1>
+    <p class="subtitle">Complete Architectural Manual: Creation, Modification, Frontend Fetching & Multisite Rules</p>
+    <div class="meta-grid">
+      <span><strong>Project:</strong> Ministry of Home Affairs — Sri Lanka</span>
+      <span><strong>Active Theme:</strong> <code>homeaffairs-theme</code></span>
+      <span><strong>Engine:</strong> Carbon Fields 3.x (with Awesome Extensions)</span>
+      <span><strong>Architecture:</strong> WordPress Multisite (<code>/en/</code>, <code>/si/</code>, <code>/ta/</code>)</span>
+    </div>
+  </header>
+
+  <!-- ═══ TABLE OF CONTENTS ═══ -->
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <div class="toc-grid">
+      <div class="toc-item">
+        <a href="#sec-architecture">1. Carbon Fields Architecture & Foundation</a>
+        <div class="toc-desc">Bootstrapping, hooks, containers & field packages</div>
+      </div>
+      <div class="toc-item">
+        <a href="#sec-create">2. Creating Custom Fields Manually (Examples)</a>
+        <div class="toc-desc">Text, repeaters, media, number & Font Awesome icons</div>
+      </div>
+      <div class="toc-item">
+        <a href="#sec-modify">3. Modifying Existing Custom Fields (Examples)</a>
+        <div class="toc-desc">Adding fields, non-destructive renaming & DB structure</div>
+      </div>
+      <div class="toc-item">
+        <a href="#sec-fetch">4. Fetching Data on the Frontend Manually</a>
+        <div class="toc-desc">Post meta, theme options, escaping & repeaters loop</div>
+      </div>
+      <div class="toc-item">
+        <a href="#sec-rules">5. Essential Rules & Best Practices</a>
+        <div class="toc-desc">No-seeder policy, multisite inheritance & Font Awesome</div>
+      </div>
+      <div class="toc-item">
+        <a href="#sec-cheatsheet">6. Quick Reference Cheat Sheet</a>
+        <div class="toc-desc">API functions, field types & code templates</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ 1. ARCHITECTURE & FOUNDATION ═══ -->
+  <section class="section" id="sec-architecture">
+    <div class="section-tag">Section 1</div>
+    <h2 class="section-title">Carbon Fields Architecture & Foundation</h2>
+    <p>
+      In the <code>homeaffairs-theme</code>, custom fields are strictly decoupled from fragile UI page builders. Content structures are built natively with <strong>Carbon Fields 3.x</strong> and loaded via Composer with official extension packages (<code>htmlburger/carbon-field-icon</code> and <code>htmlburger/carbon-field-number</code>).
+    </p>
+
+    <h3 class="subsection-title">1.1 Bootstrapping Lifecycle</h3>
+    <p>
+      Carbon Fields is booted on <code>after_setup_theme</code> in <code>functions.php</code>, and all custom containers are registered through the standard hook: <code>carbon_fields_register_fields</code>.
+    </p>
+    <div class="code-title">functions.php / inc/custom-fields.php</div>
+<pre><code>use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
+// 1. Bootstrapping in functions.php
+add_action( 'after_setup_theme', 'crb_initialize_carbon_fields' );
+function crb_initialize_carbon_fields() {
+    \Carbon_Fields\Carbon_Fields::boot();
+}
+
+// 2. Registering fields hook
+add_action( 'carbon_fields_register_fields', 'ha_register_carbon_fields' );
+function ha_register_carbon_fields() {
+    // Containers defined here
+}</code></pre>
+
+    <h3 class="subsection-title">1.2 Supported Container Types in the Theme</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Container Type</th>
+          <th>Hook & Target Usage</th>
+          <th>Theme Example File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>post_meta</code></td>
+          <td>Attached to Custom Post Types or specific Page Templates</td>
+          <td><code>inc/custom-fields.php</code></td>
+        </tr>
+        <tr>
+          <td><code>theme_options</code></td>
+          <td>Global settings panel under WordPress <em>Appearance &gt; Theme Options</em></td>
+          <td><code>inc/theme-options.php</code></td>
+        </tr>
+        <tr>
+          <td><code>term_meta</code></td>
+          <td>Taxonomy term metadata (e.g. category colors or banners)</td>
+          <td><code>inc/custom-fields.php</code></td>
+        </tr>
+        <tr>
+          <td><code>nav_menu_item</code></td>
+          <td>Custom attributes attached directly to WP Menu items</td>
+          <td><code>inc/menu-icons.php</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ 2. CREATING CUSTOM FIELDS MANUALLY ═══ -->
+  <section class="section" id="sec-create">
+    <div class="section-tag">Section 2</div>
+    <h2 class="section-title">Creating Custom Fields Manually (With Examples)</h2>
+    <p>
+      Every field must be added inside a container. The container specifies <em>where</em> the fields appear in the WordPress administration dashboard.
+    </p>
+
+    <h3 class="subsection-title">2.1 Basic Container on a Specific Page Template</h3>
+    <p>
+      To attach fields to a specific page template (e.g. <code>page-templates/template-home.php</code>):
+    </p>
+    <div class="code-title">inc/custom-fields.php</div>
+<pre><code>Container::make( 'post_meta', __( 'News &amp; Announcements Section', 'homeaffairs' ) )
+    ->where( 'post_type', '=', 'page' )
+    ->where( 'post_template', '=', 'page-templates/template-home.php' )
+    ->add_fields( array(
+        Field::make( 'text', 'ha_home_news_title', __( 'Section Title', 'homeaffairs' ) )
+            ->set_help_text( __( 'Main section heading.', 'homeaffairs' ) ),
+
+        Field::make( 'text', 'ha_home_news_subtitle', __( 'Section Sub Title', 'homeaffairs' ) )
+            ->set_help_text( __( 'Small pill badge above the section title.', 'homeaffairs' ) ),
+
+        Field::make( 'text', 'ha_home_news_view_all_text', __( 'View All Button (Text)', 'homeaffairs' ) )
+            ->set_attribute( 'placeholder', __( 'View All News', 'homeaffairs' ) ),
+
+        Field::make( 'text', 'ha_home_news_view_all_url', __( 'View All News Button Link (Link to Page)', 'homeaffairs' ) )
+            ->set_help_text( __( 'Destination URL for the "View All News" button.', 'homeaffairs' ) ),
+    ) );</code></pre>
+
+    <h3 class="subsection-title">2.2 Specialized Field Types & Usage Patterns</h3>
+
+    <p><strong>A. Font Awesome Icon Field (Strictly Font Awesome)</strong></p>
+    <p>
+      Uses the <code>htmlburger/carbon-field-icon</code> package. Always call <code>-&gt;add_fontawesome_options()</code> to ensure icons use Font Awesome:
+    </p>
+<pre><code>Field::make( 'icon', 'qa_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+    ->add_fontawesome_options()
+    ->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) )</code></pre>
+
+    <p><strong>B. Numeric Field with Constraints</strong></p>
+    <p>
+      Uses the <code>htmlburger/carbon-field-number</code> package:
+    </p>
+<pre><code>Field::make( 'number', 'ha_home_notices_count', __( 'Number of Notices to Show', 'homeaffairs' ) )
+    ->set_min( 1 )
+    ->set_max( 10 )
+    ->set_step( 1 )
+    ->set_attribute( 'placeholder', '3' )
+    ->set_help_text( __( 'How many notices to display in the hero column (1-10).', 'homeaffairs' ) )</code></pre>
+
+    <p><strong>C. Media Gallery &amp; File Attachments</strong></p>
+<pre><code>// Single Image attachment (stores attachment ID)
+Field::make( 'image', 'news_featured_image', __( 'Featured Image', 'homeaffairs' ) )
+    ->set_help_text( __( 'Upload 1600x980 photograph.', 'homeaffairs' ) ),
+
+// PDF / File attachment (stores attachment ID)
+Field::make( 'file', 'news_attachment', __( 'Upload PDF File', 'homeaffairs' ) )
+    ->set_type( array( 'pdf', 'doc', 'docx' ) )
+    ->set_help_text( __( 'Direct PDF download file.', 'homeaffairs' ) )</code></pre>
+
+    <h3 class="subsection-title">2.3 Complex Repeaters (Multi-row Data)</h3>
+    <p>
+      Complex fields allow users to build repeatable rows of data, such as the homepage hero slider or statistical highlight counters.
+    </p>
+    <div class="code-title">inc/custom-fields.php (Stats Bar Repeater Example)</div>
+<pre><code>Field::make( 'complex', 'ha_home_stats', __( 'Stats Bar Items', 'homeaffairs' ) )
+    ->set_layout( 'tabbed-horizontal' )
+    ->add_fields( array(
+        Field::make( 'text', 'stat_title', __( 'Title', 'homeaffairs' ) )
+            ->set_help_text( __( 'Metric title (e.g. District Secretariats).', 'homeaffairs' ) ),
+
+        Field::make( 'text', 'stat_count', __( 'Count', 'homeaffairs' ) )
+            ->set_help_text( __( 'Counter value (e.g. 25, 331, 14,022).', 'homeaffairs' ) ),
+    ) )
+    ->set_header_template( 
+        '&lt;%- stat_count ? stat_count + " - " : "" %&gt;&lt;%- stat_title ? stat_title : "Stat " + ($_index + 1) %&gt;' 
+    )</code></pre>
+  </section>
+
+  <!-- ═══ 3. MODIFYING EXISTING CUSTOM FIELDS ═══ -->
+  <section class="section" id="sec-modify">
+    <div class="section-tag">Section 3</div>
+    <h2 class="section-title">Modifying Existing Custom Fields Manually (With Examples)</h2>
+    <p>
+      Modifying custom fields in production requires understanding how Carbon Fields stores data in the WordPress database (<code>wp_postmeta</code> and <code>wp_options</code>).
+    </p>
+
+    <div class="callout callout-warning">
+      <strong>Critical Database Rule:</strong> Carbon Fields prefixes all meta keys with a single underscore (<code>_</code>) in the database. A field defined as <code>ha_home_notices_btn_text</code> is stored as <code>_ha_home_notices_btn_text</code> in <code>wp_postmeta</code>.
+    </div>
+
+    <h3 class="subsection-title">3.1 Adding a New Field to an Existing Container</h3>
+    <p>
+      When adding a new field to an established container, append the field without modifying existing keys:
+    </p>
+    <ol class="step-list">
+      <li>
+        <strong>Locate the container:</strong> Open <code>inc/custom-fields.php</code> and find the target container (e.g. <code>ha_container_special_notices</code>).
+      </li>
+      <li>
+        <strong>Declare the new field:</strong> Add the new field into the <code>add_fields( array( ... ) )</code> definition:
+<pre><code>// Adding Column Button (Text) to Special Notices Column
+Field::make( 'text', 'ha_home_notices_btn_text', __( 'Column Button (Text)', 'homeaffairs' ) )
+    ->set_attribute( 'placeholder', __( 'View all notices', 'homeaffairs' ) )
+    ->set_help_text( __( 'Button text label for the link at the bottom of the notices column.', 'homeaffairs' ) ),</code></pre>
+      </li>
+      <li>
+        <strong>Update the frontend template:</strong> Read the new key in <code>page-templates/template-home.php</code> with a graceful fallback to preserve existing layouts until saved.
+      </li>
+    </ol>
+
+    <h3 class="subsection-title">3.2 Renaming a Field with Zero Data Loss (Aliasing)</h3>
+    <p>
+      If a field key must be renamed (e.g. from <code>qa_button_text</code> to <code>qa_btn_text</code>), never simply change the key in PHP, or all existing values will become inaccessible in the admin and frontend.
+    </p>
+    <p><strong>The Safe 2-Tier Aliasing Pattern:</strong></p>
+<pre><code>// Step 1: Read new key first, fallback to old key if empty
+$button_text = carbon_get_post_meta( $post_id, 'qa_btn_text' );
+if ( empty( $button_text ) ) {
+    $button_text = carbon_get_post_meta( $post_id, 'qa_button_text' );
+}
+
+// Step 2 (Optional DB Migration): Migrate legacy keys in wp_postmeta
+global $wpdb;
+$wpdb->query( "
+    UPDATE {$wpdb->postmeta} 
+    SET meta_key = '_qa_btn_text' 
+    WHERE meta_key = '_qa_button_text'
+" );</code></pre>
+
+    <h3 class="subsection-title">3.3 Complex Repeaters Storage Format</h3>
+    <p>
+      Carbon Fields stores complex repeater items using indexed delimited keys. Understanding this layout is essential for manual database queries or migrations:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Meta Key Structure in <code>wp_postmeta</code></th>
+          <th>Description &amp; Stored Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>_ha_home_slides|||0|value</code></td>
+          <td>Row index marker (value: <code>_</code>)</td>
+        </tr>
+        <tr>
+          <td><code>_ha_home_slides|slide_title|0|0|value</code></td>
+          <td>Field <code>slide_title</code> of Row 0</td>
+        </tr>
+        <tr>
+          <td><code>_ha_home_slides|slide_btn_text|0|0|value</code></td>
+          <td>Field <code>slide_btn_text</code> of Row 0</td>
+        </tr>
+        <tr>
+          <td><code>_ha_home_slides|slide_title|1|0|value</code></td>
+          <td>Field <code>slide_title</code> of Row 1</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══ 4. FETCHING DATA ON THE FRONTEND MANUALLY ═══ -->
+  <section class="section" id="sec-fetch">
+    <div class="section-tag">Section 4</div>
+    <h2 class="section-title">Fetching Data to Front End Using Carbon Fields Manually</h2>
+
+    <h3 class="subsection-title">4.1 Core Retrieval Functions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Function</th>
+          <th>Usage Scope</th>
+          <th>Syntax Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>carbon_get_post_meta( $id, $name )</code></td>
+          <td>Posts, Pages, CPTs</td>
+          <td><code>$title = carbon_get_post_meta( get_the_ID(), 'news_custom_title' );</code></td>
+        </tr>
+        <tr>
+          <td><code>carbon_get_theme_option( $name )</code></td>
+          <td>Global Theme Options</td>
+          <td><code>$phone = carbon_get_theme_option( 'ha_telephone' );</code></td>
+        </tr>
+        <tr>
+          <td><code>carbon_get_term_meta( $id, $name )</code></td>
+          <td>Taxonomy Terms</td>
+          <td><code>$color = carbon_get_term_meta( $term_id, 'cat_color' );</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="subsection-title">4.2 Practical Frontend Examples with Escaping</h3>
+
+    <p><strong>Example 1: Text, Link &amp; Button with Conditionals</strong></p>
+<pre><code>&lt;?php
+$page_id            = get_the_ID();
+$news_sec_title     = carbon_get_post_meta( $page_id, 'ha_home_news_title' );
+$news_view_all_text = carbon_get_post_meta( $page_id, 'ha_home_news_view_all_text' );
+$news_view_all_url  = carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' );
+
+// Apply localized fallback if empty
+$display_btn_text = ! empty( $news_view_all_text ) ? $news_view_all_text : __( 'View All News', 'homeaffairs' );
+?&gt;
+
+&lt;?php if ( ! empty( $news_sec_title ) ) : ?&gt;
+  &lt;h2 class="section-title"&gt;&lt;?php echo esc_html( $news_sec_title ); ?&gt;&lt;/h2&gt;
+&lt;?php endif; ?&gt;
+
+&lt;?php if ( ! empty( $news_view_all_url ) ) : ?&gt;
+  &lt;a href="&lt;?php echo esc_url( $news_view_all_url ); ?&gt;" class="btn btn-primary"&gt;
+    &lt;?php echo esc_html( $display_btn_text ); ?&gt;
+    &lt;i class="fas fa-arrow-right" aria-hidden="true"&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;?php endif; ?&gt;</code></pre>
+
+    <p><strong>Example 2: Resolving Image &amp; File URLs</strong></p>
+    <p>
+      Image and file fields in Carbon Fields store the WordPress <strong>Attachment ID</strong>. Convert them to URLs using core WordPress functions:
+    </p>
+<pre><code>&lt;?php
+$image_id = carbon_get_post_meta( $post_id, 'news_featured_image' );
+$file_id  = carbon_get_post_meta( $post_id, 'news_attachment' );
+
+// 1. Image URL with size
+$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : '';
+
+// 2. Direct File Download URL
+$file_url = $file_id ? wp_get_attachment_url( $file_id ) : '';
+?&gt;
+
+&lt;?php if ( $image_url ) : ?&gt;
+  &lt;img src="&lt;?php echo esc_url( $image_url ); ?&gt;" alt="&lt;?php echo esc_attr( get_the_title( $post_id ) ); ?&gt;" loading="lazy"&gt;
+&lt;?php endif; ?&gt;
+
+&lt;?php if ( $file_url ) : ?&gt;
+  &lt;a href="&lt;?php echo esc_url( $file_url ); ?&gt;" target="_blank" download&gt;
+    &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt; &lt;?php esc_html_e( 'Download Document (PDF)', 'homeaffairs' ); ?&gt;
+  &lt;/a&gt;
+&lt;?php endif; ?&gt;</code></pre>
+
+    <p><strong>Example 3: Looping Through Complex Repeaters</strong></p>
+<pre><code>&lt;?php
+$raw_slides = carbon_get_post_meta( $page_id, 'ha_home_slides' );
+$slides     = ( ! empty( $raw_slides ) &amp;&amp; is_array( $raw_slides ) ) ? $raw_slides : array();
+?&gt;
+
+&lt;?php if ( ! empty( $slides ) ) : ?&gt;
+  &lt;div class="hero-slider"&gt;
+    &lt;?php foreach ( $slides as $index =&gt; $slide ) : 
+      $slide_title = isset( $slide['slide_title'] ) ? $slide['slide_title'] : '';
+      $slide_desc  = isset( $slide['slide_desc'] ) ? $slide['slide_desc'] : '';
+      $slide_btn   = isset( $slide['slide_btn_text'] ) ? $slide['slide_btn_text'] : '';
+      $slide_url   = isset( $slide['slide_btn_url'] ) ? $slide['slide_btn_url'] : '#';
+      $slide_img   = isset( $slide['slide_image'] ) ? $slide['slide_image'] : '';
+    ?&gt;
+      &lt;div class="slide-item" data-index="&lt;?php echo esc_attr( $index ); ?&gt;"&gt;
+        &lt;?php if ( $slide_img ) : ?&gt;
+          &lt;img src="&lt;?php echo esc_url( $slide_img ); ?&gt;" alt="&lt;?php echo esc_attr( $slide_title ); ?&gt;"&gt;
+        &lt;?php endif; ?&gt;
+        &lt;h3&gt;&lt;?php echo esc_html( $slide_title ); ?&gt;&lt;/h3&gt;
+        &lt;p&gt;&lt;?php echo esc_html( $slide_desc ); ?&gt;&lt;/p&gt;
+        &lt;?php if ( ! empty( $slide_btn ) ) : ?&gt;
+          &lt;a href="&lt;?php echo esc_url( $slide_url ); ?&gt;" class="btn"&gt;&lt;?php echo esc_html( $slide_btn ); ?&gt;&lt;/a&gt;
+        &lt;?php endif; ?&gt;
+      &lt;/div&gt;
+    &lt;?php endforeach; ?&gt;
+  &lt;/div&gt;
+&lt;?php endif; ?&gt;</code></pre>
+  </section>
+
+  <!-- ═══ 5. ESSENTIAL RULES & BEST PRACTICES ═══ -->
+  <section class="section" id="sec-rules">
+    <div class="section-tag">Section 5</div>
+    <h2 class="section-title">Other Required Things to Know When Using Carbon Fields</h2>
+
+    <h3 class="subsection-title">5.1 The "No-Seeder / Keep Empty" Policy</h3>
+    <div class="callout callout-danger">
+      <strong>Theme Policy Requirement:</strong> When custom fields are not populated by the user, <strong>never output fake seeder fallback data</strong> (e.g. dummy phone numbers, test emails, or hardcoded addresses). If empty, output an empty string (<code>''</code>) or cleanly suppress the enclosing HTML block.
+    </div>
+    <p>
+      <strong>Why Avoid <code>-&gt;set_default_value()</code> in Carbon Fields:</strong><br>
+      In Carbon Fields, calling <code>-&gt;set_default_value('sample')</code> causes <code>carbon_get_theme_option()</code> and <code>carbon_get_post_meta()</code> to return <code>'sample'</code> even when the database option has never been saved! This breaks the no-seeder policy.
+    </p>
+    <p>
+      <strong>The Solution — Use Placeholders:</strong><br>
+      Instead of <code>-&gt;set_default_value()</code>, use <code>-&gt;set_attribute('placeholder', '...')</code>. This provides a helpful visual guide to content editors in the admin dashboard without injecting dummy data into queries.
+    </p>
+<pre><code>// ❌ BAD: Returns default value even when empty in DB
+Field::make( 'text', 'ha_telephone', __( 'Phone', 'homeaffairs' ) )
+    ->set_default_value( '+94 112 050 450' )
+
+// ✅ GOOD: Shows placeholder hint to admin, but returns empty string if unpopulated
+Field::make( 'text', 'ha_telephone', __( 'Phone', 'homeaffairs' ) )
+    ->set_attribute( 'placeholder', '+94 112 050 450' )</code></pre>
+
+    <h3 class="subsection-title">5.2 Multisite Theme Options &amp; English Fallback</h3>
+    <p>
+      In WordPress Multisite (<code>/moha/</code>, <code>/moha/si/</code>, <code>/moha/ta/</code>, <code>/moha/en/</code>), options are saved per-site. Use the helper function <code>ha_get_theme_option()</code> in <code>inc/helpers.php</code>, which automatically inherits values from the primary English site (Blog 4) when a sub-site option is empty:
+    </p>
+<pre><code>// Automatic English fallback in inc/helpers.php:
+$phone = ha_get_theme_option( 'ha_telephone' );
+// If Sinhala site has no custom phone, it inherits from English site.
+// If both are empty, it returns empty string ('') with zero dummy data.</code></pre>
+
+    <h3 class="subsection-title">5.3 Font Awesome Exclusivity &amp; Visual Icon Picker</h3>
+    <p>
+      Under theme architectural rules:
+    </p>
+    <ul style="margin: 10px 0 16px 24px;">
+      <li>All custom field icons <strong>must strictly use Font Awesome</strong> (zero Dashicons).</li>
+      <li>Rely exclusively on Carbon Fields' built-in React visual icon picker.</li>
+      <li><strong>Do NOT</strong> inject jQuery wrapper buttons (such as custom <code>+ Browse Icons</code> modals) over Carbon Fields inputs, as this causes UI duplication and layout breakage.</li>
+    </ul>
+
+    <h3 class="subsection-title">5.4 Suppressing Default Core Editor &amp; Featured Image</h3>
+    <p>
+      On page templates and CPTs where Carbon Fields manages all structured content, the default WordPress WYSIWYG editor and Featured Image metabox must be cleanly suppressed to avoid confusing editors:
+    </p>
+    <div class="code-title">inc/custom-fields.php</div>
+<pre><code>add_action( 'admin_init', 'ha_hide_default_editor_and_thumbnail_for_templates' );
+function ha_hide_default_editor_and_thumbnail_for_templates() {
+    remove_post_type_support( 'special_notice', 'editor' );
+    remove_post_type_support( 'news_announcement', 'editor' );
+
+    if ( ha_is_custom_page_template() ) {
+        remove_post_type_support( 'page', 'editor' );
+        remove_post_type_support( 'page', 'thumbnail' );
+    }
+}</code></pre>
+  </section>
+
+  <!-- ═══ 6. QUICK REFERENCE CHEAT SHEET ═══ -->
+  <section class="section" id="sec-cheatsheet">
+    <div class="section-tag">Section 6</div>
+    <h2 class="section-title">Quick Reference &amp; Syntax Cheat Sheet</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Code Snippet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Import Classes</strong></td>
+          <td><code>use Carbon_Fields\Container;<br>use Carbon_Fields\Field;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Text Field</strong></td>
+          <td><code>Field::make( 'text', 'field_key', __( 'Label', 'homeaffairs' ) )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Textarea</strong></td>
+          <td><code>Field::make( 'textarea', 'field_key', __( 'Label', 'homeaffairs' ) )-&gt;set_rows( 4 )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Rich Text (WYSIWYG)</strong></td>
+          <td><code>Field::make( 'rich_text', 'field_key', __( 'Label', 'homeaffairs' ) )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Font Awesome Icon</strong></td>
+          <td><code>Field::make( 'icon', 'field_key', __( 'Label', 'homeaffairs' ) )-&gt;add_fontawesome_options()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Number Field</strong></td>
+          <td><code>Field::make( 'number', 'field_key', __( 'Label', 'homeaffairs' ) )-&gt;set_min( 1 )-&gt;set_max( 10 )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Image Field</strong></td>
+          <td><code>Field::make( 'image', 'field_key', __( 'Label', 'homeaffairs' ) )</code></td>
+        </tr>
+        <tr>
+          <td><strong>File Field (PDF)</strong></td>
+          <td><code>Field::make( 'file', 'field_key', __( 'Label', 'homeaffairs' ) )-&gt;set_type( array( 'pdf' ) )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Conditional Logic</strong></td>
+          <td><code>-&gt;set_conditional_logic( array( array( 'field' =&gt; 'toggle', 'value' =&gt; 'yes' ) ) )</code></td>
+        </tr>
+        <tr>
+          <td><strong>Frontend Fetch (Post)</strong></td>
+          <td><code>$val = carbon_get_post_meta( $post_id, 'field_key' );</code></td>
+        </tr>
+        <tr>
+          <td><strong>Frontend Fetch (Theme Option)</strong></td>
+          <td><code>$val = ha_get_theme_option( 'field_key' );</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+</body>
+</html>
