@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon Fields Definitions: Home Page & Special Notices
+ * Carbon Fields Definitions: Home Page, Special Notices, and News & Announcements
  *
  * @package HomeAffairs
  */
@@ -58,39 +58,39 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Controls visibility of the bottom breaking news ticker band.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_stats', __( '4. Statistics Counter Section', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_stats', __( '4. Stats Bar Section', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides the 25 Districts, 335 Divisions, 14,022 GN Divisions counter strip.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides the modern slim statistics counter bar.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_news', __( '5. Latest News & Updates Section', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_news', __( '5. News & Announcements Section', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides the featured news item and 4 small news cards.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides the News & Announcements featured card and small cards grid.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_initiatives', __( '6. Featured Projects & District Gallery', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_initiatives', __( '6 & 7. Advertise Section 1 (Digital Transformations & Banners)', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides Circuit Bungalows feature spotlight and district slider.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides Digital Transformation spotlight card and Government Projects Banners Slider.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_services', __( '7. Citizen Services & Quick Links', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_services', __( '8. Quick Access Section 1', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides the 8 citizen service portal cards.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides the Quick Access cards grid.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_leadership', __( '8. Leadership Messages / Spotlight', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_leadership', __( 'Leadership Messages / Spotlight', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -98,7 +98,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides leadership spotlight cards.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_downloads', __( '9. Downloads & Resources Section', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_downloads', __( 'Downloads & Resources Section', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -106,7 +106,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides Publications, Scholarships, Vacancies, Calendar cards.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_contact_banner', __( '10. 1905 Contact / Help Banner', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_contact_banner', __( '1905 Contact / Help Banner', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -114,7 +114,7 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the emergency 1905 helpline banner.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_institutions', __( '11. Related Institutions', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_institutions', __( 'Related Institutions', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
@@ -183,6 +183,131 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'ha_home_notices_view_all_url', __( '"View all notices" Link URL', 'homeaffairs' ) )
 				->set_default_value( home_url( '/special-notices/' ) )
 				->set_help_text( __( 'Destination link for the "View all notices" link at bottom of column.', 'homeaffairs' ) ),
+		) )
+
+		// ── Tab 4: 4. Stats Bar Section ──
+		->add_tab( __( '4. Stats Bar', 'homeaffairs' ), array(
+			Field::make( 'html', 'ha_stats_intro', __( 'Stats Bar Configuration', 'homeaffairs' ) )
+				->set_html( '<div style="padding:10px 14px;background:#f0f6fc;border-left:4px solid #0056b3;border-radius:3px;font-size:13px;line-height:1.5;">' .
+					'<strong>' . esc_html__( 'Stats Bar Section:', 'homeaffairs' ) . '</strong> ' .
+					esc_html__( 'Add statistical highlight cards below. Each item consists of a Title and a Count value.', 'homeaffairs' ) .
+				'</div>' ),
+
+			Field::make( 'complex', 'ha_home_stats', __( 'Stats Bar Items', 'homeaffairs' ) )
+				->set_layout( 'tabbed-horizontal' )
+				->add_fields( array(
+					Field::make( 'text', 'stat_title', __( 'Title', 'homeaffairs' ) )
+						->set_default_value( 'District Secretariats' )
+						->set_help_text( __( 'Metric title (e.g. Department, District Secretariats, GN Divisions).', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'stat_count', __( 'Count', 'homeaffairs' ) )
+						->set_default_value( '25' )
+						->set_help_text( __( 'Counter value (e.g. 1, 25, 331, 14,022, 100%).', 'homeaffairs' ) ),
+				) )
+				->set_header_template( '<%- stat_count ? stat_count + " - " : "" %><%- stat_title ? stat_title : "Stat " + ($_index + 1) %>' ),
+		) )
+
+		// ── Tab 5: 5. News & Announcements Section ──
+		->add_tab( __( '5. News & Announcements', 'homeaffairs' ), array(
+			Field::make( 'text', 'ha_home_news_title', __( 'Section Title', 'homeaffairs' ) )
+				->set_default_value( 'News & Announcements' )
+				->set_help_text( __( 'Main section heading.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_subtitle', __( 'Section Sub Title', 'homeaffairs' ) )
+				->set_default_value( 'Latest Updates' )
+				->set_help_text( __( 'Small pill badge above the section title.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_view_all_url', __( 'View All News Button Link (Link to Page)', 'homeaffairs' ) )
+				->set_default_value( home_url( '/news-announcements/' ) )
+				->set_help_text( __( 'Destination URL for the "View All News" button.', 'homeaffairs' ) ),
+
+			Field::make( 'select', 'ha_home_news_category', __( 'Filter by Category (Optional)', 'homeaffairs' ) )
+				->set_options( 'ha_get_news_category_options' )
+				->set_help_text( __( 'Show news from all categories or choose a specific category.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_count', __( 'Number of News Items', 'homeaffairs' ) )
+				->set_default_value( '5' )
+				->set_attribute( 'type', 'number' )
+				->set_attribute( 'min', '1' )
+				->set_attribute( 'max', '12' )
+				->set_help_text( __( 'Total news items to display (1 featured main card + remaining small cards). Default: 5.', 'homeaffairs' ) ),
+		) )
+
+		// ── Tab 6: 6. Advertise Section 1 : Digital Transformations Column ──
+		->add_tab( __( '6. Digital Transformations', 'homeaffairs' ), array(
+			Field::make( 'text', 'ha_home_adv1_dt_title', __( 'Title', 'homeaffairs' ) )
+				->set_default_value( 'Digital Transformation & Smart Services' )
+				->set_help_text( __( 'Main headline for the left highlight card.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_adv1_dt_subtitle', __( 'Sub Title', 'homeaffairs' ) )
+				->set_default_value( 'Smart e-Government Era' )
+				->set_help_text( __( 'Pill badge title above headline.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'ha_home_adv1_dt_desc', __( 'Description', 'homeaffairs' ) )
+				->set_rows( 3 )
+				->set_default_value( 'Empowering citizens with seamless online services, digital ID integration, and cloud-first governance.' )
+				->set_help_text( __( 'Body paragraph copy.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_adv1_dt_tags', __( 'Tags (separated by commas)', 'homeaffairs' ) )
+				->set_default_value( 'Paperless, Digital ID, 24/7 Portal' )
+				->set_help_text( __( 'Features or tags separated by commas (e.g. Paperless, Digital ID, 24/7 Portal).', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_adv1_dt_btn_text', __( 'Button Text', 'homeaffairs' ) )
+				->set_default_value( 'Explore Services' )
+				->set_help_text( __( 'Action button text label.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_adv1_dt_btn_url', __( 'Button Link (Link to Page)', 'homeaffairs' ) )
+				->set_default_value( home_url( '/services/' ) )
+				->set_help_text( __( 'Action button destination link.', 'homeaffairs' ) ),
+		) )
+
+		// ── Tab 7: 7. Advertise Section 1 : Government Projects Banners Slider ──
+		->add_tab( __( '7. Projects Banners Slider', 'homeaffairs' ), array(
+			Field::make( 'complex', 'ha_home_adv1_banners', __( 'Government Projects Banners Slider', 'homeaffairs' ) )
+				->set_layout( 'tabbed-vertical' )
+				->add_fields( array(
+					Field::make( 'image', 'banner_image', __( 'Banner Image (Size: 1370px × 500px)', 'homeaffairs' ) )
+						->set_value_type( 'url' )
+						->set_help_text( __( 'Upload project banner photograph. Recommended size is 1370px × 500px.', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'banner_title', __( 'Banner Title / Alt Text', 'homeaffairs' ) )
+						->set_default_value( 'Government Project' )
+						->set_help_text( __( 'Descriptive title / accessibility alt attribute for the banner.', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'banner_url', __( 'Banner Link (URL)', 'homeaffairs' ) )
+						->set_default_value( '#' )
+						->set_help_text( __( 'Destination URL when the banner is clicked.', 'homeaffairs' ) ),
+				) )
+				->set_header_template( '<%- banner_title ? banner_title : "Banner " + ($_index + 1) %>' ),
+		) )
+
+		// ── Tab 8: 8. Quick Access Section 1 ──
+		->add_tab( __( '8. Quick Access Section 1', 'homeaffairs' ), array(
+			Field::make( 'text', 'ha_home_qa1_title', __( 'Section Title', 'homeaffairs' ) )
+				->set_default_value( 'Quick Access' )
+				->set_help_text( __( 'Section heading text (default: Quick Access).', 'homeaffairs' ) ),
+
+			Field::make( 'complex', 'ha_home_qa1_items', __( 'Quick Access Section 1 Items', 'homeaffairs' ) )
+				->set_layout( 'tabbed-vertical' )
+				->add_fields( array(
+					Field::make( 'text', 'qa_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+						->set_default_value( 'fas fa-file-alt' )
+						->set_help_text( __( 'Font Awesome icon class (e.g. fas fa-file-alt, fas fa-chart-simple, fas fa-arrows-rotate, fas fa-receipt).', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'qa_title', __( 'Title', 'homeaffairs' ) )
+						->set_default_value( 'Circulars' )
+						->set_help_text( __( 'Item headline label.', 'homeaffairs' ) ),
+
+					Field::make( 'textarea', 'qa_desc', __( 'Description', 'homeaffairs' ) )
+						->set_rows( 2 )
+						->set_default_value( 'Home Affairs directives' )
+						->set_help_text( __( 'Short descriptive line beneath the title.', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'qa_url', __( 'Link', 'homeaffairs' ) )
+						->set_default_value( '#' )
+						->set_help_text( __( 'Destination page URL.', 'homeaffairs' ) ),
+				) )
+				->set_header_template( '<%- qa_title ? qa_title : "Item " + ($_index + 1) %>' ),
 		) );
 
 
@@ -218,6 +343,50 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'notice_ref', __( 'Reference Number (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Official reference code, e.g. MOHA/2026/SN/01.', 'homeaffairs' ) ),
 		) );
+
+
+	// ═══════════════════════════════════════════════════════════════════
+	// 3. NEWS & ANNOUNCEMENTS CUSTOM POST TYPE FIELDS
+	// ═══════════════════════════════════════════════════════════════════
+	Container::make( 'post_meta', __( 'News & Announcement Details', 'homeaffairs' ) )
+		->where( 'post_type', '=', 'news_announcement' )
+		->add_fields( array(
+			Field::make( 'text', 'news_custom_title', __( 'Custom Display Title (Optional)', 'homeaffairs' ) )
+				->set_help_text( __( 'Optional custom headline. If left blank, the main Post Title above will be used.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'news_description', __( 'Description (WYSIWYG Editor)', 'homeaffairs' ) )
+				->set_help_text( __( 'Full formatted article description, announcement text, and formatted body copy.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'news_short_desc', __( 'Short Description', 'homeaffairs' ) )
+				->set_rows( 3 )
+				->set_help_text( __( 'Brief summary displayed on the homepage news cards (1-2 sentences).', 'homeaffairs' ) ),
+
+			Field::make( 'image', 'news_featured_image', __( 'Featured Image (Upload Image File) (1600px × 980px)', 'homeaffairs' ) )
+				->set_value_type( 'url' )
+				->set_help_text( __( 'Upload high-resolution featured image (Recommended size: 1600px × 980px). Used on homepage featured card and post header.', 'homeaffairs' ) ),
+
+			Field::make( 'complex', 'news_gallery', __( 'Media Gallery (Max 8 Images)', 'homeaffairs' ) )
+				->set_layout( 'tabbed-horizontal' )
+				->set_max( 8 )
+				->add_fields( array(
+					Field::make( 'image', 'gallery_image', __( 'Gallery Image', 'homeaffairs' ) )
+						->set_value_type( 'url' )
+						->set_help_text( __( 'Upload image to include in the news photo gallery.', 'homeaffairs' ) ),
+
+					Field::make( 'text', 'gallery_caption', __( 'Caption / Description (Optional)', 'homeaffairs' ) )
+						->set_help_text( __( 'Optional caption displayed beneath this gallery image.', 'homeaffairs' ) ),
+				) )
+				->set_header_template( '<%- gallery_caption ? gallery_caption : "Image " + ($_index + 1) %>' )
+				->set_help_text( __( 'Add up to 8 images for the media gallery on this news post.', 'homeaffairs' ) ),
+
+			Field::make( 'file', 'news_attachment', __( 'Add Attachment / Upload PDF File', 'homeaffairs' ) )
+				->set_type( array( 'pdf', 'document' ) )
+				->set_value_type( 'url' )
+				->set_help_text( __( 'Upload official PDF press release, gazette, or circular file.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'news_attachment_url', __( 'Attachment External Link (Optional)', 'homeaffairs' ) )
+				->set_help_text( __( 'Alternative external URL for documents hosted elsewhere.', 'homeaffairs' ) ),
+		) );
 }
 
 /**
@@ -244,14 +413,38 @@ function ha_get_notice_category_options() {
 	return $options;
 }
 
+/**
+ * Helper to retrieve news categories for Carbon Fields select options
+ */
+function ha_get_news_category_options() {
+	$options = array(
+		'' => __( 'All Categories (Latest News)', 'homeaffairs' ),
+	);
+
+	if ( taxonomy_exists( 'news_category' ) ) {
+		$terms = get_terms( array(
+			'taxonomy'   => 'news_category',
+			'hide_empty' => false,
+		) );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$options[ $term->slug ] = $term->name;
+			}
+		}
+	}
+
+	return $options;
+}
+
 // ═══════════════════════════════════════════════════════════════════
-// 3. ADMIN ENHANCEMENTS: FONT AWESOME SELECTION & LIVE PREVIEW
+// 4. ADMIN ENHANCEMENTS: FONT AWESOME SELECTION & LIVE PREVIEW
 // ═══════════════════════════════════════════════════════════════════
 add_action( 'admin_enqueue_scripts', 'ha_cpt_fields_admin_assets' );
 function ha_cpt_fields_admin_assets( $hook ) {
 	global $post_type;
 
-	// Enqueue on special_notice edit and page edit screens
+	// Enqueue on post edit screens
 	if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 		wp_enqueue_style(
 			'font-awesome-6-admin',
@@ -285,7 +478,7 @@ function ha_notice_icon_admin_footer() {
 	<script>
 	jQuery(function ($) {
 		function initNoticeIconField() {
-			var $iconInputs = $('[name*="notice_icon"]');
+			var $iconInputs = $('[name*="notice_icon"], [name*="qa_icon"]');
 			$iconInputs.each(function () {
 				var $input = $(this);
 				if ($input.data('ha-icon-inited')) return;

@@ -18,6 +18,7 @@ homeaffairs-theme/
 ├── home.php                   # Blog posts index (cards with featured image + category badge)
 ├── page.php                   # Default page with sidebar
 ├── single.php                 # Single post
+├── single-news_announcement.php # Single News & Announcement post template
 ├── archive.php                # Archive listing
 ├── search.php                 # Search results
 ├── category.php               # Category archive
@@ -29,8 +30,8 @@ homeaffairs-theme/
 ├── sidebar.php                # Widgetized sidebar
 ├── inc/
 │   ├── setup.php              # Theme support, image sizes (800x400), 5 nav menu locations
-│   ├── post-types.php         # Custom Post Types (Special Notices) & Taxonomies (Notice Categories)
-│   ├── custom-fields.php      # Carbon Fields definitions for Home Page & Special Notices
+│   ├── post-types.php         # CPTs (Special Notices, News & Announcements) & Taxonomies
+│   ├── custom-fields.php      # Carbon Fields definitions (Home Page, Special Notices, News & Announcements)
 │   ├── theme-options.php      # Carbon Fields (9 tabs, bidirectional sync, export/import)
 │   ├── enqueue.php            # Assets (local — no CDN at runtime)
 │   ├── widgets.php            # 5 sidebar/widget areas

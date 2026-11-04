@@ -6,6 +6,9 @@ function ha_setup() {
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
     add_image_size( 'ha-slider-thumb', 800, 400, true );
+    add_image_size( 'ha-news-hero', 1600, 980, true );
+    add_image_size( 'ha-news-card', 600, 360, true );
+    add_image_size( 'ha-banner-project', 1370, 500, true );
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
     add_theme_support( 'custom-logo', array(
         'height'      => 80,

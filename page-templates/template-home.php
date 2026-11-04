@@ -314,36 +314,62 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
       <span class="bg-secondary text-bg-dark text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded mr-3 shrink-0 flex items-center gap-1 shadow-sm"><i class="fas fa-bolt text-[8px]"></i> <?php esc_html_e( 'Breaking', 'homeaffairs' ); ?></span>
       <div class="ticker-window overflow-hidden flex-1 relative h-full">
         <div class="ticker-track text-[11px] sm:text-xs font-medium text-white/90" id="tickerTrack">
-          <a href="<?php echo $ha_news; ?>" class="ticker-item">
-            <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-            <span class="ticker-title font-medium text-white"><?php esc_html_e( '78th National Independence Day (04.02.2026)', 'homeaffairs' ); ?></span>
-            <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-            <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '04 February 2026', 'homeaffairs' ); ?></span>
-          </a>
-          <a href="<?php echo $ha_news; ?>" class="ticker-item">
-            <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-            <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Digital Signature System launched for secure document verification', 'homeaffairs' ); ?></span>
-            <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-            <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '28 January 2026', 'homeaffairs' ); ?></span>
-          </a>
-          <a href="<?php echo $ha_news; ?>" class="ticker-item">
-            <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-            <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Island-wide Grama Niladhari training programme commences next month', 'homeaffairs' ); ?></span>
-            <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-            <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '20 January 2026', 'homeaffairs' ); ?></span>
-          </a>
-          <a href="<?php echo $ha_news; ?>" class="ticker-item">
-            <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-            <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Online Circuit Bungalow Booking system now available 24/7', 'homeaffairs' ); ?></span>
-            <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-            <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '15 January 2026', 'homeaffairs' ); ?></span>
-          </a>
-          <a href="<?php echo $ha_news; ?>" class="ticker-item">
-            <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
-            <span class="ticker-title font-medium text-white"><?php esc_html_e( 'New public administration reforms to be implemented from Q3 2026', 'homeaffairs' ); ?></span>
-            <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-            <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '10 January 2026', 'homeaffairs' ); ?></span>
-          </a>
+          <?php
+          $ticker_news_query = new WP_Query( array(
+            'post_type'      => 'news_announcement',
+            'posts_per_page' => 8,
+            'post_status'    => 'publish',
+          ) );
+
+          if ( $ticker_news_query->have_posts() ) :
+            while ( $ticker_news_query->have_posts() ) : $ticker_news_query->the_post();
+              $t_id   = get_the_ID();
+              $t_file = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $t_id, 'news_attachment' ) : '';
+              $t_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $t_id, 'news_attachment_url' ) : '';
+              $t_link = ! empty( $t_file ) ? $t_file : ( ! empty( $t_url ) ? $t_url : get_permalink() );
+          ?>
+            <a href="<?php echo esc_url( $t_link ); ?>" <?php echo ! empty( $t_file ) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php the_title(); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php echo esc_html( get_the_date( 'd F Y' ) ); ?></span>
+            </a>
+          <?php
+            endwhile;
+            wp_reset_postdata();
+          else :
+          ?>
+            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php esc_html_e( '78th National Independence Day (04.02.2026)', 'homeaffairs' ); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '04 February 2026', 'homeaffairs' ); ?></span>
+            </a>
+            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Digital Signature System launched for secure document verification', 'homeaffairs' ); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '28 January 2026', 'homeaffairs' ); ?></span>
+            </a>
+            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Island-wide Grama Niladhari training programme commences next month', 'homeaffairs' ); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '20 January 2026', 'homeaffairs' ); ?></span>
+            </a>
+            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'Online Circuit Bungalow Booking system now available 24/7', 'homeaffairs' ); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '15 January 2026', 'homeaffairs' ); ?></span>
+            </a>
+            <a href="<?php echo esc_url( $ha_news ); ?>" class="ticker-item">
+              <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
+              <span class="ticker-title font-medium text-white"><?php esc_html_e( 'New public administration reforms to be implemented from Q3 2026', 'homeaffairs' ); ?></span>
+              <span class="ticker-sep text-secondary font-bold mx-1">-</span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php esc_html_e( '10 January 2026', 'homeaffairs' ); ?></span>
+            </a>
+          <?php endif; ?>
         </div>
       </div>
       <div class="ticker-nav flex items-center gap-1 ml-3 shrink-0">
@@ -368,43 +394,35 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 
 
-<?php if ( "hide" !== $ha_home_show_stats ) : ?>
+<?php if ( "hide" !== $ha_home_show_stats ) :
+  $raw_stats = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_stats' ) : array();
+  if ( empty( $raw_stats ) || ! is_array( $raw_stats ) ) {
+    $stats_items = array(
+      array( 'stat_count' => '1',      'stat_title' => __( 'Department', 'homeaffairs' ) ),
+      array( 'stat_count' => '25',     'stat_title' => __( 'District Secretariats', 'homeaffairs' ) ),
+      array( 'stat_count' => '331',    'stat_title' => __( 'Divisional Secretariats', 'homeaffairs' ) ),
+      array( 'stat_count' => '14,022', 'stat_title' => __( 'GN Divisions', 'homeaffairs' ) ),
+    );
+  } else {
+    $stats_items = $raw_stats;
+  }
+  $stat_cols = min( 4, max( 1, count( $stats_items ) ) );
+?>
 <!-- ═══ MODERN COMPACT SLIM STATS BAR (MAROON & GOLD THEME) ═══ -->
 <div class="stats-bar bg-white border-b-2 border-solid border-primary">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 lg:grid-cols-4">
-      
-      <!-- Stat Item 1 -->
+    <div class="grid grid-cols-2 lg:grid-cols-<?php echo esc_attr( $stat_cols ); ?>">
+      <?php foreach ( $stats_items as $stat ) :
+        $s_count = ! empty( $stat['stat_count'] ) ? $stat['stat_count'] : '0';
+        $s_title = ! empty( $stat['stat_title'] ) ? $stat['stat_title'] : '';
+      ?>
       <div class="stat-item py-2 sm:py-2.5 text-center px-2 group transition-all duration-300 hover:bg-gray-50/60">
-        <div class="stat-counter stat-num block text-lg sm:text-xl lg:text-2xl font-black text-primary-darker tracking-tight drop-shadow-sm group-hover:scale-105 transition-transform">1</div>
+        <div class="stat-counter stat-num block text-lg sm:text-xl lg:text-2xl font-black text-primary-darker tracking-tight drop-shadow-sm group-hover:scale-105 transition-transform"><?php echo esc_html( $s_count ); ?></div>
         <div class="text-[9px] sm:text-[10px] text-primary mt-0.5 font-bold uppercase tracking-wider">
-          <?php esc_html_e( 'Department', 'homeaffairs' ); ?>
+          <?php echo esc_html( $s_title ); ?>
         </div>
       </div>
-      <!-- Stat Item 2 -->
-      <div class="stat-item py-2 sm:py-2.5 text-center px-2 group transition-all duration-300 hover:bg-gray-50/60">
-        <div class="stat-counter stat-num block text-lg sm:text-xl lg:text-2xl font-black text-primary-darker tracking-tight drop-shadow-sm group-hover:scale-105 transition-transform">25</div>
-        <div class="text-[9px] sm:text-[10px] text-primary mt-0.5 font-bold uppercase tracking-wider">
-          <?php esc_html_e( 'District Secretariats', 'homeaffairs' ); ?>
-        </div>
-      </div>
-
-      <!-- Stat Item 3 -->
-      <div class="stat-item py-2 sm:py-2.5 text-center px-2 group transition-all duration-300 hover:bg-gray-50/60">
-        <div class="stat-counter stat-num block text-lg sm:text-xl lg:text-2xl font-black text-primary-darker tracking-tight drop-shadow-sm group-hover:scale-105 transition-transform">331</div>
-        <div class="text-[9px] sm:text-[10px] text-primary mt-0.5 font-bold uppercase tracking-wider">
-          <?php esc_html_e( 'Divisional Secretariats', 'homeaffairs' ); ?>
-        </div>
-      </div>
-
-      <!-- Stat Item 4 -->
-      <div class="stat-item py-2 sm:py-2.5 text-center px-2 group transition-all duration-300 hover:bg-gray-50/60">
-        <div class="stat-counter stat-num block text-lg sm:text-xl lg:text-2xl font-black text-primary-darker tracking-tight drop-shadow-sm group-hover:scale-105 transition-transform">14,022</div>
-        <div class="text-[9px] sm:text-[10px] text-primary mt-0.5 font-bold uppercase tracking-wider">
-          <?php esc_html_e( 'GN Divisions', 'homeaffairs' ); ?>
-        </div>
-      </div>
-
+      <?php endforeach; ?>
     </div>
   </div>
 </div>
@@ -412,7 +430,133 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 
     
-<?php if ( "hide" !== $ha_home_show_news ) : ?>
+<?php if ( "hide" !== $ha_home_show_news ) :
+  $news_sec_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
+  $news_sec_title    = $news_sec_title ?: __( 'News & Announcements', 'homeaffairs' );
+  $news_sec_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
+  $news_sec_subtitle = $news_sec_subtitle ?: __( 'Latest Updates', 'homeaffairs' );
+  $news_view_all     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
+  $news_view_all     = $news_view_all ?: home_url( '/news-announcements/' );
+  $news_cat_filter   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_category' ) : '';
+  $news_limit        = function_exists( 'carbon_get_post_meta' ) ? (int) carbon_get_post_meta( $page_id, 'ha_home_news_count' ) : 5;
+  if ( $news_limit < 1 ) { $news_limit = 5; }
+
+  $news_query_args = array(
+    'post_type'      => 'news_announcement',
+    'posts_per_page' => $news_limit,
+    'post_status'    => 'publish',
+  );
+  if ( ! empty( $news_cat_filter ) ) {
+    $news_query_args['tax_query'] = array(
+      array(
+        'taxonomy' => 'news_category',
+        'field'    => 'slug',
+        'terms'    => $news_cat_filter,
+      ),
+    );
+  }
+  $news_posts = get_posts( $news_query_args );
+
+  // Default fallback data if fewer than 5 posts exist
+  $fallback_news = array(
+    array(
+      'title'      => __( '78th National Independence Day Celebrated with Grand Ceremony', 'homeaffairs' ),
+      'desc'       => __( 'The Ministry organized a landmark national celebration bringing together government officials, military personnel, and thousands of citizens across the island.', 'homeaffairs' ),
+      'cat'        => __( 'Official Event', 'homeaffairs' ),
+      'date'       => 'February 4, 2026',
+      'date_short' => 'Feb 04, 2026',
+      'image'      => content_url( '/uploads/sites/4/2026/07/9_Independence_Day_78th.jpeg' ),
+      'link'       => $ha_news,
+      'is_pdf'     => false,
+    ),
+    array(
+      'title'      => __( 'National Digital Birth Certificate will be issued', 'homeaffairs' ),
+      'desc'       => __( 'Nationwide rollout of secure digital civil registration documents.', 'homeaffairs' ),
+      'cat'        => __( 'eGovernance', 'homeaffairs' ),
+      'date'       => 'Jan 20, 2026',
+      'date_short' => 'Jan 20, 2026',
+      'image'      => $ha_uri . '/assets/images/news/4.jpg',
+      'link'       => $ha_news,
+      'is_pdf'     => false,
+    ),
+    array(
+      'title'      => __( 'Island-Wide Anti-Drug Campaign', 'homeaffairs' ),
+      'desc'       => __( 'Collaborative initiative with District Secretariats for youth protection.', 'homeaffairs' ),
+      'cat'        => __( 'Anti-Drug Initiative', 'homeaffairs' ),
+      'date'       => 'Dec 12, 2025',
+      'date_short' => 'Dec 12, 2025',
+      'image'      => $ha_uri . '/assets/images/news/2.jpg',
+      'link'       => $ha_news,
+      'is_pdf'     => false,
+    ),
+    array(
+      'title'      => __( 'Circuit Bungalow Online Booking System Launch', 'homeaffairs' ),
+      'desc'       => __( 'Modern digital reservation platform for public servants and citizens.', 'homeaffairs' ),
+      'cat'        => __( 'Public Services', 'homeaffairs' ),
+      'date'       => 'Nov 05, 2025',
+      'date_short' => 'Nov 05, 2025',
+      'image'      => $ha_uri . '/assets/images/news/3.jpg',
+      'link'       => $ha_news,
+      'is_pdf'     => false,
+    ),
+    array(
+      'title'      => __( 'District Secretariat Capacity Building Workshop', 'homeaffairs' ),
+      'desc'       => __( 'Regional administrative officers convene for professional digital governance training.', 'homeaffairs' ),
+      'cat'        => __( 'Administration', 'homeaffairs' ),
+      'date'       => 'Oct 18, 2025',
+      'date_short' => 'Oct 18, 2025',
+      'image'      => $ha_uri . '/assets/images/news/1.jpg',
+      'link'       => $ha_news,
+      'is_pdf'     => false,
+    ),
+  );
+
+  // Parse items from query, filling with fallback if needed
+  $display_news = array();
+  if ( ! empty( $news_posts ) ) {
+    foreach ( $news_posts as $idx => $np ) {
+      $np_id     = $np->ID;
+      $custom_t  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_custom_title' ) : '';
+      $title     = $custom_t ?: get_the_title( $np_id );
+      $short_d   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_short_desc' ) : '';
+      $desc      = $short_d ?: wp_trim_words( get_the_excerpt( $np_id ), 22 );
+      $terms     = get_the_terms( $np_id, 'news_category' );
+      $cat_name  = ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : __( 'News', 'homeaffairs' );
+      $img_url   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_featured_image' ) : '';
+      if ( ! $img_url ) {
+        $img_url = get_the_post_thumbnail_url( $np_id, 'ha-news-hero' );
+      }
+      if ( ! $img_url && isset( $fallback_news[ $idx ]['image'] ) ) {
+        $img_url = $fallback_news[ $idx ]['image'];
+      }
+      $file_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment' ) : '';
+      $ext_url   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
+      $link_url  = ! empty( $file_url ) ? $file_url : ( ! empty( $ext_url ) ? $ext_url : get_permalink( $np_id ) );
+
+      $display_news[] = array(
+        'title'      => $title,
+        'desc'       => $desc,
+        'cat'        => $cat_name,
+        'date'       => get_the_date( 'F j, Y', $np_id ),
+        'date_short' => get_the_date( 'M d, Y', $np_id ),
+        'image'      => $img_url,
+        'link'       => $link_url,
+        'is_pdf'     => ! empty( $file_url ),
+      );
+    }
+  }
+
+  // Backfill with fallbacks if fewer than 5 items
+  $current_count = count( $display_news );
+  if ( $current_count < 5 ) {
+    for ( $i = $current_count; $i < 5; $i++ ) {
+      $display_news[] = $fallback_news[ $i ];
+    }
+  }
+
+  $featured_news = $display_news[0];
+  $small_news    = array_slice( $display_news, 1, 4 );
+?>
 <!-- ═══ NEWS & ANNOUNCEMENTS SECTION (OPTIMIZED 12-COL GRID) ═══ -->
 <section class="pt-10 pb-0 lg:pt-12 lg:pb-0 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -422,13 +566,13 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
       <div>
         <span class="inline-flex items-center gap-1.5 text-secondary font-bold text-[10px] tracking-[2px] uppercase bg-secondary/10 px-3 py-1 rounded-full mb-2">
           <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
-          <?php esc_html_e( 'Latest Updates', 'homeaffairs' ); ?>
+          <?php echo esc_html( $news_sec_subtitle ); ?>
         </span>
         <h2 class="text-2xl sm:text-3xl font-black text-primary tracking-tight">
-          <?php esc_html_e( 'News & Announcements', 'homeaffairs' ); ?>
+          <?php echo esc_html( $news_sec_title ); ?>
         </h2>
       </div>
-      <a href="<?php echo esc_url( $ha_news ); ?>" class="inline-flex items-center gap-2 bg-white text-primary hover:text-secondary-dark font-bold text-xs px-4 py-2 rounded-xl border border-slate-200/90 shadow-2xs hover:border-secondary hover:bg-secondary/5 transition-all group">
+      <a href="<?php echo esc_url( $news_view_all ); ?>" class="inline-flex items-center gap-2 bg-white text-primary hover:text-secondary-dark font-bold text-xs px-4 py-2 rounded-xl border border-slate-200/90 shadow-2xs hover:border-secondary hover:bg-secondary/5 transition-all group">
         <?php esc_html_e( 'View All News', 'homeaffairs' ); ?> 
         <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
       </a>
@@ -439,12 +583,12 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
       <!-- ─── LEFT: FEATURED MAIN NEWS CARD (Spans 5 Cols) ─── -->
       <div class="lg:col-span-5 bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full group">
-        <div class="flex flex-col h-full justify-between">
+        <a href="<?php echo esc_url( $featured_news['link'] ); ?>" <?php echo $featured_news['is_pdf'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> class="flex flex-col h-full justify-between">
           <div>
             <!-- Main Featured Image -->
             <div class="relative h-56 sm:h-64 bg-gray-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="<?php echo esc_url( content_url( '/uploads/sites/4/2026/07/9_Independence_Day_78th.jpeg' ) ); ?>" 
-                   alt="<?php esc_attr_e( '78th Independence Day', 'homeaffairs' ); ?>" 
+              <img loading="lazy" decoding="async" src="<?php echo esc_url( $featured_news['image'] ); ?>" 
+                   alt="<?php echo esc_attr( $featured_news['title'] ); ?>" 
                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               <span class="absolute top-4 left-4 text-[9px] font-bold text-white uppercase tracking-wider bg-secondary px-3 py-1 rounded-full shadow-md">
@@ -455,120 +599,60 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
             <!-- Content Area -->
             <div class="p-5">
               <div class="flex items-center gap-3 text-[11px] font-semibold text-gray-600 mb-2">
-                <span><i class="far fa-calendar text-secondary mr-1"></i> February 4, 2025</span>
+                <span><i class="far fa-calendar text-secondary mr-1"></i> <?php echo esc_html( $featured_news['date'] ); ?></span>
                 <span>•</span>
-                <span><i class="fas fa-tag text-secondary mr-1"></i> Official Event</span>
+                <span><i class="fas fa-tag text-secondary mr-1"></i> <?php echo esc_html( $featured_news['cat'] ); ?></span>
+                <?php if ( $featured_news['is_pdf'] ) : ?>
+                  <span>•</span>
+                  <span class="text-secondary font-bold"><i class="fas fa-file-pdf mr-0.5"></i> PDF</span>
+                <?php endif; ?>
               </div>
               
               <h3 class="text-base sm:text-lg font-bold text-primary mb-2.5 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
-                <?php esc_html_e( '78th National Independence Day Celebrated with Grand Ceremony', 'homeaffairs' ); ?>
+                <?php echo esc_html( $featured_news['title'] ); ?>
               </h3>
               
               <p class="text-xs text-gray-500 line-clamp-3 leading-relaxed">
-                <?php esc_html_e( 'The Ministry organized a landmark national celebration bringing together government officials, military personnel, and thousands of citizens across the island.', 'homeaffairs' ); ?>
+                <?php echo esc_html( $featured_news['desc'] ); ?>
               </p>
             </div>
           </div>
 
           <!-- Card Footer -->
           <div class="px-5 py-3.5 bg-slate-50/50 text-xs font-bold text-primary flex items-center justify-between border-t border-gray-100 shrink-0">
-            <span><?php esc_html_e( 'Read Full Article', 'homeaffairs' ); ?></span>
+            <span><?php echo $featured_news['is_pdf'] ? esc_html__( 'Download Document (PDF)', 'homeaffairs' ) : esc_html__( 'Read Full Article', 'homeaffairs' ); ?></span>
             <i class="fas fa-chevron-right text-[10px] text-secondary group-hover:translate-x-1 transition-transform"></i>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- ─── RIGHT: 4 SMALL NEWS CARDS GRID (Spans 7 Cols, 2x2 Layout) ─── -->
       <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        
-        <!-- Small Card 1 -->
-        <div class="bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
+        <?php foreach ( $small_news as $sn ) : ?>
+        <a href="<?php echo esc_url( $sn['link'] ); ?>" <?php echo $sn['is_pdf'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?> class="bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
           <div>
             <div class="relative h-28 bg-gray-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/news/4.jpg' ); ?>" 
-                   alt="News Item 1" 
+              <img loading="lazy" decoding="async" src="<?php echo esc_url( $sn['image'] ); ?>" 
+                   alt="<?php echo esc_attr( $sn['title'] ); ?>" 
                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="p-3.5">
               <span class="inline-block text-[8px] font-bold text-secondary uppercase tracking-wider bg-secondary/10 px-2 py-0.5 rounded-full mb-1.5">
-                eGovernance
+                <?php echo esc_html( $sn['cat'] ); ?>
               </span>
               <h4 class="text-xs font-bold text-primary leading-snug line-clamp-2 group-hover:text-secondary transition-colors">
-                <?php esc_html_e( 'National Digital Birth Certificate will be issued', 'homeaffairs' ); ?>
+                <?php echo esc_html( $sn['title'] ); ?>
               </h4>
             </div>
           </div>
-          <div class="px-3.5 pb-3 pt-1 text-[10px] font-medium text-gray-600 shrink-0 flex items-center gap-1.5 border-t border-gray-50 mt-2">
-            <i class="far fa-calendar text-secondary"></i> Jan 20, 2025
+          <div class="px-3.5 pb-3 pt-1 text-[10px] font-medium text-gray-600 shrink-0 flex items-center justify-between border-t border-gray-50 mt-2">
+            <span class="flex items-center gap-1.5"><i class="far fa-calendar text-secondary"></i> <?php echo esc_html( $sn['date_short'] ); ?></span>
+            <?php if ( $sn['is_pdf'] ) : ?>
+              <span class="text-secondary text-[9px] font-bold"><i class="fas fa-file-pdf mr-0.5"></i> PDF</span>
+            <?php endif; ?>
           </div>
-        </div>
-
-        <!-- Small Card 2 -->
-        <div class="bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="relative h-28 bg-gray-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/news/2.jpg' ); ?>" 
-                   alt="News Item 2" 
-                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            </div>
-            <div class="p-3.5">
-              <span class="inline-block text-[8px] font-bold text-secondary uppercase tracking-wider bg-secondary/10 px-2 py-0.5 rounded-full mb-1.5">
-                Anti-Drug Initiative
-              </span>
-              <h4 class="text-xs font-bold text-primary leading-snug line-clamp-2 group-hover:text-secondary transition-colors">
-                <?php esc_html_e( 'Island-Wide Anti-Drug Campaign', 'homeaffairs' ); ?>
-              </h4>
-            </div>
-          </div>
-          <div class="px-3.5 pb-3 pt-1 text-[10px] font-medium text-gray-600 shrink-0 flex items-center gap-1.5 border-t border-gray-50 mt-2">
-            <i class="far fa-calendar text-secondary"></i> Dec 12, 2024
-          </div>
-        </div>
-
-        <!-- Small Card 3 (Duplicated/Reused Image Link) -->
-        <div class="bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="relative h-28 bg-gray-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/news/3.jpg' ); ?>" 
-                   alt="News Item 3" 
-                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            </div>
-            <div class="p-3.5">
-              <span class="inline-block text-[8px] font-bold text-secondary uppercase tracking-wider bg-secondary/10 px-2 py-0.5 rounded-full mb-1.5">
-                Public Services
-              </span>
-              <h4 class="text-xs font-bold text-primary leading-snug line-clamp-2 group-hover:text-secondary transition-colors">
-                <?php esc_html_e( 'Circuit Bungalow Online Booking System Launch', 'homeaffairs' ); ?>
-              </h4>
-            </div>
-          </div>
-          <div class="px-3.5 pb-3 pt-1 text-[10px] font-medium text-gray-600 shrink-0 flex items-center gap-1.5 border-t border-gray-50 mt-2">
-            <i class="far fa-calendar text-secondary"></i> Nov 05, 2024
-          </div>
-        </div>
-
-        <!-- Small Card 4 (Duplicated/Reused Image Link) -->
-        <div class="bg-white border border-slate-200/90 hover:border-secondary/40 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="relative h-28 bg-gray-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/news/1.jpg' ); ?>" 
-                   alt="News Item 4" 
-                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            </div>
-            <div class="p-3.5">
-              <span class="inline-block text-[8px] font-bold text-secondary uppercase tracking-wider bg-secondary/10 px-2 py-0.5 rounded-full mb-1.5">
-                Administration
-              </span>
-              <h4 class="text-xs font-bold text-primary leading-snug line-clamp-2 group-hover:text-secondary transition-colors">
-                <?php esc_html_e( 'District Secretariat Capacity Building Workshop', 'homeaffairs' ); ?>
-              </h4>
-            </div>
-          </div>
-          <div class="px-3.5 pb-3 pt-1 text-[10px] font-medium text-gray-600 shrink-0 flex items-center gap-1.5 border-t border-gray-50 mt-2">
-            <i class="far fa-calendar text-secondary"></i> Oct 18, 2024
-          </div>
-        </div>
-
+        </a>
+        <?php endforeach; ?>
       </div>
 
     </div>
@@ -576,8 +660,38 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 </section>
 <?php endif; ?>
    
-<?php if ( "hide" !== $ha_home_show_initiatives ) : ?>
- <!-- ═══ COMPACT CREATIVE HERO SHOWCASE SECTION ═══ -->
+<?php if ( "hide" !== $ha_home_show_initiatives ) :
+  // Section 6: Digital Transformations Column
+  $adv1_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_title' ) : '';
+  $adv1_title    = $adv1_title ?: __( 'Digital Transformation & Smart Services', 'homeaffairs' );
+  $adv1_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_subtitle' ) : '';
+  $adv1_subtitle = $adv1_subtitle ?: __( 'Smart e-Government Era', 'homeaffairs' );
+  $adv1_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_desc' ) : '';
+  $adv1_desc     = $adv1_desc ?: __( 'Empowering citizens with seamless online services, digital ID integration, and cloud-first governance.', 'homeaffairs' );
+  $adv1_tags_raw = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_tags' ) : '';
+  $adv1_tags_raw = $adv1_tags_raw ?: 'Paperless, Digital ID, 24/7 Portal';
+  $adv1_tags     = array_filter( array_map( 'trim', explode( ',', $adv1_tags_raw ) ) );
+  $adv1_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_btn_text' ) : '';
+  $adv1_btn_text = $adv1_btn_text ?: __( 'Explore Services', 'homeaffairs' );
+  $adv1_btn_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_btn_url' ) : '';
+  $adv1_btn_url  = $adv1_btn_url ?: $ha_services;
+
+  // Section 7: Government Projects Banners Slider
+  $raw_banners = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_banners' ) : array();
+  if ( empty( $raw_banners ) || ! is_array( $raw_banners ) ) {
+    $banners = array(
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/d.png',  'banner_title' => 'Government Banner 1', 'banner_url' => $ha_about ),
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/e.png',  'banner_title' => 'Government Banner 2', 'banner_url' => $ha_about ),
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/a.jpg',  'banner_title' => 'Government Banner 3', 'banner_url' => $ha_about ),
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/b.jpeg', 'banner_title' => 'Government Banner 4', 'banner_url' => $ha_about ),
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/c.jpeg', 'banner_title' => 'Government Banner 5', 'banner_url' => $ha_about ),
+      array( 'banner_image' => $ha_uri . '/assets/images/banner/d.png',  'banner_title' => 'Government Banner 6', 'banner_url' => $ha_about ),
+    );
+  } else {
+    $banners = $raw_banners;
+  }
+?>
+ <!-- ═══ COMPACT CREATIVE HERO SHOWCASE SECTION (SECTIONS 6 & 7) ═══ -->
 <section class="py-8 lg:py-10 bg-gray-50 border-b border-gray-200/60">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -590,7 +704,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <!-- Main Grid with Auto Height Match -->
     <div class="grid lg:grid-cols-12 gap-4 items-stretch">
 
-      <!-- ─── LEFT: COMPACT FEATURE HIGHLIGHT CARD (4 Cols) ─── -->
+      <!-- ─── 6. ADVERTISE SECTION 1: DIGITAL TRANSFORMATIONS COLUMN (4 Cols) ─── -->
       <div class="lg:col-span-4 relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-darker via-primary-dark to-primary p-4 sm:p-5 text-white shadow-md border border-secondary/25 group flex flex-col justify-between h-full">
         
         <!-- Background Accents -->
@@ -606,143 +720,103 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
               <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-secondary"></span>
             </span>
-            <?php esc_html_e( 'Smart e-Government Era', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv1_subtitle ); ?>
           </div>
 
           <!-- Main Title -->
           <h2 class="text-base sm:text-lg lg:text-xl font-extrabold tracking-tight text-white leading-tight">
-            <?php esc_html_e( 'Digital Transformation & Smart Services', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv1_title ); ?>
           </h2>
 
           <!-- Description -->
           <p class="text-[11px] text-secondary-light/90 font-normal leading-relaxed line-clamp-2 sm:line-clamp-3">
-            <?php esc_html_e( 'Empowering citizens with seamless online services, digital ID integration, and cloud-first governance.', 'homeaffairs' ); ?>
+            <?php echo esc_html( $adv1_desc ); ?>
           </p>
 
-          <!-- Quick Micro-Features -->
+          <!-- Quick Micro-Features / Tags -->
+          <?php if ( ! empty( $adv1_tags ) ) : ?>
           <div class="pt-1 flex flex-wrap gap-1.5 text-[9px] text-white/90 font-semibold">
-            <span class="px-2.5 py-0.5 rounded-full bg-black/25 border border-secondary/30 flex items-center gap-1.5 backdrop-blur-sm">
-              <i class="fas fa-file-shield text-secondary text-[8px]" aria-hidden="true"></i> <?php esc_html_e( 'Paperless', 'homeaffairs' ); ?>
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full bg-black/25 border border-secondary/30 flex items-center gap-1.5 backdrop-blur-sm">
-              <i class="fas fa-id-card text-secondary text-[8px]" aria-hidden="true"></i> <?php esc_html_e( 'Digital ID', 'homeaffairs' ); ?>
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full bg-black/25 border border-secondary/30 flex items-center gap-1.5 backdrop-blur-sm">
-              <i class="fas fa-bolt text-secondary text-[8px]" aria-hidden="true"></i> <?php esc_html_e( '24/7 Portal', 'homeaffairs' ); ?>
-            </span>
+            <?php
+            $tag_icons = array( 'fas fa-file-shield', 'fas fa-id-card', 'fas fa-bolt', 'fas fa-cloud', 'fas fa-lock' );
+            foreach ( $adv1_tags as $t_idx => $tag_text ) :
+              $t_icon = isset( $tag_icons[ $t_idx % count( $tag_icons ) ] ) ? $tag_icons[ $t_idx % count( $tag_icons ) ] : 'fas fa-check-circle';
+            ?>
+              <span class="px-2.5 py-0.5 rounded-full bg-black/25 border border-secondary/30 flex items-center gap-1.5 backdrop-blur-sm">
+                <i class="<?php echo esc_attr( $t_icon ); ?> text-secondary text-[8px]" aria-hidden="true"></i> <?php echo esc_html( $tag_text ); ?>
+              </span>
+            <?php endforeach; ?>
           </div>
+          <?php endif; ?>
 
         </div>
 
-        <!-- Bottom Action Button (Single Button) -->
+        <!-- Bottom Action Button -->
+        <?php if ( ! empty( $adv1_btn_text ) ) : ?>
         <div class="relative z-10 pt-3 mt-3 border-t border-white/15 flex">
-          <a href="<?php echo esc_url( $ha_services ); ?>" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary-dark text-primary-dark font-extrabold text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
-            <span><?php esc_html_e( 'Explore Services', 'homeaffairs' ); ?></span>
+          <a href="<?php echo esc_url( $adv1_btn_url ); ?>" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary-dark text-primary-dark font-extrabold text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
+            <span><?php echo esc_html( $adv1_btn_text ); ?></span>
             <i class="fas fa-arrow-right text-[10px]" aria-hidden="true"></i>
           </a>
         </div>
+        <?php endif; ?>
 
       </div>
 
-      <!-- ─── RIGHT: FULL-FILL COMPACT BANNER CAROUSEL (8 Cols) ─── -->
+      <!-- ─── 7. ADVERTISE SECTION 1: GOVERNMENT PROJECTS BANNERS SLIDER (8 Cols) ─── -->
       <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm relative overflow-hidden flex items-center">
         
         <div class="swiper visionBannerSlider w-full h-full rounded-2xl overflow-hidden bg-white">
           <div class="swiper-wrapper h-full">
 
-            <!-- Slide 1 -->
+            <?php foreach ( $banners as $b ) :
+              $b_img   = function_exists( 'ha_resolve_image_url' ) ? ha_resolve_image_url( ! empty( $b['banner_image'] ) ? $b['banner_image'] : '' ) : '';
+              if ( ! $b_img ) { $b_img = $ha_uri . '/assets/images/banner/d.png'; }
+              $b_title = ! empty( $b['banner_title'] ) ? $b['banner_title'] : __( 'Government Project', 'homeaffairs' );
+              $b_url   = ! empty( $b['banner_url'] ) ? $b['banner_url'] : '#';
+            ?>
             <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/d.png' ); ?>" 
-                     alt="Government Banner 1" 
+              <a href="<?php echo esc_url( $b_url ); ?>" class="block w-full h-full overflow-hidden group">
+                <img loading="lazy" decoding="async" src="<?php echo esc_url( $b_img ); ?>" 
+                     alt="<?php echo esc_attr( $b_title ); ?>" 
                      class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
               </a>
             </div>
-
-            <!-- Slide 2 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/e.png' ); ?>" 
-                     alt="Government Banner 2" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/a.jpg' ); ?>" 
-                     alt="Government Banner 3" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
-
-            <!-- Slide 4 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/b.jpeg' ); ?>" 
-                     alt="Government Banner 4" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
-
-            <!-- Slide 5 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/c.jpeg' ); ?>" 
-                     alt="Government Banner 5" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
-
-            <!-- Slide 6 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/f.png' ); ?>" 
-                     alt="Government Banner 6" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
-
-            <!-- Slide 7 -->
-            <div class="swiper-slide w-full h-full bg-white">
-              <a href="<?php echo esc_url($ha_about); ?>" class="block w-full h-full overflow-hidden group">
-                <img loading="lazy" decoding="async" src="<?php echo esc_url( $ha_uri . '/assets/images/banner/g.png' ); ?>" 
-                     alt="Government Banner 7" 
-                     class="w-full h-full aspect-[16/6] sm:aspect-[21/7] object-cover group-hover:scale-105 transition-transform duration-500" />
-              </a>
-            </div>
+            <?php endforeach; ?>
 
           </div>
 
-          <!-- Subtle Dots Navigation -->
-          <div class="swiper-pagination !bottom-2"></div>
+          <!-- Pagination Dots Container -->
+          <div class="swiper-pagination !bottom-3"></div>
 
-          <!-- Minimal Floating Arrows -->
-          <div class="swiper-button-next !text-white !w-6 !h-6 after:!text-[10px] bg-primary-dark/80 hover:bg-secondary hover:!text-primary-dark backdrop-blur-md rounded-full transition-all border border-secondary/30"></div>
-          <div class="swiper-button-prev !text-white !w-6 !h-6 after:!text-[10px] bg-primary-dark/80 hover:bg-secondary hover:!text-primary-dark backdrop-blur-md rounded-full transition-all border border-secondary/30"></div>
+          <!-- Navigation Buttons (Desktop Only, Subtle & Sleek) -->
+          <div class="swiper-button-prev !w-8 !h-8 !rounded-full !bg-white/80 hover:!bg-secondary !text-primary-dark hover:!text-primary-darker !shadow-md backdrop-blur-sm transition-all after:!text-xs"></div>
+          <div class="swiper-button-next !w-8 !h-8 !rounded-full !bg-white/80 hover:!bg-secondary !text-primary-dark hover:!text-primary-darker !shadow-md backdrop-blur-sm transition-all after:!text-xs"></div>
         </div>
 
       </div>
 
     </div>
-
   </div>
 </section>
 
-<!-- Swiper JS Script -->
+<!-- Swiper JS & Carousel Initialization Script -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    new Swiper(".visionBannerSlider", {
+    const bannerSwiper = new Swiper(".visionBannerSlider", {
       loop: true,
+      speed: 800,
       autoplay: {
         delay: 4500,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       },
-      effect: "slide", 
+      effect: "fade",
+      fadeEffect: {
+        crossFade: true,
+      },
       pagination: {
-        el: ".swiper-pagination",
+        el: ".visionBannerSlider .swiper-pagination",
         clickable: true,
       },
       navigation: {
@@ -757,38 +831,62 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
 
 
-<?php if ( "hide" !== $ha_home_show_services ) : ?>
-<!-- ═══ DOWNLOADS / QUICK RESOURCES (COMPACT WITH YELLOW BORDER) ═══ -->
+<?php if ( "hide" !== $ha_home_show_services ) :
+  $qa_section_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa1_title' ) : '';
+  $qa_section_title = $qa_section_title ?: __( 'Quick Access', 'homeaffairs' );
+
+  $raw_qa_items = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_qa1_items' ) : array();
+  if ( empty( $raw_qa_items ) || ! is_array( $raw_qa_items ) ) {
+    $qa_items = array(
+      array( 'qa_icon' => 'fas fa-file-alt',        'qa_title' => __( 'Circulars', 'homeaffairs' ),                  'qa_desc' => __( 'Home Affairs directives', 'homeaffairs' ),               'qa_url' => $ha_circulars ),
+      array( 'qa_icon' => 'fas fa-chart-simple',    'qa_title' => __( 'Exam Results', 'homeaffairs' ),              'qa_desc' => __( 'Verified departmental marks', 'homeaffairs' ),           'qa_url' => home_url( '/exam-results/' ) ),
+      array( 'qa_icon' => 'fas fa-arrows-rotate',   'qa_title' => __( 'Transfers', 'homeaffairs' ),                 'qa_desc' => __( 'Schedules and guidelines', 'homeaffairs' ),              'qa_url' => home_url( '/transfer-procedures/' ) ),
+      array( 'qa_icon' => 'fas fa-receipt',         'qa_title' => __( 'Procurement', 'homeaffairs' ),               'qa_desc' => __( 'Active government tenders', 'homeaffairs' ),             'qa_url' => home_url( '/procurements-notices/' ) ),
+      array( 'qa_icon' => 'fas fa-laptop-file',     'qa_title' => __( 'E Forms', 'homeaffairs' ),                   'qa_desc' => __( 'Downloadable application templates', 'homeaffairs' ),     'qa_url' => home_url( '/e-forms/' ) ),
+      array( 'qa_icon' => 'fas fa-house-user',      'qa_title' => __( 'Circuit Bungalows', 'homeaffairs' ),         'qa_desc' => __( 'Reservations and guidelines', 'homeaffairs' ),           'qa_url' => home_url( '/circuit-bungalows/' ) ),
+      array( 'qa_icon' => 'fas fa-map-location-dot','qa_title' => __( 'List of GN Division & Villages', 'homeaffairs' ), 'qa_desc' => __( 'Regional administrative directory', 'homeaffairs' ), 'qa_url' => home_url( '/gn-divisions/' ) ),
+      array( 'qa_icon' => 'fas fa-shield-halved',   'qa_title' => __( 'Internal Affairs Unit', 'homeaffairs' ),      'qa_desc' => __( 'Integrity & anti-corruption oversight', 'homeaffairs' ), 'qa_url' => home_url( '/internal-affairs-unit/' ) ),
+    );
+  } else {
+    $qa_items = $raw_qa_items;
+  }
+?>
+<!-- ═══ 8. QUICK ACCESS SECTION 1 (COMPACT WITH ACCENT BORDER) ═══ -->
 <section class="py-12 lg:py-16 bg-warm-white border-t border-b border-slate-200/80 relative overflow-hidden">
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     
     <!-- Compact Header Section -->
     <div class="text-center mb-5">
-     
       <h2 class="text-xl sm:text-2xl font-extrabold text-primary tracking-tight">
-        <?php esc_html_e( 'Quick Access', 'homeaffairs' ); ?>
+        <?php echo esc_html( $qa_section_title ); ?>
       </h2>
     </div>
 
     <!-- 4-Column Responsive Grid (Tight Gap) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-      
-      <!-- Card 1: Circulars -->
-      <a href="<?php echo esc_url( $ha_circulars ); ?>" 
+      <?php foreach ( $qa_items as $item ) :
+        $q_icon  = ! empty( $item['qa_icon'] ) ? $item['qa_icon'] : 'fas fa-file-alt';
+        $q_title = ! empty( $item['qa_title'] ) ? $item['qa_title'] : '';
+        $q_desc  = ! empty( $item['qa_desc'] ) ? $item['qa_desc'] : '';
+        $q_url   = ! empty( $item['qa_url'] ) ? $item['qa_url'] : '#';
+      ?>
+      <a href="<?php echo esc_url( $q_url ); ?>" 
          class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
         
         <div class="flex items-center gap-3 min-w-0">
           <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-file-alt"></i>
+            <i class="<?php echo esc_attr( $q_icon ); ?>"></i>
           </div>
           <div class="truncate">
             <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Circulars', 'homeaffairs' ); ?>
+              <?php echo esc_html( $q_title ); ?>
             </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Home Affairs directives', 'homeaffairs' ); ?>
-            </span>
+            <?php if ( $q_desc ) : ?>
+              <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
+                <?php echo esc_html( $q_desc ); ?>
+              </span>
+            <?php endif; ?>
           </div>
         </div>
 
@@ -796,168 +894,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
           <i class="fas fa-chevron-right"></i>
         </div>
       </a>
-
-      <!-- Card 2: Exam Results -->
-      <a href="<?php echo esc_url( home_url( '/exam-results/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-chart-simple"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Exam Results', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Verified departmental marks', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 3: Transfers -->
-      <a href="<?php echo esc_url( home_url( '/transfer-procedures/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-arrows-rotate"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Transfers', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Schedules and guidelines', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 4: Procurement -->
-      <a href="<?php echo esc_url( home_url( '/procurements-notices/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-receipt"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Procurement', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Active government tenders', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 5: eforms -->
-      <a href="<?php echo esc_url( home_url( '/e-forms/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-laptop-file"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'E Forms', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Downloadable application templates', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 6: Circuit Bungalows -->
-      <a href="<?php echo esc_url( home_url( '/circuit-bungalows/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-house-user"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Circuit Bungalows', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Reservations and guidelines', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 7: List of GN Division & Villages -->
-      <a href="<?php echo esc_url( home_url( '/gn-divisions/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-map-location-dot"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'List of GN Division & Villages', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Regional administrative directory', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
-      <!-- Card 8: Internal Affairs Unit -->
-      <a href="<?php echo esc_url( home_url( '/internal-affairs-unit/' ) ); ?>" 
-         class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 overflow-hidden">
-        
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 bg-primary/[0.05] border border-primary/10 rounded-xl flex items-center justify-center text-sm shrink-0 text-primary group-hover:bg-primary group-hover:text-secondary group-hover:border-primary group-hover:scale-105 transition-all duration-200">
-            <i class="fas fa-shield-halved"></i>
-          </div>
-          <div class="truncate">
-            <strong class="block text-sm font-bold text-primary group-hover:text-primary-dark transition-colors duration-200 truncate">
-              <?php esc_html_e( 'Internal Affairs Unit', 'homeaffairs' ); ?>
-            </strong>
-            <span class="text-[11px] text-slate-500 font-normal truncate block mt-0.5">
-              <?php esc_html_e( 'Integrity & anti-corruption oversight', 'homeaffairs' ); ?>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-slate-300 group-hover:text-secondary group-hover:translate-x-0.5 transition-all duration-200 text-xs shrink-0">
-          <i class="fas fa-chevron-right"></i>
-        </div>
-      </a>
-
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
