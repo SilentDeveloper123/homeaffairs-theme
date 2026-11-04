@@ -80,13 +80,21 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the News & Announcements featured card and small cards grid.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_initiatives', __( 'Advertise Section 1 (Digital Transformations & Banners)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_adv1_dt', __( 'Advertise Section 1 : Digital Transformations Column', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides Digital Transformation spotlight card and Government Projects Banners Slider.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides the Digital Transformation spotlight card on the left.', 'homeaffairs' ) ),
+
+			Field::make( 'radio', 'ha_home_show_adv1_banners', __( 'Advertise Section 1 : Government Projects Banners Slider', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Shows/hides the Government Projects Banners Slider on the right.', 'homeaffairs' ) ),
 
 			Field::make( 'radio', 'ha_home_show_services', __( 'Quick Access Section 1', 'homeaffairs' ) )
 				->set_options( array(
@@ -96,13 +104,21 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'show' )
 				->set_help_text( __( 'Shows/hides the Quick Access Section 1 cards grid.', 'homeaffairs' ) ),
 
-			Field::make( 'radio', 'ha_home_show_leadership', __( 'Advertise Section 2 (Right to Information & Grievances Hotline 1905)', 'homeaffairs' ) )
+			Field::make( 'radio', 'ha_home_show_adv2_rti', __( 'Advertise Section 2 : Right to Information Column', 'homeaffairs' ) )
 				->set_options( array(
 					'show' => __( 'Show', 'homeaffairs' ),
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Shows/hides Right to Information and 1905 Hotline cards.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Shows/hides the Right to Information hero column on the left.', 'homeaffairs' ) ),
+
+			Field::make( 'radio', 'ha_home_show_adv2_1905', __( 'Advertise Section 2 : Grievances Hotline - 1905 Column', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Shows/hides the Grievances Hotline 1905 column on the right.', 'homeaffairs' ) ),
 
 			Field::make( 'radio', 'ha_home_show_downloads', __( 'Quick Access Section 3', 'homeaffairs' ) )
 				->set_options( array(
@@ -578,7 +594,7 @@ function ha_register_carbon_fields() {
 				->set_value_type( 'url' )
 				->set_help_text( __( 'Upload high-resolution featured image (Recommended size: 1600px × 980px). Used on homepage featured card and post header.', 'homeaffairs' ) ),
 
-			Field::make( 'complex', 'news_gallery', __( 'Media Gallery (Max 8 Images)', 'homeaffairs' ) )
+			Field::make( 'complex', 'news_gallery', __( 'Media Gallery (Size: 1200px × 800px) Max 8 Images', 'homeaffairs' ) )
 				->set_layout( 'tabbed-horizontal' )
 				->set_max( 8 )
 				->add_fields( array(

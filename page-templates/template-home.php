@@ -31,17 +31,19 @@ if ( ! $page_id ) {
 	$page_id = (int) get_option( 'page_on_front' );
 }
 
-$ha_home_show_slider         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_slider' ) : 'show';
-$ha_home_show_notices        = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_notices' ) : 'show';
-$ha_home_show_ticker         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_ticker' ) : 'show';
-$ha_home_show_stats          = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_stats' ) : 'show';
-$ha_home_show_news           = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_news' ) : 'show';
-$ha_home_show_initiatives    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_initiatives' ) : 'show';
-$ha_home_show_services       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_services' ) : 'show';
-$ha_home_show_leadership     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_leadership' ) : 'show';
-$ha_home_show_downloads      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_downloads' ) : 'show';
-$ha_home_show_contact_banner = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_contact_banner' ) : 'show';
-$ha_home_show_institutions   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_show_institutions' ) : 'show';
+$ha_home_show_slider         = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_slider' ) ?: 'show' ) : 'show';
+$ha_home_show_notices        = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_notices' ) ?: 'show' ) : 'show';
+$ha_home_show_ticker         = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_ticker' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_breaking_news' ) ?: 'show' ) ) : 'show';
+$ha_home_show_stats          = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_stats' ) ?: 'show' ) : 'show';
+$ha_home_show_news           = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_news' ) ?: 'show' ) : 'show';
+$ha_home_show_adv1_dt        = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_adv1_dt' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_initiatives' ) ?: 'show' ) ) : 'show';
+$ha_home_show_adv1_banners   = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_adv1_banners' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_initiatives' ) ?: 'show' ) ) : 'show';
+$ha_home_show_services       = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_services' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_quick_access' ) ?: 'show' ) ) : 'show';
+$ha_home_show_adv2_rti       = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_adv2_rti' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_leadership' ) ?: 'show' ) ) : 'show';
+$ha_home_show_adv2_1905      = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_adv2_1905' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_leadership' ) ?: 'show' ) ) : 'show';
+$ha_home_show_downloads      = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_downloads' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_qa3' ) ?: 'show' ) ) : 'show';
+$ha_home_show_contact_banner = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_contact_banner' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_cta' ) ?: 'show' ) ) : 'show';
+$ha_home_show_institutions   = function_exists( 'carbon_get_post_meta' ) ? ( carbon_get_post_meta( $page_id, 'ha_home_show_institutions' ) ?: ( carbon_get_post_meta( $page_id, 'ha_home_show_orgs' ) ?: 'show' ) ) : 'show';
 
 // Retrieve Hero Repeater Slides
 $raw_slides = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_slides' ) : array();
@@ -699,7 +701,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 </section>
 <?php endif; ?>
    
-<?php if ( "hide" !== $ha_home_show_initiatives ) :
+<?php if ( "hide" !== $ha_home_show_adv1_dt || "hide" !== $ha_home_show_adv1_banners ) :
   // Section 6: Digital Transformations Column
   $adv1_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv1_dt_title' ) : '';
   $adv1_title    = $adv1_title ?: __( 'Digital Transformation & Smart Services', 'homeaffairs' );
@@ -743,8 +745,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     <!-- Main Grid with Auto Height Match -->
     <div class="grid lg:grid-cols-12 gap-4 items-stretch">
 
-      <!-- ─── 6. ADVERTISE SECTION 1: DIGITAL TRANSFORMATIONS COLUMN (4 Cols) ─── -->
-      <div class="lg:col-span-4 relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-darker via-primary-dark to-primary p-4 sm:p-5 text-white shadow-md border border-secondary/25 group flex flex-col justify-between h-full">
+      <!-- ─── 6. ADVERTISE SECTION 1: DIGITAL TRANSFORMATIONS COLUMN ─── -->
+      <?php if ( "hide" !== $ha_home_show_adv1_dt ) : ?>
+      <div class="<?php echo ( "hide" === $ha_home_show_adv1_banners ) ? "lg:col-span-12 max-w-4xl mx-auto" : "lg:col-span-4"; ?> relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-darker via-primary-dark to-primary p-4 sm:p-5 text-white shadow-md border border-secondary/25 group flex flex-col justify-between h-full">
         
         <!-- Background Accents -->
         <div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary/20 rounded-full blur-2xl group-hover:bg-secondary/30 transition-all duration-700 pointer-events-none"></div>
@@ -800,9 +803,11 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         <?php endif; ?>
 
       </div>
+      <?php endif; ?>
 
-      <!-- ─── 7. ADVERTISE SECTION 1: GOVERNMENT PROJECTS BANNERS SLIDER (8 Cols) ─── -->
-      <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm relative overflow-hidden flex items-center">
+      <!-- ─── 7. ADVERTISE SECTION 1: GOVERNMENT PROJECTS BANNERS SLIDER ─── -->
+      <?php if ( "hide" !== $ha_home_show_adv1_banners ) : ?>
+      <div class="<?php echo ( "hide" === $ha_home_show_adv1_dt ) ? "lg:col-span-12" : "lg:col-span-8"; ?> bg-white rounded-2xl shadow-sm relative overflow-hidden flex items-center">
         
         <div class="swiper visionBannerSlider w-full h-full rounded-2xl overflow-hidden bg-white">
           <div class="swiper-wrapper h-full">
@@ -833,6 +838,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         </div>
 
       </div>
+      <?php endif; ?>
 
     </div>
   </div>
@@ -940,7 +946,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 <?php endif; ?>
 
 
-<?php if ( "hide" !== $ha_home_show_leadership ) :
+<?php if ( "hide" !== $ha_home_show_adv2_rti || "hide" !== $ha_home_show_adv2_1905 ) :
   // Section 9: Right to Information Column
   $adv2_rti_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_adv2_rti_title' ) : '';
   $adv2_rti_title    = $adv2_rti_title ?: __( 'Right to Information', 'homeaffairs' );
@@ -984,8 +990,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-12 gap-5 items-stretch">
 
-      <!-- ─── 9. ADVERTISE SECTION 2: RTI HERO BANNER (Spans 7 Cols) ─── -->
-      <div class="lg:col-span-7 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_rti_img ); ?>'); background-size: cover; background-position: center;">
+      <!-- ─── 9. ADVERTISE SECTION 2: RTI HERO BANNER ─── -->
+      <?php if ( "hide" !== $ha_home_show_adv2_rti ) : ?>
+      <div class="<?php echo ( "hide" === $ha_home_show_adv2_1905 ) ? "lg:col-span-12" : "lg:col-span-7"; ?> rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_rti_img ); ?>'); background-size: cover; background-position: center;">
         
         <!-- Ambient Dark Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
@@ -1033,9 +1040,11 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
           <?php endif; ?>
         </div>
       </div>
+      <?php endif; ?>
 
-      <!-- ─── 10. ADVERTISE SECTION 2: 1905 HOTLINE BANNER (Spans 5 Cols) ─── -->
-      <div class="lg:col-span-5 rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_1905_img ); ?>'); background-size: cover; background-position: center;">
+      <!-- ─── 10. ADVERTISE SECTION 2: 1905 HOTLINE BANNER ─── -->
+      <?php if ( "hide" !== $ha_home_show_adv2_1905 ) : ?>
+      <div class="<?php echo ( "hide" === $ha_home_show_adv2_rti ) ? "lg:col-span-12" : "lg:col-span-5"; ?> rounded-2xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between relative overflow-hidden group min-h-[280px] sm:min-h-[320px]" style="background-image: url('<?php echo esc_url( $adv2_1905_img ); ?>'); background-size: cover; background-position: center;">
         
         <!-- Ambient Dark Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40 pointer-events-none"></div>
@@ -1085,6 +1094,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         </div>
 
       </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>
