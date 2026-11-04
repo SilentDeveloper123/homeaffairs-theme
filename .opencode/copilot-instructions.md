@@ -10,6 +10,14 @@
 - **Color Scheme**: Maroon + Gold (see full token list in §Colors below)
 - **No green brand colors** (`#43c000` or green utilities as brand styling). The only green in the theme is semantic `emerald` status styling (Active/Available badges).
 
+## Developer References
+
+- **[Carbon Fields Documentation](https://docs.carbonfields.net/)**: Official documentation for Carbon Fields (containers, fields, complex repeaters, theme options, and Gutenberg blocks).
+- **[WordPress Functions Reference](https://developer.wordpress.org/reference/functions/)**: Official developer documentation for core WordPress functions, hooks, and template tags.
+- **[WordPress Codex](https://codex.wordpress.org/)**: Comprehensive manual and reference for WordPress core architecture and legacy implementations.
+- **[WordPress Theme Developer Handbook](https://developer.wordpress.org/themes/)**: Official WordPress guidelines for theme hierarchy, security, sanitization, and best practices.
+- **[Awesome Carbon Fields](https://github.com/htmlburger/awesome-carbon-fields)**: Curated list of Carbon Fields field types and extensions (e.g. `htmlburger/carbon-field-icon`, `htmlburger/carbon-field-number`).
+
 ## Tech Stack
 
 | Technology | Version | Usage |
@@ -17,10 +25,10 @@
 | PHP | 8.0+ | WordPress templates, theme setup, enqueue |
 | SCSS (dart-sass) | ^1.77.8 | Custom styles; compile via `npm run build:css` |
 | Tailwind CSS | 3.4.x (Play-CDN runtime build) | Utility classes — **runtime**, vendored at `assets/css/lib/tailwind.min.js`; config is inline JS, not a config file |
-| Font Awesome 6 | 6.5.1 | Icons; use `fas` prefix |
+| Font Awesome 6 | 6.5.1 | Icons; use `fas` / `fab` prefixes; exclusively Font Awesome across all fields |
 | jQuery | 3.7.1 | DOM manipulation, sliders, accordion, ticker |
 | GLightbox | 3.3.0 | Lightbox galleries |
-| Carbon Fields | ^3.6 | Custom fields framework |
+| Carbon Fields | ^3.6.1 + awesome-carbon-fields | Custom fields framework with `htmlburger/carbon-field-icon` and `carbon-field-number` |
 
 ## File Locations
 
@@ -31,7 +39,7 @@
 - **Library assets**: `assets/js/lib/` and `assets/css/lib/`
 - **Template parts**: `template-parts/` (page-banner, content-*, footer-*)
 - **Custom page templates**: `page-templates/` — **35 files, all named `template-{slug}.php`** (renamed from the old `page-*.php` convention). Files: `template-1905`, `template-banglow-booking`, `template-banglow-colombo`, `template-banglow-gampaha`, `template-bid-documents`, `template-circulars`, `template-contact-us`, `template-district-secretariats`, `template-division-administration`, `template-divisional-secretariats`, `template-divisions`, `template-e-forms`, `template-exam-results`, `template-full-width`, `template-governance-structure`, `template-government-calendar`, `template-grama-niladhari`, `template-history`, `template-home`, `template-institutions`, `template-landing`, `template-media-center`, `template-national-symbols`, `template-news-events`, `template-news`, `template-online-services`, `template-procurements`, `template-publications`, `template-rti`, `template-scholarships`, `template-services`, `template-special-notices`, `template-transfer-procedures`, `template-vacancies`, `template-who-we-are` (all `.php`)
-- **Theme functions**: `inc/` (enqueue.php, setup.php, helpers.php, widgets.php, menu-icons.php, walkers.php, plugins.php, theme-options.php, fa-icons.php, fa-brands.php)
+- **Theme functions**: `inc/` (enqueue.php, setup.php, post-types.php, custom-fields.php, helpers.php, widgets.php, menu-icons.php, walkers.php, plugins.php, theme-options.php, fa-icons.php, fa-brands.php)
 - **Documentation**: `doc/` — `COLOR_GUIDE.md`, `COLOR_GUIDE.html`, `COLOR_PALETTE_TOOL.html` (interactive palette generator), `WordPress_Multisite_Migration_Guide-Bilingual.pdf`
 
 ## Colors
@@ -70,6 +78,27 @@ Design tokens are defined in **three places that must stay in sync**:
 - Full re-theme procedure and the interactive generator: `doc/COLOR_GUIDE.md` (sections 8 & 8B) and `doc/COLOR_PALETTE_TOOL.html`.
 - `template-landing.php` is a **standalone `<html>` document** (does not use `get_header()`) — it carries its **own copy** of the Tailwind config and its own `<style>` block. Always update it too.
 
+## Custom Fields, Post Types & Icon Picker Architecture
+
+- **Custom Post Types & Taxonomies** (`inc/post-types.php`):
+  - `special_notice`: CPT for hero special notices and procurement/exam announcements. Taxonomy: `notice_category`.
+  - `news_announcement`: CPT for news items, press releases, and media events. Taxonomy: `news_category` (`featured-news` category reserved for hero main card highlight).
+- **Carbon Fields Structure** (`inc/custom-fields.php`, `inc/theme-options.php`):
+  - Uses Carbon Fields 3.x with `awesome-carbon-fields` extensions (`htmlburger/carbon-field-icon`, `htmlburger/carbon-field-number`).
+  - Containers are rendered as individual, titled metaboxes without numbered tabs for clean organization.
+- **Font Awesome Icon Selection**:
+  - All icon fields use `Field::make( 'icon', ... )->add_fontawesome_options()`.
+  - Exclusively Font Awesome icons are permitted; Dashicons and other providers are filtered out via `ha_extend_carbon_icon_options` (`carbon_field_icon_options` filter).
+  - Built-in React visual icon picker: Never inject custom jQuery buttons (`.ha-icon-picker-cf`) or datalists into Carbon Fields icon inputs; let the native React picker render cleanly.
+  - Safe CSS class resolution: Use `ha_get_icon_class()` and `ha_get_post_icon()` to resolve stored values (`fas fa-{icon}`).
+- **Editor & Featured Image Suppression**:
+  - Default WordPress WYSIWYG editor and thumbnail metabox are suppressed on page templates and custom post types via `remove_post_type_support()` and CSS fail-safes in `inc/custom-fields.php`.
+- **Section Visibility**:
+  - Every home page section has a dedicated `ha_home_{section}_show` radio button (`show`/`hide`) with default `'show'` allowing individual section toggling.
+- **Template Home News Query Logic**:
+  - Main Hero Card: Queries the latest post from `featured-news` category.
+  - Other Cards: Queries latest news excluding the post displayed in the Main Card.
+
 ## Key Coding Rules
 
 ### PHP / WordPress
@@ -96,7 +125,7 @@ Design tokens are defined in **three places that must stay in sync**:
 - No hardcoded fallback HTML — all menus use `fallback_cb => '__return_false'`
 - `wp_nav_menu()` calls use `items_wrap => '%3$s'` and `container => false` for walkers that output raw `<div>`/`<a>`/`<button>` without `<ul>`/`<li>`
 - `HA_Copyright_Walker` uses `items_wrap => '%3$s'` to suppress `<ul>`; separator logic tracks item count via `walk()` override
-- Menu item icons via `inc/menu-icons.php` — visual icon picker modal with all 1,837 FA 6.5.1 free icons. Correct style prefix (`fab` for brands, `fas` for solid). Modal JS rendered in `admin_footer-nav-menus.php` (after DOM exists), uses `keyup` direct binding for search (not delegation). Search matches by label name only. Stores full class (e.g. `fab fa-joomla`) in `_menu_item_icon` post meta. Preview shows correct icon style for both brands and solid.
+- Menu item icons via `inc/menu-icons.php` — visual icon picker modal dedicated to `nav-menus.php`. Stores full class (e.g. `fab fa-joomla`, `fas fa-envelope`) in `_menu_item_icon` post meta.
 - Backward compatible via `ha_icon_class()` in `inc/walkers.php` — `preg_match('/^(fas|far|fab)\s/', $icon)` detects stored full class; `str_starts_with($icon, 'fa-')` handles old format; defaults to `'fas fa-' . $icon` for bare names
 - Brand icons from `inc/fa-brands.php` (519 brands, generated from FA `brands.min.css`)
 - Solid/regular icons from `inc/fa-icons.php` (1,837 deduplicated, generated from FA `_variables.scss`)

@@ -211,7 +211,7 @@ This repository uses a two-tier branching model (`main` & `dev`):
 | **Contact** | Address, Telephone, Email, Fax | — |
 | **Social Media** | Facebook, X (Twitter), YouTube URLs | — |
 | **Map** | Google Maps Embed URL | Live iframe preview |
-| **Header CTA** | Button Text (70%), Button Icon (text + datalist + live FA preview, 30%), Button Link | 1,837 FA icons; branding row desktop, primary row mobile |
+| **Header CTA** | Button Text (70%), Button Icon (Carbon Fields visual FA icon picker, 30%), Button Link | 1,837 FA icons; branding row desktop, primary row mobile |
 | **Tools** | Export/Import JSON | — |
 
 ## Menu Locations & Walkers
@@ -301,3 +301,12 @@ get_footer();
 ```
 
 It will appear in the WP Admin Page Attributes → Template dropdown automatically.
+
+## Developer References
+
+- **[Carbon Fields Documentation](https://docs.carbonfields.net/)**: Official documentation for Carbon Fields (containers, fields, complex repeaters, theme options, and Gutenberg blocks).
+- **[WordPress Functions Reference](https://developer.wordpress.org/reference/functions/)**: Official developer documentation for core WordPress functions, hooks, and template tags.
+- **[WordPress Codex](https://codex.wordpress.org/)**: Comprehensive manual and reference for WordPress core architecture and legacy implementations.
+- **[WordPress Theme Developer Handbook](https://developer.wordpress.org/themes/)**: Official WordPress guidelines for theme hierarchy, security, sanitization, and best practices.
+- **[Awesome Carbon Fields](https://github.com/htmlburger/awesome-carbon-fields)**: Curated list of Carbon Fields field types and extensions (e.g. htmlburger/carbon-field-icon, htmlburger/carbon-field-number).
+

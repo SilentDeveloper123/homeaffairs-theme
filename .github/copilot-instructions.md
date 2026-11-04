@@ -5,11 +5,18 @@ WordPress theme for the Ministry of Home Affairs, Public Administration & Disast
 - **Root**: `C:\xampp\htdocs\moha\wp-content\themes\homeaffairs-theme` (XAMPP WordPress 7.0.7 multisite, DB `mohadb`, English subsite = `/moha/en/`, prefix `wp_4_`)
 - **Text domain**: `homeaffairs`
 
+## Developer References
+- **[Carbon Fields Documentation](https://docs.carbonfields.net/)**: Official documentation for Carbon Fields (containers, fields, complex repeaters, theme options, and Gutenberg blocks).
+- **[WordPress Functions Reference](https://developer.wordpress.org/reference/functions/)**: Official developer documentation for core WordPress functions, hooks, and template tags.
+- **[WordPress Codex](https://codex.wordpress.org/)**: Comprehensive manual and reference for WordPress core architecture and legacy implementations.
+- **[WordPress Theme Developer Handbook](https://developer.wordpress.org/themes/)**: Official WordPress guidelines for theme hierarchy, security, sanitization, and best practices.
+- **[Awesome Carbon Fields](https://github.com/htmlburger/awesome-carbon-fields)**: Curated list of Carbon Fields field types and extensions (e.g. `htmlburger/carbon-field-icon`, `htmlburger/carbon-field-number`).
+
 ## Theme Structure
-- **PHP templates** in theme root: `header.php`, `footer.php`, `home.php`, `page.php`, `single.php`, `archive.php`, `search.php`, `category.php`, `tag.php`, `singular.php`, `attachment.php`, `404.php`, `comments.php`, `sidebar.php`, `index.php`, `functions.php`
+- **PHP templates** in theme root: `header.php`, `footer.php`, `home.php`, `page.php`, `single.php`, `single-news_announcement.php`, `archive.php`, `search.php`, `category.php`, `tag.php`, `singular.php`, `attachment.php`, `404.php`, `comments.php`, `sidebar.php`, `index.php`, `functions.php`
 - **SCSS source**: `assets/scss/` (**31 partials** + `style.scss` entry, compiled to `assets/css/style.css`)
 - **JavaScript**: `assets/js/main.js` (jQuery wrapped in `jQuery(function ($) { })`)
-- **Theme functions**: `inc/` — enqueue.php, setup.php, helpers.php, widgets.php, menu-icons.php, walkers.php, plugins.php, theme-options.php, fa-icons.php, fa-brands.php
+- **Theme functions**: `inc/` — enqueue.php, setup.php, post-types.php, custom-fields.php, helpers.php, widgets.php, menu-icons.php, walkers.php, plugins.php, theme-options.php, fa-icons.php, fa-brands.php
 - **Template parts**: `template-parts/` — page-banner, content-*, footer-*
 - **Page templates**: `page-templates/` — **35 files, all `template-{slug}.php`**: template-1905.php, template-banglow-booking.php, template-banglow-colombo.php, template-banglow-gampaha.php, template-bid-documents.php, template-circulars.php, template-contact-us.php, template-district-secretariats.php, template-division-administration.php, template-divisional-secretariats.php, template-divisions.php, template-e-forms.php, template-exam-results.php, template-full-width.php, template-governance-structure.php, template-government-calendar.php, template-grama-niladhari.php, template-history.php, template-home.php, template-institutions.php, template-landing.php, template-media-center.php, template-national-symbols.php, template-news-events.php, template-news.php, template-online-services.php, template-procurements.php, template-publications.php, template-rti.php, template-scholarships.php, template-services.php, template-special-notices.php, template-transfer-procedures.php, template-vacancies.php, template-who-we-are.php
 - **Documentation**: `doc/` — COLOR_GUIDE.md/html, COLOR_PALETTE_TOOL.html (interactive), migration PDF
@@ -44,6 +51,20 @@ Defined in 3 places that must stay in sync:
 
 Changing a color = update all 3 layers + `npm run build:css` + hard-refresh. Full procedure: `doc/COLOR_GUIDE.md` §8/§8B, generator: `doc/COLOR_PALETTE_TOOL.html`.
 
+## Custom Fields, Post Types & Icon Picker Architecture
+- **CPTs & Taxonomies**:
+  - `special_notice` with `notice_category`.
+  - `news_announcement` with `news_category` (`featured-news` for hero main card).
+- **Carbon Fields**:
+  - 3.x with `awesome-carbon-fields` packages (`htmlburger/carbon-field-icon`, `htmlburger/carbon-field-number`).
+  - Containers registered separately by section without numerical tab headers.
+  - All icon fields use `Field::make( 'icon', ... )->add_fontawesome_options()`. Exclusively Font Awesome icons (filtered via `ha_extend_carbon_icon_options`). Zero Dashicons.
+  - Never inject custom jQuery wrapper buttons into Carbon Fields React icon pickers; let the native React picker render cleanly.
+- **Editor & Featured Image Suppression**:
+  - Automatically hidden on page templates and custom post types via `remove_post_type_support()` and CSS fail-safes in `inc/custom-fields.php`.
+- **Section Visibility**:
+  - Every home page section has an individual `ha_home_{section}_show` radio button (`show`/`hide`).
+
 ## Menu Walkers (6 in `inc/walkers.php`)
 
 | Walker | Location | Icon Rules |
@@ -56,7 +77,7 @@ Changing a color = update all 3 layers + `npm run build:css` + hard-refresh. Ful
 | `HA_Copyright_Walker` | `menu-copyright` | No icons. Dot separators via `walk()` override |
 
 - No hardcoded fallbacks — all menus use `fallback_cb => '__return_false'`
-- Icons via `inc/menu-icons.php` — visual icon picker modal, all 1,837 FA 6.5.1 free icons, searchable grid, stores full class in `_menu_item_icon`
+- Icons via `inc/menu-icons.php` — visual icon picker modal dedicated to `nav-menus.php`. Stores full class in `_menu_item_icon`.
 - All walkers use `ha_icon_class($item->icon)` for rendering (backward compatible)
 - Use `items_wrap => '%3$s'` + `container => false` with non-`<li>` walkers
 
@@ -67,6 +88,7 @@ Changing a color = update all 3 layers + `npm run build:css` + hard-refresh. Ful
 | `home.php` | Blog posts index (2-col: articles + sidebar; cards include featured image + category badge) |
 | `page.php` | Static pages with sidebar |
 | `single.php` | Single post with sidebar |
+| `single-news_announcement.php` | Single News & Announcement post template |
 | `archive.php` | Archive listing with year/month filters + pagination |
 | `category.php` | Category archive |
 | `tag.php` | Tag archive |
@@ -110,5 +132,5 @@ Changing a color = update all 3 layers + `npm run build:css` + hard-refresh. Ful
 ```bash
 npm run build:css     # Compile SCSS to compressed CSS
 npm run watch:css     # Watch SCSS for changes
-composer install      # Install Carbon Fields
+composer install      # Install Carbon Fields & dependencies
 ```
