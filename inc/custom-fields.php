@@ -715,13 +715,11 @@ function ha_extend_carbon_icon_options( $options, $field_name = '' ) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// ADMIN ENHANCEMENTS: FONT AWESOME SELECTION & LIVE PREVIEW
+// ADMIN ENHANCEMENTS: FONT AWESOME ASSETS
 // ═══════════════════════════════════════════════════════════════════
 add_action( 'admin_enqueue_scripts', 'ha_cpt_fields_admin_assets' );
 function ha_cpt_fields_admin_assets( $hook ) {
-	global $post_type;
-
-	// Enqueue on post edit screens
+	// Enqueue Font Awesome on post edit screens so icons render cleanly in Carbon Fields preview and admin list tables
 	if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 		wp_enqueue_style(
 			'font-awesome-6-admin',
@@ -729,74 +727,7 @@ function ha_cpt_fields_admin_assets( $hook ) {
 			array(),
 			'6.5.1'
 		);
-
-		if ( function_exists( 'ha_enqueue_icon_picker_modal' ) ) {
-			ha_enqueue_icon_picker_modal();
-		}
 	}
-}
-
-add_action( 'admin_footer', 'ha_notice_icon_admin_footer' );
-function ha_notice_icon_admin_footer() {
-	global $pagenow, $post_type;
-
-	if ( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) ) {
-		return;
-	}
-
-	$icon_options = function_exists( 'ha_get_cta_icon_options' ) ? ha_get_cta_icon_options() : array();
-	?>
-	<datalist id="ha-notice-icon-list">
-		<?php foreach ( $icon_options as $val => $lbl ) : ?>
-			<option value="<?php echo esc_attr( $val ); ?>"><?php echo esc_html( $lbl ); ?></option>
-		<?php endforeach; ?>
-	</datalist>
-
-	<script>
-	jQuery(function ($) {
-		function initNoticeIconField() {
-			var $iconInputs = $('[name*="notice_icon"], [name*="qa_icon"], [name*="qa3_icon"], [name*="cta_btn_icon"]');
-			$iconInputs.each(function () {
-				var $input = $(this);
-				if ($input.data('ha-icon-inited')) return;
-				$input.data('ha-icon-inited', true);
-
-				$input.attr('list', 'ha-notice-icon-list');
-
-				// Wrapper
-				var $wrap = $('<div class="ha-icon-picker-field ha-icon-picker-cf" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;"></div>');
-				var $preview = $('<div class="ha-icon-preview-box" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #ccd0d4;border-radius:4px;background:#f9f9f9;min-width:120px;height:30px;"><i style="font-size:16px;color:#800000;width:18px;text-align:center;"></i><span class="ha-icon-label" style="font-size:12px;color:#444;"></span></div>');
-				var $chooseBtn = $('<button type="button" class="button ha-icon-choose" style="display:inline-flex;align-items:center;gap:4px;"><i class="fas fa-plus" style="font-size:12px;margin-right:2px;"></i> <?php echo esc_js( __( 'Browse Icons', 'homeaffairs' ) ); ?></button>');
-
-				$wrap.append($preview).append($chooseBtn);
-				$input.after($wrap);
-
-				function refreshPreview() {
-					var val = $input.val().trim();
-					if (val) {
-						$preview.find('i').attr('class', val);
-						$preview.find('.ha-icon-label').text(val.replace(/^(fas|far|fab)\s+/, ''));
-						$preview.show();
-					} else {
-						$preview.find('i').attr('class', 'fas fa-circle-question');
-						$preview.find('.ha-icon-label').text('No icon');
-					}
-				}
-
-				$input.on('input change keyup', refreshPreview);
-				refreshPreview();
-			});
-		}
-
-		// Run after Carbon Fields React mounts
-		setTimeout(initNoticeIconField, 400);
-		setTimeout(initNoticeIconField, 1200);
-		$(document).on('click', '.carbon-tab, .carbon-section', function () {
-			setTimeout(initNoticeIconField, 250);
-		});
-	});
-	</script>
-	<?php
 }
 
 // ═══════════════════════════════════════════════════════════════════

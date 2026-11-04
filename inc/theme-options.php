@@ -27,8 +27,8 @@ function ha_crb_admin_assets() {
     }
 
     wp_enqueue_style(
-        'font-awesome-6',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+        'font-awesome-6-admin',
+        get_template_directory_uri() . '/assets/css/fontawesome-all.min.css',
         array(),
         '6.5.1'
     );
@@ -39,30 +39,10 @@ function ha_crb_admin_footer_js() {
     if ( empty( $_GET['page'] ) || strpos( $_GET['page'], 'crb_' ) !== 0 ) {
         return;
     }
-
-    $icon_options = ha_get_cta_icon_options();
     ?>
-<datalist id="ha-icon-list">
-<?php foreach ( $icon_options as $value => $label ) :
-    echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . "</option>\n";
-endforeach; ?>
-</datalist>
 <script>
 jQuery(function ($) {
     setTimeout(function () {
-        $('[name*="ha_cta_button_icon"]').attr('list', 'ha-icon-list');
-
-        var $iconIn = $('[name*="ha_cta_button_icon"]');
-        if ($iconIn.length) {
-            var $prev = $('<span class="ha-icon-preview" style="display:inline-flex;align-items:center;margin-left:6px;font-size:20px;width:28px;height:28px;color:var(--color-primary)"></span>').insertAfter($iconIn);
-            function updIcon() {
-                var v = $iconIn.val().trim();
-                $prev.html(v ? '<i class="'+v+'"></i>' : '');
-            }
-            $iconIn.on('change keyup', updIcon);
-            updIcon();
-        }
-
         var $mapIn = $('[name*="ha_map_embed_url"]');
         if ($mapIn.length) {
             $mapIn.closest('.carbon-field').after(
