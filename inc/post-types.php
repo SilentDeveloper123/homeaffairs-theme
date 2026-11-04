@@ -194,6 +194,7 @@ function ha_seed_news_categories() {
 	}
 
 	$defaults = array(
+		'featured-news'      => __( 'Featured News', 'homeaffairs' ),
 		'press-releases'     => __( 'Press Releases', 'homeaffairs' ),
 		'egovernance'        => __( 'eGovernance', 'homeaffairs' ),
 		'administration'     => __( 'Administration', 'homeaffairs' ),

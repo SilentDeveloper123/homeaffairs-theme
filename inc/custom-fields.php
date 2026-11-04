@@ -243,16 +243,10 @@ function ha_register_carbon_fields() {
 				->set_default_value( home_url( '/news-announcements/' ) )
 				->set_help_text( __( 'Destination URL for the "View All News" button.', 'homeaffairs' ) ),
 
-			Field::make( 'select', 'ha_home_news_category', __( 'Filter by Category (Optional)', 'homeaffairs' ) )
+			Field::make( 'select', 'ha_home_news_featured_category', __( 'Featured News Category (Main Card)', 'homeaffairs' ) )
 				->set_options( 'ha_get_news_category_options' )
-				->set_help_text( __( 'Show news from all categories or choose a specific category.', 'homeaffairs' ) ),
-
-			Field::make( 'text', 'ha_home_news_count', __( 'Number of News Items', 'homeaffairs' ) )
-				->set_default_value( '5' )
-				->set_attribute( 'type', 'number' )
-				->set_attribute( 'min', '1' )
-				->set_attribute( 'max', '12' )
-				->set_help_text( __( 'Total news items to display (1 featured main card + remaining small cards). Default: 5.', 'homeaffairs' ) ),
+				->set_default_value( 'featured-news' )
+				->set_help_text( __( 'Category used for the Main Card (most recent post). Default: Featured News.', 'homeaffairs' ) ),
 		) );
 
 
@@ -637,7 +631,7 @@ function ha_get_notice_category_options() {
  */
 function ha_get_news_category_options() {
 	$options = array(
-		'' => __( 'All Categories (Latest News)', 'homeaffairs' ),
+		'featured-news' => __( 'Featured News (Default)', 'homeaffairs' ),
 	);
 
 	if ( taxonomy_exists( 'news_category' ) ) {

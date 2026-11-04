@@ -437,32 +437,16 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
   $news_sec_subtitle = $news_sec_subtitle ?: __( 'Latest Updates', 'homeaffairs' );
   $news_view_all     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
   $news_view_all     = $news_view_all ?: home_url( '/news-announcements/' );
-  $news_cat_filter   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_category' ) : '';
-  $news_limit        = function_exists( 'carbon_get_post_meta' ) ? (int) carbon_get_post_meta( $page_id, 'ha_home_news_count' ) : 5;
-  if ( $news_limit < 1 ) { $news_limit = 5; }
+  
+  $featured_cat_slug = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_category' ) : '';
+  $featured_cat_slug = $featured_cat_slug ?: 'featured-news';
 
-  $news_query_args = array(
-    'post_type'      => 'news_announcement',
-    'posts_per_page' => $news_limit,
-    'post_status'    => 'publish',
-  );
-  if ( ! empty( $news_cat_filter ) ) {
-    $news_query_args['tax_query'] = array(
-      array(
-        'taxonomy' => 'news_category',
-        'field'    => 'slug',
-        'terms'    => $news_cat_filter,
-      ),
-    );
-  }
-  $news_posts = get_posts( $news_query_args );
-
-  // Default fallback data if fewer than 5 posts exist
+  // Default fallback news data
   $fallback_news = array(
     array(
       'title'      => __( '78th National Independence Day Celebrated with Grand Ceremony', 'homeaffairs' ),
       'desc'       => __( 'The Ministry organized a landmark national celebration bringing together government officials, military personnel, and thousands of citizens across the island.', 'homeaffairs' ),
-      'cat'        => __( 'Official Event', 'homeaffairs' ),
+      'cat'        => __( 'Featured News', 'homeaffairs' ),
       'date'       => 'February 4, 2026',
       'date_short' => 'Feb 04, 2026',
       'image'      => content_url( '/uploads/sites/4/2026/07/9_Independence_Day_78th.jpeg' ),
@@ -511,29 +495,31 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     ),
   );
 
-  // Parse items from query, filling with fallback if needed
-  $display_news = array();
-  if ( ! empty( $news_posts ) ) {
-    foreach ( $news_posts as $idx => $np ) {
-      $np_id     = $np->ID;
-      $custom_t  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_custom_title' ) : '';
-      $title     = $custom_t ?: get_the_title( $np_id );
-      $short_d   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_short_desc' ) : '';
-      $desc      = $short_d ?: wp_trim_words( get_the_excerpt( $np_id ), 22 );
-      $terms     = get_the_terms( $np_id, 'news_category' );
-      $cat_name  = ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : __( 'News', 'homeaffairs' );
-      $img_url   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_featured_image' ) : '';
+  // Helper function to build structured card data
+  if ( ! function_exists( 'ha_prepare_news_item_data' ) ) {
+    function ha_prepare_news_item_data( $post_obj, $fallback = array() ) {
+      if ( ! $post_obj ) {
+        return $fallback;
+      }
+      $np_id    = is_object( $post_obj ) ? $post_obj->ID : (int) $post_obj;
+      $custom_t = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_custom_title' ) : '';
+      $title    = $custom_t ?: get_the_title( $np_id );
+      $short_d  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_short_desc' ) : '';
+      $desc     = $short_d ?: wp_trim_words( get_the_excerpt( $np_id ), 22 );
+      $terms    = get_the_terms( $np_id, 'news_category' );
+      $cat_name = ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : ( ! empty( $fallback['cat'] ) ? $fallback['cat'] : __( 'News', 'homeaffairs' ) );
+      $img_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_featured_image' ) : '';
       if ( ! $img_url ) {
         $img_url = get_the_post_thumbnail_url( $np_id, 'ha-news-hero' );
       }
-      if ( ! $img_url && isset( $fallback_news[ $idx ]['image'] ) ) {
-        $img_url = $fallback_news[ $idx ]['image'];
+      if ( ! $img_url && ! empty( $fallback['image'] ) ) {
+        $img_url = $fallback['image'];
       }
-      $file_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment' ) : '';
-      $ext_url   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
-      $link_url  = ! empty( $file_url ) ? $file_url : ( ! empty( $ext_url ) ? $ext_url : get_permalink( $np_id ) );
+      $file_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment' ) : '';
+      $ext_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
+      $link_url = ! empty( $file_url ) ? $file_url : ( ! empty( $ext_url ) ? $ext_url : get_permalink( $np_id ) );
 
-      $display_news[] = array(
+      return array(
         'title'      => $title,
         'desc'       => $desc,
         'cat'        => $cat_name,
@@ -546,16 +532,69 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
     }
   }
 
-  // Backfill with fallbacks if fewer than 5 items
-  $current_count = count( $display_news );
-  if ( $current_count < 5 ) {
-    for ( $i = $current_count; $i < 5; $i++ ) {
-      $display_news[] = $fallback_news[ $i ];
+  // 1. MAIN CARD: Most recent news from Featured News Category
+  $featured_query_args = array(
+    'post_type'      => 'news_announcement',
+    'posts_per_page' => 1,
+    'post_status'    => 'publish',
+    'tax_query'      => array(
+      array(
+        'taxonomy' => 'news_category',
+        'field'    => 'slug',
+        'terms'    => array_unique( array_filter( array( $featured_cat_slug, 'featured-news', 'featured' ) ) ),
+      ),
+    ),
+  );
+  $featured_posts = get_posts( $featured_query_args );
+
+  // Graceful fallback to latest published news item if no post is tagged with Featured News Category
+  if ( empty( $featured_posts ) ) {
+    $featured_posts = get_posts( array(
+      'post_type'      => 'news_announcement',
+      'posts_per_page' => 1,
+      'post_status'    => 'publish',
+    ) );
+  }
+
+  $featured_id   = ! empty( $featured_posts ) ? $featured_posts[0]->ID : 0;
+  $featured_news = ! empty( $featured_posts ) ? ha_prepare_news_item_data( $featured_posts[0], $fallback_news[0] ) : $fallback_news[0];
+
+  // 2. OTHER CARDS: Display other recent news excluding Featured News
+  $other_query_args = array(
+    'post_type'      => 'news_announcement',
+    'posts_per_page' => 4,
+    'post_status'    => 'publish',
+    'tax_query'      => array(
+      array(
+        'taxonomy' => 'news_category',
+        'field'    => 'slug',
+        'terms'    => array_unique( array_filter( array( $featured_cat_slug, 'featured-news', 'featured' ) ) ),
+        'operator' => 'NOT IN',
+      ),
+    ),
+  );
+  if ( $featured_id > 0 ) {
+    $other_query_args['post__not_in'] = array( $featured_id );
+  }
+  $other_posts = get_posts( $other_query_args );
+
+  $small_news = array();
+  if ( ! empty( $other_posts ) ) {
+    foreach ( $other_posts as $idx => $op ) {
+      $fb = isset( $fallback_news[ $idx + 1 ] ) ? $fallback_news[ $idx + 1 ] : array();
+      $small_news[] = ha_prepare_news_item_data( $op, $fb );
     }
   }
 
-  $featured_news = $display_news[0];
-  $small_news    = array_slice( $display_news, 1, 4 );
+  // Backfill up to 4 items from fallback_news (indices 1 to 4)
+  $count_other = count( $small_news );
+  if ( $count_other < 4 ) {
+    for ( $i = $count_other + 1; $i <= 4; $i++ ) {
+      if ( isset( $fallback_news[ $i ] ) ) {
+        $small_news[] = $fallback_news[ $i ];
+      }
+    }
+  }
 ?>
 <!-- ═══ NEWS & ANNOUNCEMENTS SECTION (OPTIMIZED 12-COL GRID) ═══ -->
 <section class="pt-10 pb-0 lg:pt-12 lg:pb-0 bg-gray-50">
@@ -592,7 +631,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               <span class="absolute top-4 left-4 text-[9px] font-bold text-white uppercase tracking-wider bg-secondary px-3 py-1 rounded-full shadow-md">
-                Featured News
+                <?php echo esc_html( ! empty( $featured_news['cat'] ) ? $featured_news['cat'] : __( 'Featured News', 'homeaffairs' ) ); ?>
               </span>
             </div>
 
