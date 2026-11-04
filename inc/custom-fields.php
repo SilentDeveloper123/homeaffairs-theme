@@ -204,6 +204,10 @@ function ha_register_carbon_fields() {
 				->set_options( 'ha_get_notice_category_options' )
 				->set_help_text( __( 'Display notices from all categories or choose a specific category.', 'homeaffairs' ) ),
 
+			Field::make( 'text', 'ha_home_notices_btn_text', __( 'Column Button (Text)', 'homeaffairs' ) )
+				->set_attribute( 'placeholder', __( 'View all notices', 'homeaffairs' ) )
+				->set_help_text( __( 'Button text label for the link at the bottom of the notices column.', 'homeaffairs' ) ),
+
 			Field::make( 'text', 'ha_home_notices_view_all_url', __( '"View all notices" Link URL', 'homeaffairs' ) )
 				->set_help_text( __( 'Destination link for the "View all notices" link at bottom of column.', 'homeaffairs' ) ),
 		) );
@@ -243,6 +247,10 @@ function ha_register_carbon_fields() {
 
 			Field::make( 'text', 'ha_home_news_subtitle', __( 'Section Sub Title', 'homeaffairs' ) )
 				->set_help_text( __( 'Small pill badge above the section title.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_view_all_text', __( 'View All Button (Text)', 'homeaffairs' ) )
+				->set_attribute( 'placeholder', __( 'View All News', 'homeaffairs' ) )
+				->set_help_text( __( 'Text label for the "View All News" button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_news_view_all_url', __( 'View All News Button Link (Link to Page)', 'homeaffairs' ) )
 				->set_help_text( __( 'Destination URL for the "View All News" button.', 'homeaffairs' ) ),
@@ -594,8 +602,16 @@ function ha_get_notice_category_options() {
  * Helper to retrieve news categories for Carbon Fields select options
  */
 function ha_get_news_category_options() {
+	$lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
+	$default_label = __( 'Featured News (Default)', 'homeaffairs' );
+	if ( 'si' === $lang ) {
+		$default_label = 'විශේෂ පුවත් (පෙරනිමි)';
+	} elseif ( 'ta' === $lang ) {
+		$default_label = 'முக்கிய செய்திகள் (இயல்புநிலை)';
+	}
+
 	$options = array(
-		'featured-news' => __( 'Featured News (Default)', 'homeaffairs' ),
+		'featured-news' => $default_label,
 	);
 
 	if ( taxonomy_exists( 'news_category' ) ) {

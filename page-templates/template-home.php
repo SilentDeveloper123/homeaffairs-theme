@@ -54,7 +54,8 @@ $notices_badge   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_m
 $notices_count   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_count' ) : '3';
 $notices_count   = ! empty( $notices_count ) ? intval( $notices_count ) : 3;
 $notices_cat     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_category' ) : '';
-$notices_all_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_view_all_url' ) : '';
+$notices_all_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_view_all_url' ) : '';
+$notices_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_notices_btn_text' ) : '';
 
 $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_notices || 'hide' !== $ha_home_show_ticker );
 ?>
@@ -261,10 +262,15 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         <?php endif; ?>
 
         <!-- View All Link -->
+        <?php
+        $display_notices_btn_text = ! empty( $notices_btn_text ) ? $notices_btn_text : __( 'View all notices', 'homeaffairs' );
+        if ( ! empty( $notices_all_url ) || ! empty( $notices_btn_text ) ) :
+        ?>
         <a href="<?php echo esc_url( $notices_all_url ); ?>" 
            class="view-all-notices text-primary hover:text-primary font-bold text-[9.5px] transition-colors inline-flex items-center gap-1 mt-0.5 px-0.5">
-          <?php esc_html_e( 'View all notices', 'homeaffairs' ); ?> <i class="fas fa-arrow-right text-[7.5px] text-primary"></i>
+          <?php echo esc_html( $display_notices_btn_text ); ?> <i class="fas fa-arrow-right text-[7.5px] text-primary"></i>
         </a>
+        <?php endif; ?>
       </div>
       <?php endif; ?>
 
@@ -354,9 +360,10 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
     
 <?php if ( "hide" !== $ha_home_show_news ) :
-  $news_sec_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
-  $news_sec_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
-  $news_view_all     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
+  $news_sec_title     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
+  $news_sec_subtitle  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
+  $news_view_all_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_text' ) : '';
+  $news_view_all      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
   
   $featured_cat_slug = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_category' ) : '';
   $featured_cat_slug = $featured_cat_slug ?: 'featured-news';
@@ -484,10 +491,15 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
           <?php echo esc_html( $news_sec_title ); ?>
         </h2>
       </div>
+      <?php
+      $display_news_btn_text = ! empty( $news_view_all_text ) ? $news_view_all_text : __( 'View All News', 'homeaffairs' );
+      if ( ! empty( $news_view_all ) || ! empty( $news_view_all_text ) ) :
+      ?>
       <a href="<?php echo esc_url( $news_view_all ); ?>" class="inline-flex items-center gap-2 bg-white text-primary hover:text-secondary-dark font-bold text-xs px-4 py-2 rounded-xl border border-slate-200/90 shadow-2xs hover:border-secondary hover:bg-secondary/5 transition-all group">
-        <?php esc_html_e( 'View All News', 'homeaffairs' ); ?> 
+        <?php echo esc_html( $display_news_btn_text ); ?> 
         <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
       </a>
+      <?php endif; ?>
     </div>
 
     <!-- Main Grid Container (12 Columns) -->

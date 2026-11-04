@@ -193,6 +193,42 @@ function ha_get_post_icon( $post_id, $field_name, $default = 'fas fa-info-circle
  *
  * @return int Blog ID
  */
+/**
+ * Detect the active language code ('en', 'si', or 'ta') for the current site / request
+ *
+ * @return string Language code
+ */
+function ha_get_current_language() {
+	if ( is_multisite() ) {
+		$blog_id = get_current_blog_id();
+		if ( 2 === $blog_id ) {
+			return 'si';
+		} elseif ( 3 === $blog_id ) {
+			return 'ta';
+		} elseif ( 4 === $blog_id || 1 === $blog_id ) {
+			return 'en';
+		}
+
+		$site = get_site( $blog_id );
+		if ( $site && isset( $site->path ) ) {
+			if ( strpos( $site->path, '/si' ) !== false ) {
+				return 'si';
+			} elseif ( strpos( $site->path, '/ta' ) !== false ) {
+				return 'ta';
+			}
+		}
+	}
+
+	$locale = get_locale();
+	if ( strpos( $locale, 'si' ) === 0 ) {
+		return 'si';
+	} elseif ( strpos( $locale, 'ta' ) === 0 ) {
+		return 'ta';
+	}
+
+	return 'en';
+}
+
 function ha_get_english_blog_id() {
 	static $en_blog_id = null;
 	if ( null !== $en_blog_id ) {

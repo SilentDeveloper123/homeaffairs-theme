@@ -186,6 +186,47 @@ function ha_seed_notice_categories() {
 }
 
 /**
+ * Get localized news category names based on language
+ *
+ * @param string|null $lang Optional language code ('en', 'si', 'ta')
+ * @return array Slug to translated name mapping
+ */
+function ha_get_news_category_defaults( $lang = null ) {
+	if ( null === $lang && function_exists( 'ha_get_current_language' ) ) {
+		$lang = ha_get_current_language();
+	}
+
+	$translations = array(
+		'si' => array(
+			'featured-news'      => 'විශේෂ පුවත්',
+			'press-releases'     => 'මාධ්‍ය නිවේදන',
+			'egovernance'        => 'විද්‍යුත් පාලනය',
+			'administration'     => 'පරිපාලනය',
+			'events'             => 'නිල සිදුවීම්',
+			'circulars-gazettes' => 'නියෝග සහ ගැසට් පත්‍ර',
+		),
+		'ta' => array(
+			'featured-news'      => 'முக்கிய செய்திகள்',
+			'press-releases'     => 'ஊடக வெளியீடுகள்',
+			'egovernance'        => 'மின்-ஆளுகை',
+			'administration'     => 'நிர்வாகம்',
+			'events'             => 'உத்தியோகபூர்வ நிகழ்வுகள்',
+			'circulars-gazettes' => 'கட்டளைகள் மற்றும் வர்த்தமானிகள்',
+		),
+		'en' => array(
+			'featured-news'      => __( 'Featured News', 'homeaffairs' ),
+			'press-releases'     => __( 'Press Releases', 'homeaffairs' ),
+			'egovernance'        => __( 'eGovernance', 'homeaffairs' ),
+			'administration'     => __( 'Administration', 'homeaffairs' ),
+			'events'             => __( 'Official Events', 'homeaffairs' ),
+			'circulars-gazettes' => __( 'Directives & Gazettes', 'homeaffairs' ),
+		),
+	);
+
+	return isset( $translations[ $lang ] ) ? $translations[ $lang ] : $translations['en'];
+}
+
+/**
  * Seed default categories for News & Announcements
  */
 function ha_seed_news_categories() {
@@ -193,14 +234,7 @@ function ha_seed_news_categories() {
 		return;
 	}
 
-	$defaults = array(
-		'featured-news'      => __( 'Featured News', 'homeaffairs' ),
-		'press-releases'     => __( 'Press Releases', 'homeaffairs' ),
-		'egovernance'        => __( 'eGovernance', 'homeaffairs' ),
-		'administration'     => __( 'Administration', 'homeaffairs' ),
-		'events'             => __( 'Official Events', 'homeaffairs' ),
-		'circulars-gazettes' => __( 'Directives & Gazettes', 'homeaffairs' ),
-	);
+	$defaults = ha_get_news_category_defaults();
 
 	foreach ( $defaults as $slug => $name ) {
 		if ( ! term_exists( $slug, 'news_category' ) ) {
