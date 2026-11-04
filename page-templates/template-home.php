@@ -150,7 +150,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
               </p>
             <?php endif; ?>
 
-            <?php if ( $btn_text && $btn_url ) : ?>
+            <?php if ( ! empty( $btn_text ) ) : ?>
               <div class="flex gap-2.5 justify-start flex-wrap">
                 <a href="<?php echo esc_url( $btn_url ); ?>" target="<?php echo esc_attr( $btn_target ); ?>" class="bg-secondary hover:bg-secondary-dark text-primary-dark font-bold px-4 py-2 rounded-lg text-xs inline-flex items-center gap-2 transition-all shadow-sm hover:shadow-gold hover:-translate-y-0.5 active:translate-y-0">
                   <i class="fas fa-users-cog text-[10px]"></i> <?php echo esc_html( $btn_text ); ?> <i class="fas fa-arrow-right text-[9px]"></i>

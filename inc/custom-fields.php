@@ -145,7 +145,7 @@ function ha_register_carbon_fields() {
 						->set_default_value( 'About Us' )
 						->set_help_text( __( 'Label for the action button (e.g. About Us, Explore More). Leave empty to hide button.', 'homeaffairs' ) ),
 
-					Field::make( 'text', 'slide_btn_url', __( 'Slide Button Link (URL)', 'homeaffairs' ) )
+					Field::make( 'text', 'slide_btn_url', __( 'Slide Button (Link)', 'homeaffairs' ) )
 						->set_default_value( '#' )
 						->set_help_text( __( 'Destination URL for this slide\'s button.', 'homeaffairs' ) ),
 
