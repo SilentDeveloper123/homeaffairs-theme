@@ -199,9 +199,13 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'notice_custom_title', __( 'Custom Display Title (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Optional shorter headline for the homepage tile. If left blank, the main Post Title above will be used.', 'homeaffairs' ) ),
 
-			Field::make( 'textarea', 'notice_desc', __( 'Notice Description', 'homeaffairs' ) )
-				->set_rows( 3 )
-				->set_help_text( __( 'Brief summary or description displayed in the notice tile/card.', 'homeaffairs' ) ),
+			Field::make( 'textarea', 'notice_short_desc', __( 'Short Description', 'homeaffairs' ) )
+				->set_rows( 2 )
+				->set_help_text( __( 'Brief summary displayed on the homepage hero notice tile (e.g. "Training programme for officers").', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'notice_desc', __( 'Description', 'homeaffairs' ) )
+				->set_rows( 4 )
+				->set_help_text( __( 'Fuller description or announcement details.', 'homeaffairs' ) ),
 
 			Field::make( 'file', 'notice_attachment', __( 'Upload Attachment / PDF File', 'homeaffairs' ) )
 				->set_type( array( 'pdf', 'document' ) )

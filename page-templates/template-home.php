@@ -206,10 +206,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
             $notice_icon  = $notice_icon ?: 'fas fa-bullhorn';
             $custom_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_custom_title' ) : '';
             $n_title      = $custom_title ?: get_the_title();
+            $n_short_desc = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_short_desc' ) : '';
             $n_desc       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_desc' ) : '';
-            if ( empty( $n_desc ) ) {
-              $n_desc = get_the_excerpt();
-            }
+            $tile_desc    = ! empty( $n_short_desc ) ? $n_short_desc : ( ! empty( $n_desc ) ? $n_desc : get_the_excerpt() );
             $n_file      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_attachment' ) : '';
             $n_url       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $notice_id, 'notice_url' ) : '';
             $n_link      = ! empty( $n_file ) ? $n_file : ( ! empty( $n_url ) ? $n_url : get_permalink() );
@@ -225,9 +224,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
                 <strong class="tile-text block text-[10px] font-medium text-white transition-colors line-clamp-1">
                   <?php echo esc_html( $n_title ); ?>
                 </strong>
-                <?php if ( $n_desc ) : ?>
+                <?php if ( $tile_desc ) : ?>
                   <span class="tile-date text-[8.5px] text-white/80 block line-clamp-1">
-                    <?php echo esc_html( $n_desc ); ?>
+                    <?php echo esc_html( $tile_desc ); ?>
                   </span>
                 <?php endif; ?>
               </div>

@@ -131,8 +131,10 @@ function ha_special_notice_column_content( $column, $post_id ) {
 			break;
 
 		case 'notice_desc':
-			$desc = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_desc' ) : '';
-			echo $desc ? esc_html( wp_trim_words( $desc, 8 ) ) : '<em>&mdash;</em>';
+			$short_desc = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_short_desc' ) : '';
+			$desc       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_desc' ) : '';
+			$display    = $short_desc ?: $desc;
+			echo $display ? esc_html( wp_trim_words( $display, 8 ) ) : '<em>&mdash;</em>';
 			break;
 
 		case 'notice_attachment':
