@@ -1,0 +1,17 @@
+{
+  "name": "homeaffairs-theme",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "sass assets/scss/style.scss assets/css/style.css --style compressed --no-source-map",
+    "watch:css": "sass --watch assets/scss/style.scss assets/css/style.css --style compressed --no-source-map",
+    "build:tailwind": "npx tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.css --minify",
+    "watch:tailwind": "npx tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.css --watch",
+    "build": "npm run build:css && npm run build:tailwind",
+    "watch": "npm run watch:css & npm run watch:tailwind"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8",
+    "tailwindcss": "^3.4.17"
+  }
+}

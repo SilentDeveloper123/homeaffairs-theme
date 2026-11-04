@@ -1,0 +1,26 @@
+# Dependencies
+vendor/
+node_modules/
+composer.lock
+
+# Assets / Media
+assets/images/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+wp-cli.log
+
+# Build artifacts (SCSS compiled output is tracked, but sourcemaps are not)
+*.map

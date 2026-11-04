@@ -1,0 +1,12 @@
+{
+    "name": "homeaffairs/theme",
+    "description": "Ministry of Home Affairs WordPress Theme",
+    "type": "wordpress-theme",
+    "require": {
+        "htmlburger/carbon-fields": "^3.6"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "allow-plugins": {}
+    }
+}

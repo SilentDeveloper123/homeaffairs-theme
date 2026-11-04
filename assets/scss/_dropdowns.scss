@@ -1,0 +1,63 @@
+@use 'variables' as *;
+
+.dropdown-group { position: relative; }
+
+.dropdown-menu {
+  position: absolute; top: 100%; left: 0; min-width: 230px;
+  background: white; border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(89, 21, 33, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity $dur-fast $ease-out, transform $dur-fast $ease-out, visibility $dur-fast $ease-out;
+  border: 1px solid rgba(89, 21, 33, 0.08);
+  padding: 6px 0;
+  z-index: 200;
+
+  // Open on hover OR when JS adds .dd-open class (keyboard)
+  .dropdown-group:hover > &,
+  .dropdown-group:focus-within > &,
+  .dropdown-group.dd-open > & {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+
+  a {
+    display: block;
+    padding: 10px 18px; font-weight: 500; width: 100%; font-size: 13px;
+    color: $gray-700; border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all $dur-fast $ease-out;
+
+    &:last-child { border-bottom: none; }
+    &:hover {
+      background: rgba($color-secondary, 0.08);
+      color: $color-primary;
+    }
+    &:focus-visible {
+      outline: 2px solid $color-secondary;
+      outline-offset: -2px;
+      background: rgba($color-secondary, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+  }
+
+  // ── Nested 3rd-level ───────────────────────────────────────────
+  .dropdown-group {
+    position: relative;
+    > a {
+      padding-right: 32px;
+      .fa-chevron-right { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 10px; }
+    }
+  }
+
+  .dropdown-menu {
+    top: -6px; left: 100%; margin-left: 4px;
+    border-radius: 12px; min-width: 230px;
+    a { padding: 9px 18px; }
+  }
+}
+
+.topbar .dropdown-menu { z-index: 300; }
+header .dropdown-menu { z-index: 200; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-menu { transition: none; }
+}

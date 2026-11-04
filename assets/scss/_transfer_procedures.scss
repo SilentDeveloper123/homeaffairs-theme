@@ -1,0 +1,144 @@
+@use 'variables' as *;
+
+/* ── Tab Navigation ── */
+.tran-tab {
+  font-size: clamp(0.75rem, 0.688rem + 0.25vw, 0.813rem);
+  white-space: nowrap;
+  background: none;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid $color-secondary;
+    outline-offset: -2px;
+    border-radius: 2px;
+  }
+}
+
+/* ── Card ── */
+.tran-card {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $color-secondary, $color-secondary-dark);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* ── Timeline meta ── */
+.tran-card .fa-calendar-alt {
+  color: $color-secondary;
+  font-size: 0.75rem;
+}
+
+/* ── Action Buttons ── */
+.tran-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.tran-notice-btn {
+  color: $gray-700;
+  background: white;
+  border: 1px solid $gray-200;
+
+  &:hover {
+    background: $color-bg-dark;
+    color: white;
+    border-color: $color-bg-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($color-bg-dark, 0.12);
+
+    i { color: #ef4444 !important; }
+  }
+}
+
+.tran-app-btn {
+  color: $gray-700;
+  background: white;
+  border: 1px solid $gray-200;
+
+  &:hover {
+    background: $color-bg-dark;
+    color: white;
+    border-color: $color-bg-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($color-bg-dark, 0.12);
+
+    i { color: $color-secondary-light !important; }
+  }
+}
+
+/* ── Attachment Chips / Pills ── */
+.tran-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: $gray-500;
+  background: rgba($color-bg-dark, 0.03);
+  border: 1px solid $gray-100;
+  padding: 4px 10px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba($color-secondary, 0.08);
+    color: $color-secondary-dark;
+    border-color: rgba($color-secondary, 0.2);
+    transform: translateY(-1px);
+
+    i { color: $color-secondary-dark !important; }
+  }
+}
+
+/* ── Card fade-in on panel reveal ── */
+.tran-panel:not(.hidden) .tran-card {
+  opacity: 0;
+  animation: tran-fade 0.35s ease forwards;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.04}s;
+    }
+  }
+}
+
+@keyframes tran-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

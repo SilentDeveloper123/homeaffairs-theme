@@ -1,0 +1,8 @@
+# Copyright (C) 2024 Ministry of Home Affairs
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"

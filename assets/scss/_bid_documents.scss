@@ -1,0 +1,261 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+.bid-filter-bar {
+  transition: box-shadow 0.3s ease;
+  &:focus-within { box-shadow: 0 0 0 3px rgba($color-secondary, 0.12); }
+}
+
+.bid-select {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 7px 32px 7px 14px;
+  border-radius: 8px;
+  border: 1px solid $gray-200;
+  background: white;
+  color: $gray-700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+
+  &:hover {
+    border-color: $color-secondary;
+  }
+
+  &:focus {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+  }
+}
+
+.bid-search-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  &:focus {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+  }
+}
+
+.bid-clear-btn {
+  transition: all 0.2s ease;
+  &:hover { background: rgba($color-primary, 0.06); }
+  &:active { transform: scale(0.96); }
+}
+
+.bid-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 780px;
+}
+
+.bid-thead {
+  background: $color-bg-dark;
+  .bid-th {
+    padding: 12px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: none;
+    &:last-child { text-align: center; min-width: 180px; }
+  }
+}
+
+.bid-row {
+  transition: background-color 0.12s ease;
+  &-even { background: rgba(248, 250, 252, 0.5); }
+  &-odd  { background: #fff; }
+  &:hover { background: rgba($color-secondary, 0.06); }
+}
+
+.bid-td {
+  padding: 10px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 12px;
+  line-height: 1.4;
+  &:last-child { text-align: center; }
+}
+
+.bid-doc-name {
+  display: block;
+  font-weight: 700;
+  color: $color-bg-dark;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.bid-code-tag {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: $steel;
+  background: rgba($steel, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.02em;
+}
+
+.bid-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  &-goods {
+    color: #065f46;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  &-works {
+    color: $steel;
+    background: rgba($steel, 0.08);
+    border: 1px solid rgba($steel, 0.15);
+  }
+  &-services {
+    color: #7c3aed;
+    background: rgba(124, 58, 237, 0.08);
+    border: 1px solid rgba(124, 58, 237, 0.15);
+  }
+  &-consultancy {
+    color: #92400e;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  &-registration {
+    color: $gray-500;
+    background: rgba($gray-500, 0.08);
+    border: 1px solid rgba($gray-500, 0.15);
+  }
+}
+
+.bid-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.bid-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  i {
+    font-size: 11px;
+    color: $color-secondary;
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  &-text {
+    font-size: 11px;
+    color: $gray-700;
+    strong { font-weight: 600; }
+  }
+}
+
+.bid-meta-size {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  color: $gray-500;
+  background: rgba($gray-500, 0.06);
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-left: 20px;
+}
+
+.bid-format-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 18px;
+  margin-bottom: 4px;
+  &-pdf {
+    color: #dc2626;
+    background: rgba(220, 38, 38, 0.08);
+  }
+  &-word {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+  }
+}
+
+.bid-download-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  color: #fff;
+  background: $color-bg-dark;
+  border: 1px solid $color-bg-dark;
+  i { font-size: 14px; color: #fff; }
+  &:hover {
+    background: $color-primary-dark;
+    border-color: $color-primary-dark;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 18px rgba($color-bg-dark, 0.2);
+  }
+  &:active { transform: translateY(0) scale(1); }
+  span { display: block; line-height: 1; }
+}
+
+@media (max-width: 1023px) {
+  .bid-table { min-width: unset; }
+  .bid-thead { display: none; }
+  .bid-row {
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    &-even, &-odd { background: #fff; }
+    &:hover { background: #fff; }
+  }
+  .bid-td {
+    display: block;
+    padding: 5px 14px;
+    border-bottom: none;
+    text-align: left !important;
+    &::before {
+      content: attr(data-label);
+      display: inline-block;
+      width: 120px;
+      font-weight: 700;
+      font-size: 10px;
+      color: $color-bg-dark;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+  }
+  .bid-td-last { padding-bottom: 10px; }
+  .bid-download-btn {
+    flex-direction: row;
+    padding: 5px 12px;
+    font-size: 10px;
+    i { font-size: 12px; }
+  }
+  .bid-meta-size { margin-left: 20px; }
+}

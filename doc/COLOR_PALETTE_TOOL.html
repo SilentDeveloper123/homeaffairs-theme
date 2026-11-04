@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Affairs Theme — Custom Color Palette Tool</title>
+<style>
+  :root{
+    --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --soft:#f9fafb;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI','Inter',system-ui,sans-serif;background:#f3f4f6;color:var(--ink);line-height:1.6;font-size:14px}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+  header.top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+  header.top h1{font-size:22px;font-weight:800;color:#111827}
+  header.top .sub{font-size:12.5px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .card h2{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#374151;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .card h2 .num{background:#111827;color:#fff;width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  /* pickers */
+  .picker-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  .picker-row label{font-weight:600;font-size:13px;min-width:90px}
+  .color-input{position:relative;width:56px;height:56px;border-radius:12px;overflow:hidden;border:2px solid #fff;box-shadow:0 0 0 1px var(--line),0 2px 6px rgba(0,0,0,.12);cursor:pointer;flex-shrink:0}
+  .color-input input{position:absolute;inset:-8px;width:120%;height:120%;border:0;padding:0;background:none;cursor:pointer}
+  .hex-val{font-family:Consolas,monospace;font-size:13px;color:#374151;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:110px}
+  .presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+  .preset-btn{font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:600;color:#374151;transition:all .15s}
+  .preset-btn:hover{border-color:#111827}
+  .random-btn{background:#111827;color:#fff;border-color:#111827}
+  .random-btn:hover{background:#374151}
+  /* swatch list */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .sw{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .sw .chip{height:46px}
+  .sw .lab{padding:6px 9px}
+  .sw .lab .n{font-size:11.5px;font-weight:700;color:#111827}
+  .sw .lab .h{font-size:10.5px;color:var(--muted);font-family:Consolas,monospace}
+  /* preview */
+  #preview{display:flex;flex-direction:column;gap:14px}
+  .pv-topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-radius:8px;font-size:11px}
+  .pv-topbar .t-txt{color:#fff;opacity:.9}
+  .pv-topbar .t-gold{font-weight:700}
+  .pv-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:10px}
+  .pv-logo{font-weight:800;font-size:15px}
+  .pv-nav{display:flex;gap:14px;font-size:12px;color:#6b7280}
+  .pv-cta{display:inline-flex;align-items:center;gap:6px;color:#fff;font-weight:700;font-size:11.5px;padding:8px 16px;border-radius:999px;position:relative}
+  .pv-cta::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(0,0,0,.5);animation:pulse 1.8s ease-out infinite;pointer-events:none}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,0,0,.45)}70%{box-shadow:0 0 0 12px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+  .pv-hero{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 22px;border-radius:12px;color:#fff}
+  .pv-hero h3{font-size:18px;font-weight:800}
+  .pv-hero p{font-size:12px;opacity:.85;margin-top:4px}
+  .pv-btn{color:#fff;font-weight:700;font-size:12px;padding:9px 18px;border-radius:8px;text-decoration:none}
+  .pv-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 12px;border-radius:999px;text-transform:uppercase}
+  .pv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .pv-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}
+  .pv-card .cd{height:8px;width:100%;border-radius:4px;margin-bottom:10px}
+  .pv-card h4{font-size:12.5px;font-weight:700}
+  .pv-card p{font-size:11px;color:#6b7280;margin-top:3px}
+  .pv-tab{display:inline-block;font-size:11.5px;font-weight:700;padding:7px 16px;border-radius:8px 8px 0 0}
+  .pv-band{padding:18px 16px;border-radius:12px;color:#fff;text-align:center}
+  .pv-band h4{font-size:14px;font-weight:800}
+  .pv-band p{font-size:11px;opacity:.85;margin-top:2px}
+  .pv-foot{padding:14px 16px;border-radius:10px;color:#fff;font-size:11px;display:flex;justify-content:space-between}
+  /* contrast */
+  .contrast{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+  .cc{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px}
+  .cc .sw2{width:30px;height:30px;border-radius:6px;border:1px solid rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#fff}
+  .cc .ok{color:#047857;font-weight:800}
+  .cc .bad{color:#b91c1c;font-weight:800}
+  /* code */
+  .code-head{display:flex;align-items:center;justify-content:space-between;margin:16px 0 6px}
+  .code-head .lbl{font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.4px}
+  .copy-btn{font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:#fff;cursor:pointer;color:#111827}
+  .copy-btn:hover{background:#111827;color:#fff}
+  pre{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow:auto;font-family:Consolas,'Courier New',monospace;font-size:12px;line-height:1.55;max-height:340px}
+  .mode-switch{display:flex;gap:8px;margin-bottom:12px}
+  .mode-btn{font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;color:#374151}
+  .mode-btn.on{background:#111827;color:#fff;border-color:#111827}
+  .hint{font-size:12px;color:var(--muted);margin-top:10px}
+  .note{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:8px;font-size:12.5px;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Custom Color Palette Tool</h1>
+      <div class="sub">Home Affairs Theme • Generate shades → preview live → copy Tailwind config &amp; SCSS variables</div>
+    </div>
+    <div class="presets">
+      <button class="preset-btn" onclick="setPreset('maroon','#591521','#dfa21f')">Maroon + Gold (current)</button>
+      <button class="preset-btn" onclick="setPreset('navy','#123a6b','#0f9d8f')">Navy + Teal</button>
+      <button class="preset-btn" onclick="setPreset('emerald','#065f46','#f59e0b')">Emerald + Amber</button>
+      <button class="preset-btn" onclick="setPreset('royal','#312e81','#db2777')">Indigo + Pink</button>
+      <button class="preset-btn random-btn" onclick="randomPalette()">🎲 Random</button>
+    </div>
+  </header>
+
+  <div class="note"><strong>Current theme:</strong> Maroon + Gold (default). Other presets are for exploring a full re-theme — see <code>COLOR_GUIDE.md</code> §8B.</div>
+
+  <div class="grid">
+
+    <!-- ═══ LEFT: controls + swatches ═══ -->
+    <div>
+      <div class="card" style="margin-bottom:22px">
+        <h2><span class="num">1</span>Pick Base Colors</h2>
+        <div class="picker-row">
+          <label>Primary</label>
+          <div class="color-input"><input type="color" id="primaryPicker" value="#591521" oninput="onPick()"></div>
+          <input class="hex-val" id="primaryHex" value="#591521" onchange="onHex('primary')">
+        </div>
+        <div class="picker-row">
+          <label>Secondary</label>
+          <div class="color-input"><input type="color" id="secondaryPicker" value="#dfa21f" oninput="onPick()"></div>
+          <input class="hex-val" id="secondaryHex" value="#dfa21f" onchange="onHex('secondary')">
+        </div>
+        <div class="picker-row">
+          <label>Background</label>
+          <div class="color-input"><input type="color" id="warmPicker" value="#fff5f0" oninput="onPick()"></div>
+          <input class="hex-val" id="warmHex" value="#fff5f0" onchange="onHex('warm')">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span>Generated Palette</h2>
+        <div class="swatches" id="swatches"></div>
+        <div class="hint">Shades are auto-derived with HSL math from your primary / secondary. Tweak if needed.</div>
+      </div>
+    </div>
+
+    <!-- ═══ RIGHT: preview ═══ -->
+    <div>
+      <div class="card" style="margin-bottom:22px">
+        <h2><span class="num">3</span>Live Theme Preview</h2>
+        <div id="preview"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:22px">
+        <h2><span class="num">4</span>Contrast Check</h2>
+        <div class="contrast" id="contrast"></div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">5</span>Copy-Ready Code</h2>
+        <div class="mode-switch">
+          <button class="mode-btn on" id="modeFull" onclick="setMode('full')">Full theme (17 tokens)</button>
+          <button class="mode-btn" id="modeCore" onclick="setMode('core')">Primary/Secondary only</button>
+        </div>
+
+        <div class="code-head">
+          <span class="lbl">Tailwind config → header.php:11 &amp; template-landing.php:20</span>
+          <button class="copy-btn" onclick="copyText('jsCode')">Copy JS</button>
+        </div>
+        <pre id="jsCode"></pre>
+
+        <div class="code-head">
+          <span class="lbl">SCSS variables → assets/scss/_variables.scss</span>
+          <button class="copy-btn" onclick="copyText('scssCode')">Copy SCSS</button>
+        </div>
+        <pre id="scssCode"></pre>
+
+        <div class="note">
+          <strong>After pasting:</strong> run <code>npx sass assets/scss/style.scss assets/css/style.css</code>, then hard-refresh (Ctrl+F5).
+          See <code>doc/COLOR_GUIDE.html</code> Section 8 / 8B for the full procedure.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ── color math ── */
+function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(function(c){return c+c}).join('');var n=parseInt(h,16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
+function rgbToHex(r,g,b){var f=function(v){v=Math.max(0,Math.min(255,Math.round(v)));return v.toString(16).padStart(2,'0')};return '#'+f(r)+f(g)+f(b)}
+function hexToHsl(h){var c=hexToRgb(h);c.r/=255;c.g/=255;c.b/=255;var mx=Math.max(c.r,c.g,c.b),mn=Math.min(c.r,c.g,c.b),d=mx-mn,l=(mx+mn)/2,hsl={h:0,s:0,l:l};if(d){hsl.s=l>0.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case c.r:hsl.h=((c.g-c.b)/d+(c.g<c.b?6:0));break;case c.g:hsl.h=((c.b-c.r)/d+2);break;default:hsl.h=((c.r-c.g)/d+4)}hsl.h*=60}return hsl}
+function hslToRgb(h,s,l){h=((h%360)+360)%360;s/=100;l/=100;var f=function(n){var k=(n+h/30)%12,a=s*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return rgbToHex(f(0)*255,f(8)*255,f(4)*255)}
+function shade(hex,amount){var h=hexToHsl(hex);var l=h.l*100;var target=amount<0?(l*(100+amount)/100):(l+(100-l)*(amount/100));h.l=Math.max(0,Math.min(100,target));return hslToRgb(h.h,h.s*100,h.l)}
+function saturate(hex,delta){var h=hexToHsl(hex);h.s=Math.max(0,Math.min(100,h.s*100+delta));return hslToRgb(h.h,h.s,h.l*100)}
+function lum(hex){var c=hexToRgb(hex),f=function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)};var r=f(c.r),g=f(c.g),b=f(c.b);return 0.2126*r+0.7152*g+0.0722*b}
+function contrast(a,b){var l1=lum(a),l2=lum(b);return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05)}
+function readableOn(bg){return contrast('#ffffff',bg)>=3.5?'#ffffff':'#111827'}
+
+/* ── state ── */
+var mode='full';
+var state={
+  primary:'#591521', secondary:'#dfa21f', warm:'#fff5f0',
+  tokens:{}
+};
+
+function buildTokens(){
+  var p=state.primary, s=state.secondary;
+  var t={
+    primary:p,
+    'primary-dark':shade(p,-16),
+    'primary-darker':shade(p,-34),
+    'primary-light':shade(p,12),
+    secondary:s,
+    'secondary-light':shade(s,22),
+    'secondary-dark':shade(s,-18),
+    'bg-dark':shade(p,-24),
+    'warm-white':state.warm,
+    steel:shade(p,12),
+    maroon:shade(p,-6),
+    'maroon-bright':shade(p,8),
+    'maroon-deep':shade(p,-30),
+    'maroon-black':shade(p,-46),
+    'gold-deep':shade(s,-10),
+    'gold-bright':shade(s,18),
+    'gold-dark':shade(s,-32)
+  };
+  state.tokens=t;
+}
+
+function renderSwatches(){
+  var el=document.getElementById('swatches'),html='';
+  for(var k in state.tokens){
+    html+='<div class="sw"><div class="chip" style="background:'+state.tokens[k]+'"></div>'+
+      '<div class="lab"><div class="n">'+k+'</div><div class="h">'+state.tokens[k].toUpperCase()+'</div></div></div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderPreview(){
+  var t=state.tokens,onPrimary=readableOn(t.primary),onDark=readableOn(t['primary-darker']),onGold=readableOn(t.secondary);
+  var heroBg='linear-gradient(135deg,'+t['primary-darker']+' 0%,'+t.primary+' 60%,'+t['primary-dark']+' 100%)';
+  var bandBg='linear-gradient(90deg,'+t.primary+' 0%,'+t['primary-light']+' 50%,'+t.secondary+' 100%)';
+  var html=
+    '<div class="pv-topbar" style="background:'+t['primary-darker']+'">'+
+      '<span class="t-txt">📞 +94 112 050 450 &nbsp; • &nbsp; info@moha.gov.lk</span>'+
+      '<span class="t-gold" style="color:'+t['secondary-light']+'">Home Affairs Division</span>'+
+    '</div>'+
+    '<div class="pv-head">'+
+      '<div class="pv-logo" style="color:'+t['primary-darker']+'">Ministry of Home Affairs</div>'+
+      '<div class="pv-nav">Home &nbsp; About &nbsp; Divisions &nbsp; Services</div>'+
+      '<a class="pv-cta" style="background:'+t.primary+';box-shadow:0 2px 10px '+t.primary+'66">📅 Circuit Booking</a>'+
+    '</div>'+
+    '<div class="pv-hero" style="background:'+heroBg+'">'+
+      '<div><h3>Welcome to the Ministry</h3><p>Efficient, transparent &amp; citizen-centric public service.</p>'+
+      '<a class="pv-btn" style="background:'+t.secondary+';color:'+readableOn(t.secondary)+'">Explore Services</a></div>'+
+      '<span class="pv-badge" style="background:'+t['secondary-light']+';color:'+t['primary-darker']+'">Breaking News</span>'+
+    '</div>'+
+    '<div class="pv-tab" style="background:'+t.primary+';color:'+onPrimary+'">Active Tab</div> &nbsp;'+
+    '<span class="pv-tab" style="background:#fff;color:'+t['primary-darker']+';border:1px solid '+t.primary+'66">Inactive Tab</span>'+
+    '<div class="pv-cards">'+
+      '<div class="pv-card"><div class="cd" style="background:'+t['secondary-light']+'"></div><h4 style="color:'+t['primary-darker']+'">News &amp; Events</h4><p>Latest circulars and notices</p></div>'+
+      '<div class="pv-card"><div class="cd" style="background:'+t['secondary-light']+'"></div><h4 style="color:'+t['primary-darker']+'">Vacancies</h4><p>Current opportunities</p></div>'+
+      '<div class="pv-card"><div class="cd" style="background:'+t['secondary-light']+'"></div><h4 style="color:'+t['primary-darker']+'">Publications</h4><p>Reports and downloads</p></div>'+
+    '</div>'+
+    '<div class="pv-band" style="background:'+bandBg+'"><h4>Gradient Band</h4><p>Primary → Light → Secondary</p></div>'+
+    '<div class="pv-foot" style="background:'+t['primary-darker']+'">'+
+      '<span>© 2026 Ministry of Home Affairs</span><span style="color:'+t['secondary-light']+'">Terms • Privacy</span>'+
+    '</div>';
+  document.getElementById('preview').innerHTML=html;
+}
+
+function renderContrast(){
+  var t=state.tokens,rows=[];
+  rows.push(['text-secondary-light on primary-dark',t['secondary-light'],t['primary-darker']]);
+  rows.push(['text-white on primary', '#ffffff', t.primary]);
+  rows.push(['text-primary-darker on secondary', t['primary-darker'], t.secondary]);
+  rows.push(['text-white on secondary-dark', '#ffffff', t['secondary-dark']]);
+  var html='';
+  rows.forEach(function(r){
+    var ratio=contrast(r[1],r[2]);
+    var pass=ratio>=4.5, aa=ratio>=3;
+    var badge=pass?'<span class="ok">AAA</span>':(aa?'<span class="bad">AA</span>':'<span class="bad">FAIL</span>');
+    html+='<div class="cc">'+
+      '<span style="font-weight:600">'+r[0]+'</span>'+
+      '<div style="display:flex;align-items:center;gap:8px">'+
+        '<span class="sw2" style="background:'+r[1]+';color:'+readableOn(r[1])+'">A</span>'+
+        '<span class="sw2" style="background:'+r[2]+';color:'+readableOn(r[2])+'">A</span>'+
+        '<span style="font-family:Consolas;font-size:11px">'+ratio.toFixed(2)+':1</span>'+badge+
+      '</div></div>';
+  });
+  document.getElementById('contrast').innerHTML=html;
+}
+
+function jsOut(){
+  var t=state.tokens;
+  if(mode==='core'){
+    return 'tailwind.config={theme:{extend:{colors:{\n'+
+      '  "primary":"'+t.primary+'",\n'+
+      '  "primary-dark":"'+t['primary-dark']+'",\n'+
+      '  "primary-darker":"'+t['primary-darker']+'",\n'+
+      '  "primary-light":"'+t['primary-light']+'",\n'+
+      '  "secondary":"'+t.secondary+'",\n'+
+      '  "secondary-light":"'+t['secondary-light']+'",\n'+
+      '  "secondary-dark":"'+t['secondary-dark']+'"\n'+
+      '}}}}';
+  }
+  return 'tailwind.config={theme:{extend:{colors:{\n'+
+    '  "primary":"'+t.primary+'",\n'+
+    '  "primary-dark":"'+t['primary-dark']+'",\n'+
+    '  "primary-darker":"'+t['primary-darker']+'",\n'+
+    '  "primary-light":"'+t['primary-light']+'",\n'+
+    '  "secondary":"'+t.secondary+'",\n'+
+    '  "secondary-light":"'+t['secondary-light']+'",\n'+
+    '  "secondary-dark":"'+t['secondary-dark']+'",\n'+
+    '  "bg-dark":"'+t['bg-dark']+'",\n'+
+    '  "steel":"'+t.steel+'",\n'+
+    '  "warm-white":"'+t['warm-white']+'",\n'+
+    '  "maroon":"'+t.maroon+'",\n'+
+    '  "maroon-bright":"'+t['maroon-bright']+'",\n'+
+    '  "maroon-deep":"'+t['maroon-deep']+'",\n'+
+    '  "maroon-black":"'+t['maroon-black']+'",\n'+
+    '  "gold-deep":"'+t['gold-deep']+'",\n'+
+    '  "gold-bright":"'+t['gold-bright']+'",\n'+
+    '  "gold-dark":"'+t['gold-dark']+'"\n'+
+    '}}}}';
+}
+
+function scssOut(){
+  var t=state.tokens;
+  if(mode==='core'){
+    return '$color-primary:         '+t.primary+';\n'+
+      '$color-primary-dark:    '+t['primary-dark']+';\n'+
+      '$color-primary-darker:  '+t['primary-darker']+';\n'+
+      '$color-primary-light:   '+t['primary-light']+';\n\n'+
+      '$color-secondary:       '+t.secondary+';\n'+
+      '$color-secondary-light: '+t['secondary-light']+';\n'+
+      '$color-secondary-dark:  '+t['secondary-dark']+';';
+  }
+  return '$color-primary:         '+t.primary+';\n'+
+    '$color-primary-dark:    '+t['primary-dark']+';\n'+
+    '$color-primary-darker:  '+t['primary-darker']+';\n'+
+    '$color-primary-light:   '+t['primary-light']+';\n\n'+
+    '$color-secondary:       '+t.secondary+';\n'+
+    '$color-secondary-light: '+t['secondary-light']+';\n'+
+    '$color-secondary-dark:  '+t['secondary-dark']+';\n\n'+
+    '$color-bg-dark:         '+t['bg-dark']+';\n'+
+    '$bg-warm-white:         '+t['warm-white']+';\n\n'+
+    '$color-maroon:          '+t.maroon+';\n'+
+    '$color-maroon-bright:   '+t['maroon-bright']+';\n'+
+    '$color-maroon-deep:     '+t['maroon-deep']+';\n'+
+    '$color-maroon-black:    '+t['maroon-black']+';\n\n'+
+    '$color-gold-deep:       '+t['gold-deep']+';\n'+
+    '$color-gold-bright:     '+t['gold-bright']+';\n'+
+    '$color-gold-dark:       '+t['gold-dark']+';\n\n'+
+    '$steel:                 $color-primary-light;';
+}
+
+function renderCode(){
+  document.getElementById('jsCode').textContent=jsOut();
+  document.getElementById('scssCode').textContent=scssOut();
+}
+
+function renderAll(){
+  buildTokens();
+  renderSwatches();
+  renderPreview();
+  renderContrast();
+  renderCode();
+}
+
+/* ── controls ── */
+function onPick(){
+  state.primary=document.getElementById('primaryPicker').value;
+  state.secondary=document.getElementById('secondaryPicker').value;
+  state.warm=document.getElementById('warmPicker').value;
+  document.getElementById('primaryHex').value=state.primary;
+  document.getElementById('secondaryHex').value=state.secondary;
+  document.getElementById('warmHex').value=state.warm;
+  renderAll();
+}
+function onHex(kind){
+  var el=document.getElementById(kind+'Hex'),v=el.value;
+  if(!/^#[0-9a-fA-F]{6}$/.test(v)){el.value=state[kind==='primary'?'primary':kind==='secondary'?'secondary':'warm'];return}
+  if(kind==='primary')document.getElementById('primaryPicker').value=v;
+  if(kind==='secondary')document.getElementById('secondaryPicker').value=v;
+  if(kind==='warm')document.getElementById('warmPicker').value=v;
+  state[kind==='primary'?'primary':kind==='secondary'?'secondary':'warm']=v;
+  renderAll();
+}
+function setPreset(name,p,s){
+  document.getElementById('primaryPicker').value=p;document.getElementById('secondaryPicker').value=s;
+  document.getElementById('primaryHex').value=p;document.getElementById('secondaryHex').value=s;
+  state.primary=p;state.secondary=s;
+  renderAll();
+}
+function randomPalette(){
+  var h1=Math.floor(Math.random()*360);
+  var h2=(h1+120+Math.floor(Math.random()*140))%360;
+  var p=hslToRgb(h1,45+Math.floor(Math.random()*35),35+Math.floor(Math.random()*20));
+  var s=hslToRgb(h2,45+Math.floor(Math.random()*35),48+Math.floor(Math.random()*22));
+  setPreset('random',p,s);
+}
+function setMode(m){
+  mode=m;
+  document.getElementById('modeFull').classList.toggle('on',m==='full');
+  document.getElementById('modeCore').classList.toggle('on',m==='core');
+  renderCode();
+}
+function copyText(id){
+  var el=document.getElementById(id);
+  var range=document.createRange();range.selectNodeContents(el);
+  var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+  try{document.execCommand('copy');}catch(e){}
+  sel.removeAllRanges();
+  var btn=el.previousElementSibling;if(btn&&btn.classList.contains('code-head'))btn=btn.querySelector('.copy-btn');
+  alert('Copied!');
+}
+
+renderAll();
+</script>
+</body>
+</html>

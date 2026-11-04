@@ -1,0 +1,115 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+.inst-card {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $color-secondary, $color-secondary-dark);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.inst-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba($color-bg-dark, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  i {
+    font-size: 22px;
+    color: $color-bg-dark;
+    transition: color 0.3s ease;
+  }
+
+  .inst-card:hover & {
+    background: $color-secondary;
+    transform: scale(1.06);
+
+    i {
+      color: $color-bg-dark;
+    }
+  }
+}
+
+.inst-card-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: $color-bg-dark;
+  line-height: 1.35;
+  transition: color 0.25s ease;
+
+  .inst-card:hover & {
+    color: color.adjust($color-bg-dark, $lightness: 8%);
+  }
+}
+
+.inst-card-text {
+  font-size: 0.8125rem;
+  color: $gray-500;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.inst-cta {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: $steel;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+
+  i {
+    font-size: 11px;
+    transition: transform 0.25s ease;
+  }
+
+  .inst-card:hover & {
+    color: $color-secondary-dark;
+
+    i {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.inst-intro-title {
+  position: relative;
+  padding-left: 18px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 4px;
+    background: $color-secondary;
+    border-radius: 2px;
+  }
+}

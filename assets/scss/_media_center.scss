@@ -1,0 +1,184 @@
+@use 'variables' as *;
+
+/* ── Filter Hub ── */
+.media-filter-bar {
+  transition: box-shadow 0.3s ease;
+}
+
+/* ── Type Toggle Buttons ── */
+.media-type-btn {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: 1px solid $gray-200;
+  background: white;
+  color: $gray-500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+
+  i { margin-right: 5px; font-size: 0.75rem; }
+
+  &:hover {
+    border-color: $color-secondary;
+    color: $color-secondary-dark;
+    background: rgba($color-secondary, 0.04);
+  }
+
+  &.active {
+    background: $color-bg-dark;
+    color: white;
+    border-color: $color-bg-dark;
+
+    &:hover {
+      background: $color-primary-dark;
+      border-color: $color-primary-dark;
+    }
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.25);
+  }
+}
+
+/* ── Search Input ── */
+.media-search-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+  }
+}
+
+/* ── Photo Card ── */
+.media-photo-card {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ── Video Card ── */
+.media-video-card {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ── Video Play Icon ── */
+.media-video-card .fa-play-circle {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+/* ── Image fallback gradient mesh ── */
+.media-photo-card .bg-gradient-to-br,
+.media-video-card .bg-gradient-to-br {
+  background-size: 200% 200%;
+  animation: media-mesh 6s ease-in-out infinite;
+}
+
+@keyframes media-mesh {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── Lightbox ── */
+.media-lb {
+  animation: media-fade 0.25s ease;
+
+  #lb-img {
+    opacity: 0;
+    animation: media-img-in 0.35s ease 0.15s forwards;
+  }
+}
+
+@keyframes media-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes media-img-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Video Modal ── */
+.media-vm {
+  animation: media-fade 0.25s ease;
+
+  #vm-container {
+    opacity: 0;
+    animation: media-img-in 0.35s ease 0.15s forwards;
+  }
+}
+
+/* ── Pagination ── */
+.media-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $gray-500;
+  background: white;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+  }
+
+  &-active {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+    font-weight: 700;
+  }
+}
+
+/* ── Card fade-in ── */
+#media-grid > div {
+  opacity: 0;
+  animation: media-grid-fade 0.4s ease forwards;
+
+  @for $i from 1 through 24 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.04}s;
+    }
+  }
+}
+
+@keyframes media-grid-fade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 639px) {
+  .media-type-btn {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+
+    i { display: none; }
+  }
+}

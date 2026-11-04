@@ -1,0 +1,259 @@
+@use 'variables' as *;
+
+/* ── Circular Filter Bar ── */
+.circular-filter-bar {
+  transition: box-shadow 0.3s ease;
+
+  &:focus-within {
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
+  }
+}
+
+/* ── Circular Select Dropdown ── */
+.circ-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 13px;
+  padding-right: 36px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+  }
+}
+
+/* ── Circular Search Input ── */
+.circ-search-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+  }
+}
+
+/* ── Clear Button ── */
+.circ-clear-btn {
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($color-primary, 0.06);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+/* ── Circular Table ── */
+.circ-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.circ-th {
+  background: $color-bg-dark;
+  color: white;
+  font-weight: 600;
+  font-size: clamp(0.688rem, 0.625rem + 0.25vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 14px 18px;
+  text-align: left;
+  white-space: nowrap;
+
+  &-dl {
+    text-align: right;
+    padding-right: 22px;
+  }
+}
+
+.circ-td {
+  padding: 14px 18px;
+  font-size: clamp(0.813rem, 0.75rem + 0.25vw, 0.875rem);
+  border-bottom: 1px solid $gray-100;
+  vertical-align: middle;
+
+  &-dl {
+    text-align: right;
+    padding-right: 22px;
+  }
+}
+
+.circ-row-even td {
+  background: white;
+}
+
+.circ-row-odd td {
+  background: rgba(248, 250, 252, 0.6);
+}
+
+.circ-number {
+  display: inline-block;
+  font-weight: 700;
+  color: $color-bg-dark;
+  background: rgba($color-secondary, 0.08);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba($color-secondary, 0.15);
+  white-space: nowrap;
+}
+
+.circ-title-text {
+  color: $gray-700;
+  line-height: 1.5;
+}
+
+/* ── New Badge ── */
+.circ-new-badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: white;
+  background: linear-gradient(135deg, $color-secondary, $color-secondary-dark);
+  padding: 2px 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 6px;
+  animation: circ-new-pulse 2s ease-in-out infinite;
+}
+
+@keyframes circ-new-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba($color-secondary, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba($color-secondary, 0); }
+}
+
+/* ── Download Button ── */
+.circ-dl-btn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $gray-700;
+  background: white;
+  border: 1px solid $gray-200;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+
+  &:hover {
+    background: $color-bg-dark;
+    color: white;
+    border-color: $color-bg-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($color-bg-dark, 0.15);
+
+    i {
+      color: #ef4444 !important;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ── Pagination ── */
+.circ-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $gray-500;
+  background: white;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+  }
+
+  &-active {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+    font-weight: 700;
+  }
+}
+
+/* ── Responsive table wrapper for mobile ── */
+@media (max-width: 767px) {
+  .circ-table,
+  .circ-table thead,
+  .circ-table tbody,
+  .circ-table tr,
+  .circ-table th,
+  .circ-table td {
+    display: block;
+  }
+
+  .circ-table thead tr {
+    display: none;
+  }
+
+  .circ-table tr {
+    margin-bottom: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid $gray-100;
+  }
+
+  .circ-td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid $gray-100;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .circ-td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $gray-500;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .circ-td-title {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .circ-td-num,
+  .circ-td-date {
+    justify-content: space-between;
+  }
+
+  .circ-td-dl {
+    justify-content: flex-end;
+  }
+}
+
+/* ── Row hover ── */
+.circ-table tbody tr:hover td {
+  background: rgba($color-secondary, 0.03);
+}

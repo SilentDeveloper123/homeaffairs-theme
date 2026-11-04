@@ -1,0 +1,73 @@
+// ── Mobile (< 640px) ─────────────────────────────────────────────
+@media (max-width: 639px) {
+  .topbar {
+    .lang-switch {
+      display: flex;
+      gap: 2px;
+      a {
+        padding: 4px 6px;
+        font-size: 10px;
+      }
+    }
+    .topbar-contact {
+      font-size: 11px;
+      .topbar-phone {
+        display: inline;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .hero-slider {
+    padding-top: 2rem; padding-bottom: 2.5rem;
+  }
+
+  .stat-item { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+  .gallery-main { aspect-ratio: 16/9; height: auto !important; }
+  .gallery-sm   { aspect-ratio: 4/3;  height: auto !important; }
+  .cta-btn { padding: 0.75rem 1.25rem; }
+
+  // Back-to-top: move up to avoid overlap with mobile bottom bar
+  .back-to-top { bottom: 5.5rem; right: 1rem; width: 44px; height: 44px; }
+
+  .secondary-menu-btn { left: 0; }
+
+  .hero-special-tiles {
+    .tile      { padding: 0.75rem; }
+    .tile-icon { width: 2rem; height: 2rem; font-size: 0.75rem; }
+    .tile-text { font-size: 0.8125rem; }
+    .tile-date { font-size: 0.6875rem; }
+  }
+}
+
+// ── Tablet (640px – 1023px) ──────────────────────────────────────
+@media (min-width: 640px) and (max-width: 1023px) {
+  .stat-item { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+  .gallery-main { height: 100%; }
+  .gallery-sm   { aspect-ratio: 4/3; }
+  .back-to-top  { bottom: 6rem; right: 1.5rem; }
+}
+
+// ── Desktop (1024px+) ────────────────────────────────────────────
+@media (min-width: 1024px) {
+  .gallery-main { height: 100%; }
+  .gallery-sm   { aspect-ratio: 4/3; }
+}
+
+// ── Print ────────────────────────────────────────────────────────
+@media print {
+  .topbar,
+  .ha-sticky-header,
+  .nav-mobile,
+  .secondary-menu-wrap,
+  .back-to-top,
+  .page-loader,
+  .news-ticker,
+  .hero-slider .slide-overlay,
+  .ha-cta-pulse { display: none !important; }
+
+  body { background: white; color: black; font-size: 11pt; }
+  a    { color: black; text-decoration: underline; }
+  h1, h2, h3 { page-break-after: avoid; }
+  img  { max-width: 100%; }
+}

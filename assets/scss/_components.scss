@@ -1,0 +1,640 @@
+@use 'variables' as *;
+
+// ── Unified Card System ──────────────────────────────────────────
+.ha-card {
+  background: white;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(89, 21, 33, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition:
+    box-shadow $dur-base $ease-out,
+    transform   $dur-base $ease-out,
+    border-color $dur-fast $ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $color-secondary, $color-secondary-dark);
+    border-radius: 16px 16px 0 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform $dur-base $ease-out;
+  }
+
+  &:hover {
+    box-shadow: 0 12px 32px rgba(89, 21, 33, 0.08), 0 2px 6px rgba(89, 21, 33, 0.03);
+    transform: translateY(-3px);
+    border-color: rgba($color-secondary, 0.4);
+
+    &::before { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover { transform: none; }
+    &::before { transition: none; }
+  }
+}
+
+// ── Legacy card classes (kept for backward compat) ───────────────
+.card-hover {
+  transition: all $dur-base $ease-in-out;
+  &:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover { transform: none; }
+  }
+}
+
+.card-top-line {
+  position: relative;
+
+  &::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: $color-secondary; transform: scaleX(0); transform-origin: left;
+    transition: transform $dur-base $ease-in-out;
+  }
+
+  &:hover::before { transform: scaleX(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before { transition: none; }
+  }
+}
+
+// ── Mobile Nav ───────────────────────────────────────────────────
+.nav-mobile {
+  background: rgba($color-bg-dark, 0.97); backdrop-filter: blur(20px);
+
+  a {
+    transition: all $dur-fast $ease-in-out;
+
+    &:hover { color: $color-secondary !important; transform: translateX(4px); }
+  }
+
+  .nav-links > a,
+  .nav-links > .accordion-item > .accordion-toggle {
+    padding-left: 0.75rem; padding-right: 0.75rem;
+  }
+
+  .accordion-content > a { padding-left: 3rem !important; }
+  .accordion-content .accordion-content > a { padding-left: 4.5rem !important; }
+  .accordion-content .accordion-content .accordion-content > a { padding-left: 6rem !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    a:hover { transform: none; }
+  }
+}
+
+.hamburger { min-width: 44px; min-height: 44px; }
+
+// ── Accordion ────────────────────────────────────────────────────
+.accordion-toggle { cursor: pointer; user-select: none; }
+
+.accordion-item.open .accordion-toggle .fa-chevron-down { transform: rotate(180deg); }
+
+.accordion-content { overflow: hidden; }
+
+// ── Secondary Menu ───────────────────────────────────────────────
+.secondary-menu-panel.open { transform: translateY(0) !important; }
+.secondary-menu-btn i { transition: transform 0.3s; }
+
+// ── Back to Top ──────────────────────────────────────────────────
+.back-to-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: $color-secondary; color: white; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1rem, 0.875rem + 0.5vw, 1.25rem); box-shadow: 0 4px 16px rgba($color-secondary, 0.35);
+  opacity: 0; visibility: hidden; transform: translateY(20px);
+  transition: all $dur-base $ease-out;
+
+  &.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  &:hover {
+    background: $color-secondary-dark; transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba($color-secondary, 0.45);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: opacity $dur-fast linear;
+    transform: none;
+    &.show { transform: none; }
+    &:hover { transform: none; }
+  }
+}
+
+// ── Pagination ───────────────────────────────────────────────────
+.pagination a.active { background: $color-secondary; color: white; border-color: $color-secondary; }
+
+// ── Stats ────────────────────────────────────────────────────────
+.stat-num { color: $color-secondary; }
+
+// ── Sub nav active ───────────────────────────────────────────────
+.sub-active { border-left: 3px solid $color-secondary !important; background: rgba($color-secondary, 0.06); font-weight: 600; }
+
+// ── Unified Tables ───────────────────────────────────────────────
+.table-custom,
+.ha-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    background: $color-bg-dark;
+    color: white;
+    font-weight: 600;
+    font-size: $text-xs;
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid $gray-200;
+    font-size: $text-sm;
+    color: $text-body;
+  }
+
+  tr:hover td { background: rgba($color-secondary, 0.04); }
+  tr:nth-child(even) td { background-color: rgba(0, 0, 0, 0.015); }
+  tr:nth-child(even):hover td { background-color: rgba($color-secondary, 0.05); }
+}
+
+// ── Modern Minimalist Scrollbar ──────────────────────────────────
+::-webkit-scrollbar { width: 7px; height: 7px; }
+
+::-webkit-scrollbar-track { background: #f8fafc; }
+
+::-webkit-scrollbar-thumb {
+  background: rgba($color-secondary, 0.6);
+  border-radius: 9999px;
+
+  &:hover { background: $color-secondary-dark; }
+}
+
+// ── Text Selection Highlight ─────────────────────────────────────
+::selection {
+  background-color: $color-primary;
+  color: #ffffff;
+}
+::-moz-selection {
+  background-color: $color-primary;
+  color: #ffffff;
+}
+
+// ── Comments ────────────────────────────────────────────────────
+.comment-form-author,
+.comment-form-email {
+  display: inline-block; width: 48%;
+  input { width: 100%; }
+}
+.comment-form-author { float: left; }
+.comment-form-email { float: right; }
+.comment-form::after { content: ''; display: table; clear: both; }
+
+.comment-reply-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: $text-xs; font-weight: 600; color: $color-secondary;
+  transition: all $dur-fast $ease-in-out;
+  &:hover { color: $color-secondary-dark; gap: 6px; }
+}
+
+.comment-edit-link {
+  font-size: $text-xs; color: $gray-500; margin-left: 8px;
+  &:hover { color: $color-secondary; }
+}
+
+#cancel-comment-reply-link {
+  display: inline-flex; align-items: center;
+  font-size: $text-sm; color: $gray-500; margin-left: 12px;
+  transition: all $dur-fast $ease-in-out;
+  &:hover { color: $color-primary; }
+}
+
+.comment-form-cookies-consent {
+  display: flex; align-items: center; gap: 8px;
+  font-size: $text-sm; color: $gray-600;
+  input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: $color-secondary;
+  }
+}
+
+.logged-in-as { font-size: $text-sm; color: $gray-600; }
+
+// ── AOS-style scroll animation ──────────────────────────────────
+.animate-fadeIn { opacity: 1 !important; transform: translateY(0) !important; }
+
+// ── Color Utilities ──────────────────────────────────────────────
+.text-secondary { color: $color-secondary; }
+.bg-secondary { background-color: $color-secondary; }
+.border-secondary { border-color: $color-secondary; }
+.hover\:text-secondary:hover { color: $color-secondary; }
+.hover\:border-secondary:hover { border-color: $color-secondary; }
+.hover\:bg-secondary-dark:hover { background-color: $color-secondary-dark; }
+
+.secondary-gradient {
+  background: linear-gradient(135deg, $color-secondary, $color-secondary-dark);
+}
+
+.text-primary { color: $color-primary; }
+.bg-primary { background-color: $color-primary; }
+.border-primary { border-color: $color-primary; }
+.hover\:text-primary:hover { color: $color-primary; }
+.hover\:bg-primary:hover { background-color: $color-primary; }
+.hover\:border-primary:hover { border-color: $color-primary; }
+
+// ── Sub-menu active ──────────────────────────────────────────────
+.sidebar-link {
+  transition: all $dur-fast $ease-in-out;
+
+  &:hover { background: rgba($color-secondary, 0.06); color: $color-secondary; padding-left: 20px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover { padding-left: 0; }
+  }
+}
+
+// ── Language Switcher ────────────────────────────────────────────
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: transparent;
+    color: $color-secondary;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color $dur-fast, color $dur-fast, transform $dur-fast;
+
+    &:hover {
+      background-color: rgba($color-secondary, 0.18);
+      color: $color-secondary;
+    }
+
+    @media (min-width: 640px) { font-size: 11px; }
+  }
+
+  .current_language,
+  .current-lang > a,
+  .current-menu-item > a,
+  .active > a {
+    background-color: $color-secondary;
+    color: $color-primary-dark;
+
+    &:hover {
+      background-color: $color-secondary-dark;
+      color: $color-primary-dark;
+      transform: translateY(-1px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a:hover { transform: none; }
+  }
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: $color-secondary;
+  color: $color-primary-dark;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 4px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color $dur-fast, color $dur-fast, transform $dur-fast;
+
+  &:hover {
+    background-color: $color-secondary-dark;
+    color: $color-primary-dark;
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 640px) { font-size: 11px; }
+  @media (prefers-reduced-motion: reduce) {
+    &:hover { transform: none; }
+  }
+}
+
+// ── Footer social ────────────────────────────────────────────────
+.social-icon {
+  transition: all $dur-base $ease-out;
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+
+  &:hover {
+    background: $color-secondary !important;
+    color: $color-primary-dark !important;
+    border-color: $color-secondary !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(223, 162, 31, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover { transform: none; }
+  }
+}
+
+// ── Circuit Booking CTA pulse ────────────────────────────────────
+.ha-cta-pulse {
+  position: relative;
+
+  &::before {
+    content: ''; position: absolute; inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgba($color-primary, 0.55);
+    animation: ha-cta-wave 2s infinite;
+  }
+
+  &::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: inherit;
+    animation: ha-cta-blink 1.6s ease-in-out infinite;
+  }
+
+  &:hover,
+  &:focus {
+    &::before,
+    &::after { animation-play-state: paused; }
+  }
+
+  &:focus-visible { outline: 2px solid $color-secondary; outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      animation: none !important;
+    }
+    box-shadow: 0 0 0 2px rgba($color-secondary, 0.5);
+  }
+}
+
+@keyframes ha-cta-wave {
+  0%   { box-shadow: 0 0 0 0 rgba($color-primary, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba($color-primary, 0); }
+  100% { box-shadow: 0 0 0 0 rgba($color-primary, 0); }
+}
+
+@keyframes ha-cta-blink {
+  0%, 100% { border: 1px solid rgba($color-secondary, 0.9); }
+  50%      { border: 1px solid rgba($color-secondary, 0.25); }
+}
+
+// ── Mobile search overlay ────────────────────────────────────────
+.mobile-search-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: #fff;
+  border-top: 1px solid $gray-200;
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.16);
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.25s $ease-out, opacity 0.2s $ease-out, visibility 0.25s $ease-out;
+
+  &.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: none;
+  }
+}
+
+.mobile-search-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba($color-bg-dark, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s $ease-out, visibility 0.25s $ease-out;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.mobile-search-toggle {
+  background: transparent;
+  border: none;
+
+  &.is-active {
+    background: transparent;
+    border: none;
+    color: $color-secondary;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-search-panel,
+  .mobile-search-backdrop {
+    display: none;
+  }
+}
+
+// ── Division Cards ───────────────────────────────────────────────
+.div-card {
+  position: relative; transition: all $dur-base $ease-in-out; overflow: hidden;
+  &::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, $color-secondary, $color-secondary-dark);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform $dur-base $ease-in-out;
+  }
+  &:hover::before { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &::before { transition: none; }
+  }
+}
+
+.div-icon-wrap {
+  width: 56px; height: 56px; border-radius: $radius-lg;
+  background: rgba($color-bg-dark, 0.06);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all $dur-base $ease-in-out;
+  i { font-size: 22px; color: $color-bg-dark; transition: color $dur-base $ease-in-out; }
+}
+
+.div-card:hover .div-icon-wrap { background: $color-secondary; transform: scale(1.06); }
+.div-card:hover .div-icon-wrap i { color: $color-bg-dark; }
+
+.div-card-title {
+  font-size: 1.1rem; font-weight: 800; color: $color-bg-dark; line-height: 1.35;
+  transition: color $dur-fast $ease-in-out;
+}
+.div-card:hover .div-card-title { color: $color-primary-dark; }
+
+.div-card-text {
+  font-size: $text-sm; color: $gray-500; line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.div-cta {
+  font-size: $text-sm; font-weight: 700; color: $steel;
+  display: inline-flex; align-items: center; gap: 6px; transition: all $dur-fast $ease-in-out;
+  i { font-size: 11px; transition: transform $dur-fast $ease-in-out; }
+}
+.div-card:hover .div-cta { color: $color-secondary-dark; }
+.div-card:hover .div-cta i { transform: translateX(4px); }
+
+.div-intro-title {
+  position: relative; padding-left: 18px;
+  &::before {
+    content: ''; position: absolute; left: 0; top: 4px; bottom: 4px;
+    width: 4px; background: $color-secondary; border-radius: 2px;
+  }
+}
+
+// ── Modern Minimalist Inner Page Design System Components ────────
+// 1. Universal Filter Pill Buttons across all directory templates
+.pub-filter-btn,
+.svc-filter-btn,
+.cal-filter-btn,
+.news-filter-btn,
+.ne-filter-btn,
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #ffffff;
+  color: #4b5563;
+  transition: all $dur-fast $ease-out;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba($color-secondary, 0.08);
+    color: $color-primary;
+    border-color: rgba($color-secondary, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: $color-primary !important;
+    color: #ffffff !important;
+    border-color: $color-primary !important;
+    box-shadow: 0 2px 8px rgba(89, 21, 33, 0.25);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-secondary;
+    outline-offset: 2px;
+  }
+}
+
+// 2. Universal Pagination Controls across all templates
+.page-btn,
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4b5563;
+  background: #ffffff;
+  transition: all $dur-fast $ease-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba($color-secondary, 0.08);
+    border-color: rgba($color-secondary, 0.5);
+    color: $color-primary;
+  }
+
+  &.active,
+  &.page-active {
+    background-color: $color-secondary !important;
+    color: $color-primary-dark !important;
+    border-color: $color-secondary !important;
+    box-shadow: 0 2px 6px rgba(223, 162, 31, 0.35);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-secondary;
+    outline-offset: 2px;
+  }
+}
+
+// 3. Search inputs on all inner page templates
+.search-box-modern,
+#svc-search,
+#pub-search,
+#circ-search,
+#doc-search,
+#exam-search,
+#ds-search,
+#gn-search {
+  transition: all $dur-fast $ease-out;
+  border-radius: 10px;
+
+  &:focus {
+    border-color: $color-secondary !important;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.15) !important;
+  }
+}
+
+// 4. Action & Download Buttons
+.btn-download,
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: $color-primary;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: rgba($color-primary, 0.05);
+  transition: all $dur-fast $ease-out;
+
+  &:hover {
+    background: $color-primary;
+    color: $color-secondary-light;
+    transform: translateY(-1px);
+  }
+}

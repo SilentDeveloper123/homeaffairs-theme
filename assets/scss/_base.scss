@@ -1,0 +1,179 @@
+@use 'variables' as *;
+
+// ── CSS Custom Properties (Design Tokens) ────────────────────────
+:root {
+  /* Brand */
+  --color-primary:          #{$color-primary};
+  --color-primary-dark:     #{$color-primary-dark};
+  --color-primary-light:    #{$color-primary-light};
+  --color-primary-darker:   #{$color-primary-darker};
+  --color-secondary:        #{$color-secondary};
+  --color-secondary-light:  #{$color-secondary-light};
+  --color-secondary-dark:   #{$color-secondary-dark};
+  --color-bg-dark:          #{$color-bg-dark};
+  --bg-warm-white:          #{$bg-warm-white};
+  --steel:                  #{$steel};
+  --color-maroon:           #{$color-maroon};
+  --color-maroon-bright:    #{$color-maroon-bright};
+  --color-maroon-deep:      #{$color-maroon-deep};
+  --color-maroon-black:     #{$color-maroon-black};
+  --color-gold-deep:        #{$color-gold-deep};
+  --color-gold-bright:      #{$color-gold-bright};
+  --color-gold-dark:        #{$color-gold-dark};
+
+  /* Semantic State Colors */
+  --color-success:          #{$color-success};
+  --color-warning:          #{$color-warning};
+  --color-error:            #{$color-error};
+  --color-info:             #{$color-info};
+
+  /* Alpha Tints */
+  --color-secondary-tint:          #{$color-secondary-tint};
+  --color-secondary-tint-strong:   #{$color-secondary-tint-strong};
+  --color-secondary-tint-light:    #{$color-secondary-tint-light};
+  --color-secondary-tint-med:      #{$color-secondary-tint-med};
+  --color-secondary-tint-deep:     #{$color-secondary-tint-deep};
+  --color-secondary-tint-vivid:    #{$color-secondary-tint-vivid};
+  --color-bg-dark-tint-strong:     #{$color-bg-dark-tint-strong};
+  --color-primary-tint-72:         #{$color-primary-tint-72};
+  --color-primary-dark-tint-78:    #{$color-primary-dark-tint-78};
+  --color-maroon-tint-05:          #{$color-maroon-tint-05};
+  --color-maroon-tint-06:          #{$color-maroon-tint-06};
+  --color-maroon-tint-08:          #{$color-maroon-tint-08};
+  --color-maroon-tint-10:          #{$color-maroon-tint-10};
+  --color-maroon-tint-12:          #{$color-maroon-tint-12};
+  --color-maroon-tint-15:          #{$color-maroon-tint-15};
+  --color-primary-darker-tint-04:  #{$color-primary-darker-tint-04};
+  --color-primary-darker-tint-10:  #{$color-primary-darker-tint-10};
+  --color-primary-darker-tint-15:  #{$color-primary-darker-tint-15};
+  --color-primary-darker-tint-20:  #{$color-primary-darker-tint-20};
+
+  /* Typography */
+  --text-xs:   #{$text-xs};
+  --text-sm:   #{$text-sm};
+  --text-base: #{$text-base};
+  --text-lg:   #{$text-lg};
+  --text-xl:   #{$text-xl};
+  --text-2xl:  #{$text-2xl};
+  --text-3xl:  #{$text-3xl};
+  --text-hero: #{$text-hero};
+
+  /* Border */
+  --border-default: #{$border-default};
+  --border-focus:   #{$border-focus};
+
+  /* Motion */
+  --ease-out:    #{$ease-out};
+  --ease-in-out: #{$ease-in-out};
+  --dur-fast:    #{$dur-fast};
+  --dur-base:    #{$dur-base};
+  --dur-slow:    #{$dur-slow};
+}
+
+// ── Base Reset & Defaults ────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: clamp(0.875rem, 0.813rem + 0.25vw, 1rem);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans Sinhala', 'Noto Sans Tamil', 'Segoe UI', system-ui, 'Noto Color Emoji', sans-serif;
+  color: #{$text-body};
+  background-color: #{$bg-warm-white};
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Global Focus Styles ──────────────────────────────────────────
+:focus {
+  outline: none;
+}
+
+:focus-visible,
+.js-focus-visible :focus {
+  outline: 2px solid $color-secondary;
+  outline-offset: 3px;
+}
+
+// Interactive elements always need visible focus
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid $color-secondary;
+  outline-offset: 3px;
+}
+
+// Ensure search inputs maintain their full pill border-radius on focus
+#header-search-desktop,
+.search-input-pill {
+  border-radius: 9999px !important;
+
+  &:focus,
+  &:focus-visible {
+    border-radius: 9999px !important;
+    outline: none !important;
+  }
+}
+
+// ── Skip Navigation Link ─────────────────────────────────────────
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 999999;
+  padding: 0.75rem 1.5rem;
+  background: $color-secondary;
+  color: $color-bg-dark;
+  font-weight: 700;
+  font-size: $text-sm;
+  border-radius: $radius-md;
+  text-decoration: none;
+  transition: top $dur-fast $ease-out;
+
+  &:focus {
+    top: 1rem;
+    outline: 3px solid $color-bg-dark;
+    outline-offset: 2px;
+  }
+}
+
+// ── Screen-reader only utility ───────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ── Reduced Motion: Disable all transitions/animations ───────────
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

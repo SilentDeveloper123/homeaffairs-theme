@@ -1,0 +1,81 @@
+@use 'variables' as *;
+
+// ── RTI Spotlight Slider ─────────────────────────────────────────
+.rti-slider-track {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+}
+
+.rti-slide {
+  min-width: 100%;
+  transition: opacity $dur-slow $ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+
+.rti-dot {
+  transition: all $dur-base $ease-in-out;
+  &.active { background: $color-secondary; width: 24px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+
+// ── Document List ────────────────────────────────────────────────
+.doc-list-box {
+  transition: box-shadow $dur-base $ease-in-out;
+  &:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+
+.doc-list-item {
+  transition: all $dur-fast $ease-in-out;
+  &:hover { background: rgba($color-secondary, 0.04); padding-left: 12px; border-radius: $radius-sm; }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover { padding-left: 0; }
+  }
+}
+
+.doc-list-date {
+  font-size: #{$text-xs};
+  color: $gray-500;
+  white-space: nowrap;
+}
+
+// ── Related Orgs Tabs ────────────────────────────────────────────
+.org-tab-btn {
+  font-size: #{$text-sm};
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: $radius-md;
+  border: 1px solid $gray-200;
+  background: white;
+  color: $gray-500;
+  cursor: pointer;
+  transition: all $dur-fast $ease-in-out;
+  outline: none;
+  min-height: 40px; // accessible tap target
+
+  &:hover { border-color: $color-secondary; color: $color-secondary-dark; background: rgba($color-secondary, 0.04); }
+
+  &.active {
+    background: $color-bg-dark; color: white; border-color: $color-bg-dark;
+    &:hover { background: $color-primary-dark; border-color: $color-primary-dark; }
+  }
+
+  &:focus-visible { box-shadow: $focus-ring; outline: 2px solid $color-secondary; outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+
+.org-logo-card {
+  transition: all $dur-base $ease-in-out;
+  &:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); border-color: $color-secondary !important; }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover { transform: none; }
+  }
+}
+
+.org-panel { display: none; &.active { display: block; } }

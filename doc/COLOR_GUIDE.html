@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Affairs Theme — Color System Guide</title>
+<style>
+  :root {
+    --primary: #591521;
+    --primary-dark: #4b121c;
+    --primary-darker: #3b0e16;
+    --primary-light: #801e2f;
+    --secondary: #dfa21f;
+    --secondary-light: #e7b750;
+    --secondary-dark: #b78519;
+    --bg-dark: #441019;
+    --warm-white: #fff5f0;
+    --maroon: #54141f;
+    --maroon-bright: #731b2b;
+    --maroon-deep: #3e0f17;
+    --maroon-black: #300b12;
+    --gold-deep: #c9921c;
+    --gold-bright: #e5b347;
+    --gold-dark: #986e15;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-900: #0f172a;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: var(--warm-white);
+    color: var(--slate-700);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  .page { max-width: 960px; margin: 0 auto; padding: 40px 48px 80px; }
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary) 60%, var(--primary-dark) 100%);
+    color: #fff; border-radius: 18px; padding: 48px 44px; margin-bottom: 36px;
+    box-shadow: 0 10px 30px rgba(43,8,13,.35);
+  }
+  .cover .badge {
+    display: inline-block; background: var(--secondary); color: var(--primary-darker);
+    font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .cover h1 { font-size: 30px; font-weight: 800; letter-spacing: -.5px; }
+  .cover p { color: var(--secondary-light); margin-top: 8px; font-size: 14px; }
+  .cover .meta { margin-top: 18px; font-size: 12px; color: rgba(255,255,255,.75); }
+  /* ── TOC ── */
+  .toc { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 22px 28px; margin-bottom: 32px; }
+  .toc h2 { font-size: 15px; color: var(--primary-darker); margin-bottom: 10px; }
+  .toc ol { padding-left: 20px; font-size: 13.5px; }
+  .toc a { color: var(--primary); text-decoration: none; }
+  .toc a:hover { color: var(--secondary-dark); }
+  /* ── Sections ── */
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 22px; font-weight: 800; color: var(--primary-darker);
+    padding-bottom: 10px; border-bottom: 3px solid var(--secondary); margin-bottom: 20px;
+  }
+  h3 { font-size: 16.5px; font-weight: 700; color: var(--primary); margin: 24px 0 10px; }
+  h4 { font-size: 14.5px; font-weight: 700; color: var(--slate-900); margin: 18px 0 8px; }
+  p { margin-bottom: 12px; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--primary); }
+  strong { color: var(--slate-900); }
+  /* ── Swatches ── */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 18px 0; }
+  .swatch {
+    background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  }
+  .swatch .chip { height: 74px; }
+  .swatch .info { padding: 10px 12px; }
+  .swatch .name { font-weight: 700; font-size: 12.5px; color: var(--slate-900); }
+  .swatch .hex { font-size: 11px; color: var(--gray-500); font-family: Consolas, monospace; }
+  .swatch .use { font-size: 10.5px; color: var(--gray-600); margin-top: 2px; }
+  /* ── Code blocks ── */
+  pre {
+    background: var(--slate-900); color: #e2e8f0; border-radius: 10px; padding: 16px 18px;
+    overflow-x: auto; font-size: 12.5px; line-height: 1.55; margin: 14px 0;
+    font-family: Consolas, 'Courier New', monospace;
+  }
+  code { font-family: Consolas, 'Courier New', monospace; }
+  p code, li code {
+    background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 5px;
+    padding: 1px 6px; font-size: 12px; color: var(--primary);
+  }
+  pre .tok-k { color: #c792ea; }
+  pre .tok-s { color: #c3e88d; }
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; font-size: 13px; }
+  th {
+    background: var(--primary-darker); color: #fff; text-align: left;
+    padding: 10px 12px; font-size: 12px; letter-spacing: .3px; text-transform: uppercase;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+  tr:nth-child(even) td { background: #faf9f7; }
+  td .mini-chip {
+    display: inline-block; width: 16px; height: 16px; border-radius: 4px;
+    vertical-align: middle; margin-right: 6px; border: 1px solid rgba(0,0,0,.12);
+  }
+  /* ── Callouts ── */
+  .note {
+    border-left: 4px solid var(--secondary); background: #fffbe9;
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 13px;
+  }
+  .warn {
+    border-left: 4px solid var(--maroon-bright); background: #fdeef1;
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 13px;
+  }
+  .tip { border-left: 4px solid var(--gold-deep); background: #fdf8ec; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 13px; }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps > li {
+    counter-increment: step; position: relative; padding: 14px 16px 14px 52px;
+    background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; margin-bottom: 12px;
+  }
+  .steps > li::before {
+    content: counter(step); position: absolute; left: 14px; top: 14px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--primary); color: #fff; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .footer-note { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--gray-300); font-size: 12px; color: var(--gray-500); }
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page { padding: 0; }
+    .cover { box-shadow: none; }
+    a { color: var(--primary); }
+    section { break-inside: auto; }
+    pre, table, .swatch, .steps > li, .note, .warn, .tip { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══════════ COVER ═══════════ -->
+  <div class="cover">
+    <span class="badge">Design System Reference</span>
+    <h1>Home Affairs Theme — Color System Guide</h1>
+    <p>Complete reference for the maroon + gold palette: tokens, utilities, CSS variables, examples, and manual re-theming steps.</p>
+    <div class="meta">Theme: <strong>homeaffairs-theme</strong> &nbsp;•&nbsp; Version 1.0 &nbsp;•&nbsp; 2026-10-26</div>
+  </div>
+
+  <!-- ═══════════ TOC ═══════════ -->
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#overview">Design System Overview</a></li>
+      <li><a href="#palette">Color Palette Reference</a></li>
+      <li><a href="#definitions">Where Colors Are Defined</a></li>
+      <li><a href="#utilities">Utility Class Usage (bg-, text-, border-, gradient-)</a></li>
+      <li><a href="#css-vars">CSS Variables (var(--...))</a></li>
+      <li><a href="#tints">Opacity Modifiers &amp; Tints</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#change-colors">How to Change Theme Colors Manually (Primary &amp; Secondary)</a></li>
+      <li><a href="#full-retheme">Changing the Total Color Theme (Full Re-theme)</a></li>
+      <li><a href="#palette-tool">Custom Color Palette Tool (Testing)</a></li>
+      <li><a href="#troubleshooting">Troubleshooting / Common Pitfalls</a></li>
+    </ol>
+  </div>
+
+  <!-- ═══════════ 1. OVERVIEW ═══════════ -->
+  <section id="overview">
+    <h2>1. Design System Overview</h2>
+    <p>The theme uses a <strong>two-brand-color system</strong> with extended tint shades:</p>
+    <table>
+      <thead><tr><th>Family</th><th>Role</th><th>Primary Value</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mini-chip" style="background:var(--primary)"></span><strong>Primary</strong></td><td>Maroon — main brand, buttons, headings, emphasis</td><td><code>#591521</code></td></tr>
+        <tr><td><span class="mini-chip" style="background:var(--secondary)"></span><strong>Secondary</strong></td><td>Gold — accents, highlights, hover states, badges</td><td><code>#dfa21f</code></td></tr>
+        <tr><td><span class="mini-chip" style="background:var(--warm-white)"></span><strong>Neutrals</strong></td><td>Warm-white backgrounds + Tailwind slate/gray scales</td><td><code>#fff5f0</code></td></tr>
+      </tbody>
+    </table>
+    <p>The palette is exposed in <strong>three layers</strong>, all kept in sync:</p>
+    <ol>
+      <li><strong>Tailwind config</strong> (inline JS) — powers utility classes <code>bg-primary</code>, <code>text-secondary</code>, etc.</li>
+      <li><strong>SCSS variables</strong> (<code>_variables.scss</code>) — powers the compiled <code>style.css</code> and <code>--color-*</code> custom properties.</li>
+      <li><strong>CSS custom properties</strong> (<code>:root</code> in <code>_base.scss</code>) — used by embedded styles and SCSS rules.</li>
+    </ol>
+    <div class="warn">⚠️ Because the palette lives in three places, a color change <strong>must be applied in all three</strong> (see <a href="#change-colors">Section 8</a>).</div>
+  </section>
+
+  <!-- ═══════════ 2. PALETTE ═══════════ -->
+  <section id="palette">
+    <h2>2. Color Palette Reference</h2>
+
+    <h3>Brand Colors</h3>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#591521"></div><div class="info"><div class="name">primary</div><div class="hex">#591521</div><div class="use">bg/text/border-primary</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#4b121c"></div><div class="info"><div class="name">primary-dark</div><div class="hex">#4b121c</div><div class="use">hover, hero bg</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3b0e16"></div><div class="info"><div class="name">primary-darker</div><div class="hex">#3b0e16</div><div class="use">footer, borders</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#801e2f"></div><div class="info"><div class="name">primary-light</div><div class="hex">#801e2f</div><div class="use">gradients (steel alias)</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#dfa21f"></div><div class="info"><div class="name">secondary</div><div class="hex">#dfa21f</div><div class="use">bg/text/border-secondary</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#e7b750"></div><div class="info"><div class="name">secondary-light</div><div class="hex">#e7b750</div><div class="use">topbar text, badges</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#b78519"></div><div class="info"><div class="name">secondary-dark</div><div class="hex">#b78519</div><div class="use">hover, borders</div></div></div>
+    </div>
+
+    <h3>Extended Maroon / Gold Shades</h3>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#54141f"></div><div class="info"><div class="name">maroon</div><div class="hex">#54141f</div><div class="use">alt maroon gradients</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#731b2b"></div><div class="info"><div class="name">maroon-bright</div><div class="hex">#731b2b</div><div class="use">bright accent</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3e0f17"></div><div class="info"><div class="name">maroon-deep</div><div class="hex">#3e0f17</div><div class="use">deep background</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#300b12"></div><div class="info"><div class="name">maroon-black</div><div class="hex">#300b12</div><div class="use">darkest / text-on-dark</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#c9921c"></div><div class="info"><div class="name">gold-deep</div><div class="hex">#c9921c</div><div class="use">muted gold</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#e5b347"></div><div class="info"><div class="name">gold-bright</div><div class="hex">#e5b347</div><div class="use">bright gold accent</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#986e15"></div><div class="info"><div class="name">gold-dark</div><div class="hex">#986e15</div><div class="use">dark gold text</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#441019"></div><div class="info"><div class="name">bg-dark</div><div class="hex">#441019</div><div class="use">nav, drawer, chrome</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#fff5f0"></div><div class="info"><div class="name">warm-white</div><div class="hex">#fff5f0</div><div class="use">section background</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#801e2f"></div><div class="info"><div class="name">steel</div><div class="hex">#801e2f</div><div class="use">alias of primary-light</div></div></div>
+    </div>
+
+    <h3>Standard Tailwind Palettes Used</h3>
+    <ul>
+      <li><code>white</code> — <code>bg-white</code>, <code>text-white</code> (opacity steps <code>/5 /10 /15 /20 /25 /30 /40 /60 /70 /80 /90</code>)</li>
+      <li><code>black</code> — <code>bg-black/20 /40 /80 /90</code></li>
+      <li><code>slate</code> — <code>50 … 950</code> (body text, muted labels, borders)</li>
+      <li><code>gray</code> — <code>50 … 800</code> (secondary text, dividers)</li>
+    </ul>
+
+    <h3>Semantic Accent Colors (status only)</h3>
+    <p>The brand palette is strictly maroon/gold. These accents appear only in semantic contexts — never in navigation, buttons, headings or section backgrounds:</p>
+    <table>
+      <thead><tr><th>Accent</th><th>Allowed use</th></tr></thead>
+      <tbody>
+        <tr><td><code>red</code></td><td>Urgent notices, prohibited items, PDF/file actions, validation errors</td></tr>
+        <tr><td><code>amber</code></td><td>Certificates, warnings, caution callouts</td></tr>
+        <tr><td><code>emerald</code></td><td>&quot;Active&quot;, &quot;Available&quot; and success status indicators</td></tr>
+        <tr><td><code>blue</code> / <code>purple</code></td><td>General-category badges and non-PDF file-type icons</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ 3. DEFINITIONS ═══════════ -->
+  <section id="definitions">
+    <h2>3. Where Colors Are Defined</h2>
+    <p>All definitions live inside the theme root: <code>wp-content/themes/homeaffairs-theme/</code></p>
+
+    <h3>3.1 Tailwind Config (inline JS)</h3>
+    <p>There is <strong>no <code>tailwind.config.js</code> file</strong>. The config is an inline <code>&lt;script&gt;</code> in <strong>two</strong> places:</p>
+    <ol>
+      <li><code>header.php</code> — line 11 (every page except the landing page)</li>
+      <li><code>page-templates/template-landing.php</code> — line 20 (standalone landing page)</li>
+    </ol>
+<pre><span class="tok-k">tailwind.config</span>={theme:{extend:{colors:{
+  <span class="tok-s">"primary"</span>:<span class="tok-s">"#591521"</span>,
+  <span class="tok-s">"primary-dark"</span>:<span class="tok-s">"#4b121c"</span>,
+  <span class="tok-s">"primary-darker"</span>:<span class="tok-s">"#3b0e16"</span>,
+  <span class="tok-s">"primary-light"</span>:<span class="tok-s">"#801e2f"</span>,
+  <span class="tok-s">"secondary"</span>:<span class="tok-s">"#dfa21f"</span>,
+  <span class="tok-s">"secondary-light"</span>:<span class="tok-s">"#e7b750"</span>,
+  <span class="tok-s">"secondary-dark"</span>:<span class="tok-s">"#b78519"</span>,
+  <span class="tok-s">"bg-dark"</span>:<span class="tok-s">"#441019"</span>,
+  <span class="tok-s">"steel"</span>:<span class="tok-s">"#801e2f"</span>,
+  <span class="tok-s">"warm-white"</span>:<span class="tok-s">"#fff5f0"</span>,
+  <span class="tok-s">"maroon"</span>:<span class="tok-s">"#54141f"</span>,
+  <span class="tok-s">"maroon-bright"</span>:<span class="tok-s">"#731b2b"</span>,
+  <span class="tok-s">"maroon-deep"</span>:<span class="tok-s">"#3e0f17"</span>,
+  <span class="tok-s">"maroon-black"</span>:<span class="tok-s">"#300b12"</span>,
+  <span class="tok-s">"gold-deep"</span>:<span class="tok-s">"#c9921c"</span>,
+  <span class="tok-s">"gold-bright"</span>:<span class="tok-s">"#e5b347"</span>,
+  <span class="tok-s">"gold-dark"</span>:<span class="tok-s">"#986e15"</span>
+}}}}</pre>
+    <div class="warn">⚠️ Keys with hyphens <strong>must be quoted</strong> (<code>"primary-dark"</code>). Unquoted keys throw <code>Uncaught SyntaxError: Unexpected token '-'</code> and disable all custom colors.</div>
+
+    <h3>3.2 SCSS Variables</h3>
+    <p><code>assets/scss/_variables.scss</code> — base source of truth for SCSS:</p>
+<pre>$color-primary:         #591521;
+$color-primary-dark:    #4b121c;
+$color-primary-darker:  #3b0e16;
+$color-primary-light:   #801e2f;
+
+$color-secondary:       #dfa21f;
+$color-secondary-light: #e7b750;
+$color-secondary-dark:  #b78519;
+
+$color-bg-dark:         #441019;
+$bg-warm-white:         #fff5f0;
+
+$color-maroon:          #54141f;
+$color-maroon-bright:   #731b2b;
+$color-maroon-deep:     #3e0f17;
+$color-maroon-black:    #300b12;
+
+$color-gold-deep:       #c9921c;
+$color-gold-bright:     #e5b347;
+$color-gold-dark:       #986e15;
+
+$steel:                 $color-primary-light;</pre>
+
+    <h3>3.3 CSS Custom Properties</h3>
+    <p><code>assets/scss/_base.scss</code> — <code>:root</code> block (lines 3–40) exposes every SCSS variable as <code>--color-*</code>:</p>
+<pre>:root {
+  --color-primary: #{$color-primary};
+  --color-primary-dark: #{$color-primary-dark};
+  --color-primary-darker: #{$color-primary-darker};
+  --color-primary-light: #{$color-primary-light};
+
+  --color-secondary: #{$color-secondary};
+  --color-secondary-light: #{$color-secondary-light};
+  --color-secondary-dark: #{$color-secondary-dark};
+
+  --color-bg-dark: #{$color-bg-dark};
+  --bg-warm-white: #{$bg-warm-white};
+  /* ...maroon / gold / tint vars */
+}</pre>
+
+    <h3>3.4 Compiled Stylesheet</h3>
+    <p>The compiled output is <code>assets/css/style.css</code> (enqueued site-wide). Any SCSS edit requires recompilation:</p>
+    <pre>npx sass assets/scss/style.scss assets/css/style.css</pre>
+  </section>
+
+  <!-- ═══════════ 4. UTILITIES ═══════════ -->
+  <section id="utilities">
+    <h2>4. Utility Class Usage</h2>
+    <p>Tailwind utilities are generated at runtime by the Play-CDN build (<code>assets/css/lib/tailwind.min.js</code>) using the inline config in Section 3.1.</p>
+    <table>
+      <thead><tr><th>Purpose</th><th>Classes</th></tr></thead>
+      <tbody>
+        <tr><td>Background fill</td><td><code>bg-primary</code>, <code>bg-secondary</code>, <code>bg-primary-dark</code>, <code>bg-warm-white</code>, <code>bg-bg-dark</code></td></tr>
+        <tr><td>Text color</td><td><code>text-primary</code>, <code>text-secondary</code>, <code>text-primary-darker</code>, <code>text-secondary-light</code></td></tr>
+        <tr><td>Border</td><td><code>border-primary</code>, <code>border-secondary</code>, <code>border-primary-darker/15</code>, <code>border-secondary/30</code></td></tr>
+        <tr><td>Dividers</td><td><code>divide-white/10</code></td></tr>
+        <tr><td>Gradient stops</td><td><code>from-primary</code>, <code>to-secondary</code>, <code>via-primary/60</code></td></tr>
+        <tr><td>Hover state</td><td><code>hover:bg-primary-dark</code>, <code>hover:border-secondary</code>, <code>group-hover:text-secondary</code></td></tr>
+        <tr><td>Opacity variants</td><td><code>bg-primary/10</code>, <code>text-secondary/20</code>, <code>border-secondary/40</code>, <code>from-secondary/10</code></td></tr>
+      </tbody>
+    </table>
+    <p>Gradient example used on the hero:</p>
+<pre>&lt;div class="bg-gradient-to-br from-primary-darker to-slate-800"&gt;…&lt;/div&gt;</pre>
+  </section>
+
+  <!-- ═══════════ 5. CSS VARS ═══════════ -->
+  <section id="css-vars">
+    <h2>5. CSS Variables</h2>
+    <p>Embedded <code>&lt;style&gt;</code> blocks and SCSS use the custom properties directly:</p>
+<pre>/* header.php topbar */
+background-color: var(--color-primary-darker) !important;
+border-top-color: var(--color-secondary) !important;
+
+/* template-landing.php language buttons */
+background: var(--color-secondary);
+color: var(--color-bg-dark);
+border-color: var(--color-secondary-dark);</pre>
+    <p>Available variables: <code>--color-primary</code>, <code>--color-primary-dark</code>, <code>--color-primary-darker</code>, <code>--color-primary-light</code>, <code>--color-secondary</code>, <code>--color-secondary-light</code>, <code>--color-secondary-dark</code>, <code>--color-bg-dark</code>, <code>--bg-warm-white</code>, <code>--steel</code>, <code>--color-maroon</code>, <code>--color-maroon-bright</code>, <code>--color-maroon-deep</code>, <code>--color-maroon-black</code>, <code>--color-gold-deep</code>, <code>--color-gold-bright</code>, <code>--color-gold-dark</code>, plus the <code>-tint-*</code> variants.</p>
+  </section>
+
+  <!-- ═══════════ 6. TINTS ═══════════ -->
+  <section id="tints">
+    <h2>6. Opacity Modifiers &amp; Tints</h2>
+    <h4>Tailwind slash syntax</h4>
+<pre>&lt;button class="bg-primary/10 text-secondary/20 border-secondary/30"&gt;…&lt;/button&gt;</pre>
+    <h4>SCSS derived tints (<code>_variables.scss</code> lines 19–38)</h4>
+    <table>
+      <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>$color-secondary-tint</code></td><td><code>rgba(212,175,55,0.08)</code></td></tr>
+        <tr><td><code>$color-secondary-tint-strong</code></td><td><code>rgba(212,175,55,0.15)</code></td></tr>
+        <tr><td><code>$color-secondary-tint-light</code></td><td><code>rgba(212,175,55,0.10)</code></td></tr>
+        <tr><td><code>$color-secondary-tint-med</code></td><td><code>rgba(212,175,55,0.20)</code></td></tr>
+        <tr><td><code>$color-secondary-tint-deep</code></td><td><code>rgba(212,175,55,0.25)</code></td></tr>
+        <tr><td><code>$color-secondary-tint-vivid</code></td><td><code>rgba(212,175,55,0.30)</code></td></tr>
+        <tr><td><code>$color-bg-dark-tint-strong</code></td><td><code>rgba(74,14,23,0.88)</code></td></tr>
+        <tr><td><code>$color-primary-tint-72</code></td><td><code>rgba(128,0,32,0.72)</code></td></tr>
+        <tr><td><code>$color-primary-dark-tint-78</code></td><td><code>rgba(88,0,22,0.78)</code></td></tr>
+        <tr><td><code>$color-maroon-tint-05 … 15</code></td><td><code>rgba(88,17,26,0.05 … 0.15)</code></td></tr>
+        <tr><td><code>$color-primary-darker-tint-04 … 20</code></td><td><code>rgba(43,8,13,0.04 … 0.20)</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ 7. EXAMPLES ═══════════ -->
+  <section id="examples">
+    <h2>7. Examples</h2>
+
+    <h3>7.1 Primary button</h3>
+<pre>&lt;a href="/services" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark
+   text-white font-bold px-5 py-2.5 rounded-full text-xs shadow-md
+   hover:shadow-lg transition-all no-underline"&gt;
+  &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt; Read More
+&lt;/a&gt;</pre>
+
+    <h3>7.2 Secondary / gold outline button</h3>
+<pre>&lt;a href="/circulars" class="inline-flex items-center gap-2 border-2 border-secondary
+   text-secondary hover:bg-secondary hover:text-primary-darker
+   px-5 py-2.5 rounded-lg font-bold text-sm transition-all no-underline"&gt;
+  Browse Circulars
+&lt;/a&gt;</pre>
+
+    <h3>7.3 Section badge (gold pill)</h3>
+<pre>&lt;span class="inline-flex items-center gap-2 bg-secondary/10 text-secondary
+     font-bold text-[10px] tracking-[2px] uppercase px-3.5 py-1 rounded-full border border-secondary/30"&gt;
+  Ministry Governance
+&lt;/span&gt;</pre>
+
+    <h3>7.4 Card with warm-white background</h3>
+<pre>&lt;div class="bg-warm-white rounded-2xl border border-primary-darker/15
+     shadow-sm p-6 sm:p-8 hover:border-secondary transition-all"&gt;
+  &lt;h3 class="text-xl font-extrabold text-primary-darker"&gt;Card Title&lt;/h3&gt;
+  &lt;p class="text-sm text-slate-600 mt-2"&gt;Body copy…&lt;/p&gt;
+&lt;/div&gt;</pre>
+
+    <h3>7.5 Gradient band</h3>
+<pre>&lt;section class="bg-gradient-to-r from-primary via-primary/80 to-secondary"&gt;
+  &lt;div class="max-w-7xl mx-auto px-6 py-16 text-white"&gt;…&lt;/div&gt;
+&lt;/section&gt;</pre>
+
+    <h3>7.6 Embedded style using CSS variables</h3>
+<pre>&lt;div class="topbar" style="background-color: var(--color-primary-darker);
+     color: var(--color-secondary-light);"&gt;…&lt;/div&gt;</pre>
+
+    <h3>7.7 Pulsing CTA (Circuit Booking)</h3>
+<pre>&lt;a class="ha-cta-pulse bg-primary hover:bg-primary-dark text-white rounded-full …"&gt;Book&lt;/a&gt;</pre>
+    <p>Powered by <code>assets/css/style.css</code> rules <code>.ha-cta-pulse::before/.after</code> (gold→primary ring <code>rgba(128,0,32,…)</code>).</p>
+  </section>
+
+  <!-- ═══════════ 8. CHANGE COLORS ═══════════ -->
+  <section id="change-colors">
+    <h2>8. How to Change Theme Colors Manually</h2>
+    <p>Changing primary/secondary requires editing <strong>three places</strong> (Tailwind config, SCSS variable, and in most cases a recompile). Do them in this order and the whole theme updates consistently.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Pick your new colors.</strong><br>
+        Example: change primary to <strong>dark blue <code>#123a6b</code></strong> and secondary to <strong>teal <code>#0f9d8f</code></strong>.
+      </li>
+      <li>
+        <strong>Edit the Tailwind config.</strong><br>
+        Open <code>header.php</code> line 11 (and <code>page-templates/template-landing.php</code> line 20 if the landing page must match). Keep keys quoted:
+<pre>tailwind.config={theme:{extend:{colors:{
+  "primary":"#123a6b",
+  "primary-dark":"#0d2b52",        // darker shade of new primary
+  "primary-darker":"#071a33",      // darkest shade
+  "primary-light":"#1a4f8c",       // lighter shade
+  "secondary":"#0f9d8f",
+  "secondary-light":"#aef0e8",     // pale tint
+  "secondary-dark":"#0b7268",      // muted shade
+  /* ...leave maroon/gold shades unless you want to replace them too */
+}}}}</pre>
+      </li>
+      <li>
+        <strong>Edit the SCSS variables.</strong><br>
+        Open <code>assets/scss/_variables.scss</code> and update the matching variables (lines 1–7):
+<pre>$color-primary:         #123a6b;
+$color-primary-dark:    #0d2b52;
+$color-primary-darker:  #071a33;
+$color-primary-light:   #1a4f8c;
+
+$color-secondary:       #0f9d8f;
+$color-secondary-light: #aef0e8;
+$color-secondary-dark:  #0b7268;</pre>
+        Optional — update the derived tints near the bottom if you want them based on the new colors:
+<pre>$color-secondary-tint: rgba($color-secondary, 0.08);
+$color-primary-tint-72: rgba($color-primary, 0.72);</pre>
+      </li>
+      <li>
+        <strong>Recompile the CSS.</strong><br>
+        From the theme folder:
+<pre>npx sass assets/scss/style.scss assets/css/style.css</pre>
+        This regenerates the <code>:root</code> block and component styles from the new SCSS variables.
+      </li>
+      <li>
+        <strong>Check hardcoded uses.</strong><br>
+        Search for the old hex values to catch embedded/legacy styles:
+<pre>rg -i "#591521|#dfa21f" --glob "!node_modules" .</pre>
+        Replacements to consider: old primary <code>#591521</code> → new primary; old secondary <code>#dfa21f</code> → new secondary; related shades (<code>#4b121c</code>, <code>#b78519</code>, etc.) in <code>.php</code> inline <code>style="…"</code> attributes and <code>template-landing.php</code> <code>&lt;style&gt;</code> block.
+      </li>
+      <li>
+        <strong>Clear browser cache &amp; verify.</strong><br>
+        <ol>
+          <li>Hard-refresh (Ctrl+F5) so the runtime Tailwind script re-reads the new config.</li>
+          <li>Check the homepage, topbar, footer, hero, and the Circuit Booking pulse effect.</li>
+          <li>Check a subpage template (e.g. <code>template-governance-structure.php</code> tabs) for the new colors.</li>
+        </ol>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ═══════════ 8B. FULL RE-THEME ═══════════ -->
+  <section id="full-retheme">
+    <h2>8B. Changing the Total Color Theme (Full Re-theme)</h2>
+    <p>Changing just primary/secondary (<a href="#change-colors">Section 8</a>) is enough when you want to <strong>re-tint</strong> the existing maroon/gold look. To <strong>fully re-theme</strong> the site (e.g. navy + teal, or a government blue + orange scheme), you must replace the entire token set so the extended maroon/gold shades and warm neutrals stop leaking through in gradients, overlays, the footer, and the landing page.</p>
+
+    <h3>Step 1 — Define the new token map</h3>
+    <p>Every token below must get a value. Use the interactive palette tool (<a href="#palette-tool">Section 10</a>) to auto-generate shades and the exact code blocks.</p>
+    <table>
+      <thead><tr><th>Token</th><th>Old (maroon/gold)</th><th>Example New (blue/teal)</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>primary</code></td><td><code>#591521</code></td><td><code>#123a6b</code></td><td>Brand main</td></tr>
+        <tr><td><code>primary-dark</code></td><td><code>#4b121c</code></td><td><code>#0d2b52</code></td><td>Hover, hero bg</td></tr>
+        <tr><td><code>primary-darker</code></td><td><code>#3b0e16</code></td><td><code>#071a33</code></td><td>Footer, borders</td></tr>
+        <tr><td><code>primary-light</code></td><td><code>#801e2f</code></td><td><code>#1a4f8c</code></td><td>Gradients, steel</td></tr>
+        <tr><td><code>secondary</code></td><td><code>#dfa21f</code></td><td><code>#0f9d8f</code></td><td>Accent main</td></tr>
+        <tr><td><code>secondary-light</code></td><td><code>#e7b750</code></td><td><code>#aef0e8</code></td><td>Topbar text, badges</td></tr>
+        <tr><td><code>secondary-dark</code></td><td><code>#b78519</code></td><td><code>#0b7268</code></td><td>Hover, borders</td></tr>
+        <tr><td><code>maroon</code></td><td><code>#54141f</code></td><td><code>#0e2a52</code></td><td>Alt gradient color</td></tr>
+        <tr><td><code>maroon-bright</code></td><td><code>#731b2b</code></td><td><code>#1c4a8c</code></td><td>Bright accent</td></tr>
+        <tr><td><code>maroon-deep</code></td><td><code>#3e0f17</code></td><td><code>#051224</code></td><td>Deep background</td></tr>
+        <tr><td><code>maroon-black</code></td><td><code>#300b12</code></td><td><code>#02060f</code></td><td>Darkest</td></tr>
+        <tr><td><code>gold-deep</code></td><td><code>#c9921c</code></td><td><code>#0a6d63</code></td><td>Muted accent</td></tr>
+        <tr><td><code>gold-bright</code></td><td><code>#e5b347</code></td><td><code>#5fd4c5</code></td><td>Bright accent</td></tr>
+        <tr><td><code>gold-dark</code></td><td><code>#986e15</code></td><td><code>#0a4f48</code></td><td>Accent text on light</td></tr>
+        <tr><td><code>bg-dark</code></td><td><code>#441019</code></td><td><code>#0a1c33</code></td><td>Chrome (nav, drawer)</td></tr>
+        <tr><td><code>warm-white</code></td><td><code>#fff5f0</code></td><td><code>#F4F7FB</code></td><td>Section bg (cool-tinted white)</td></tr>
+        <tr><td><code>steel</code></td><td><code>#801e2f</code></td><td><code>#1a4f8c</code></td><td>Alias = primary-light</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Step 2 — Update the Tailwind config (both files)</h3>
+    <p><code>header.php:11</code> <strong>and</strong> <code>page-templates/template-landing.php:20</code>:</p>
+<pre>tailwind.config={theme:{extend:{colors:{
+  "primary":"#123a6b","primary-dark":"#0d2b52","primary-darker":"#071a33","primary-light":"#1a4f8c",
+  "secondary":"#0f9d8f","secondary-light":"#aef0e8","secondary-dark":"#0b7268",
+  "bg-dark":"#0a1c33","steel":"#1a4f8c","warm-white":"#F4F7FB",
+  "maroon":"#0e2a52","maroon-bright":"#1c4a8c","maroon-deep":"#051224","maroon-black":"#02060f",
+  "gold-deep":"#0a6d63","gold-bright":"#5fd4c5","gold-dark":"#0a4f48"
+}}}}</pre>
+    <div class="tip">💡 Even though the keys keep the names <code>maroon</code>/<code>gold</code>, they now hold the new theme's shades — no template markup needs to change.</div>
+
+    <h3>Step 3 — Update SCSS variables</h3>
+    <p><code>assets/scss/_variables.scss</code> — replace all values (lines 1–16):</p>
+<pre>$color-primary:         #123a6b;
+$color-primary-dark:    #0d2b52;
+$color-primary-darker:  #071a33;
+$color-primary-light:   #1a4f8c;
+
+$color-secondary:       #0f9d8f;
+$color-secondary-light: #aef0e8;
+$color-secondary-dark:  #0b7268;
+
+$color-bg-dark:         #0a1c33;
+$bg-warm-white:         #F4F7FB;
+
+$color-maroon:          #0e2a52;
+$color-maroon-bright:   #1c4a8c;
+$color-maroon-deep:     #051224;
+$color-maroon-black:    #02060f;
+
+$color-gold-deep:       #0a6d63;
+$color-gold-bright:     #5fd4c5;
+$color-gold-dark:       #0a4f48;</pre>
+
+    <h3>Step 4 — Recompile CSS</h3>
+<pre>npx sass assets/scss/style.scss assets/css/style.css</pre>
+
+    <h3>Step 5 — Replace hardcoded maroon/gold</h3>
+    <p>Search every PHP template, inline <code>&lt;style&gt;</code> and <code>style="…"</code> attribute for the <strong>old extended shades</strong>:</p>
+<pre>rg -i "#591521|#4b121c|#3b0e16|#801e2f|#dfa21f|#e7b750|#b78519|#54141f|#731b2b|#3e0f17|#300b12|#c9921c|#e5b347|#986e15|#441019|#fff5f0" --glob "!node_modules" .</pre>
+    <p>Key spots that hardcode colors and must be re-themed by hand:</p>
+    <ul>
+      <li><code>header.php</code> topbar &amp; footer inline styles (<code>var(--color-*)</code> auto-update — no edit needed).</li>
+      <li><code>template-landing.php</code> <code>&lt;style&gt;</code> block (language buttons, <code>.landing-cover</code> gradient).</li>
+      <li><code>template-home.php</code> hero background <code>bg-primary-dark</code> (auto via token) and any inline <code>style=</code> attributes.</li>
+      <li><code>assets/css/style.css</code> component rules that use literal hex (e.g. <code>.gov-tab-btn</code>, <code>.ha-cta-pulse</code>).</li>
+    </ul>
+
+    <h3>Step 6 — Update documentation &amp; verify</h3>
+    <ol>
+      <li>Update the swatch values in this guide / <code>COLOR_GUIDE.html</code> if you keep them as reference.</li>
+      <li>Hard-refresh and audit: topbar, main nav, hero, stats bar, footer, mobile drawer, Circuit Booking pulse, landing page, and one tabbed subpage.</li>
+      <li>Verify color contrast (primary text on secondary, secondary-light text on primary-dark) — the palette tool includes contrast hints.</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════ 10. PALETTE TOOL ═══════════ -->
+  <section id="palette-tool">
+    <h2>10. Custom Color Palette Tool (Testing)</h2>
+    <p>An interactive tool ships with this guide: <strong><code>doc/COLOR_PALETTE_TOOL.html</code></strong>. Open it in any modern browser (double-click the file, or via <code>http://localhost/moha/wp-content/themes/homeaffairs-theme/doc/COLOR_PALETTE_TOOL.html</code>).</p>
+    <h3>What it does</h3>
+    <ol>
+      <li><strong>Pick colors</strong> — set a base <code>primary</code> and <code>secondary</code> (or use presets / random).</li>
+      <li><strong>Auto-derive shades</strong> — generates <code>-dark</code>, <code>-darker</code>, <code>-light</code> (and the <code>maroon</code>/<code>gold</code> extended family) using HSL math, so every token gets a value automatically.</li>
+      <li><strong>Live preview</strong> — renders the topbar, buttons, badges, cards, gradient band, tab pill and the Circuit-Booking pulse using your palette, exactly like the theme.</li>
+      <li><strong>Contrast hints</strong> — shows WCAG-style pass/fail hints for the main text combinations.</li>
+      <li><strong>Copy-ready code</strong> — outputs the Tailwind config object and the <code>_variables.scss</code> block for both <strong>Section 8</strong> (primary/secondary only) and <strong>Section 8B</strong> (full theme).</li>
+      <li><strong>Copy buttons</strong> — one-click copy of the JS config and the SCSS variables to the clipboard.</li>
+    </ol>
+    <h3>Workflow</h3>
+    <ol>
+      <li>Open the tool and tune <code>primary</code> / <code>secondary</code> until the preview looks right.</li>
+      <li>Copy the generated <strong>Tailwind config</strong> → paste into <code>header.php:11</code> (and <code>template-landing.php:20</code>).</li>
+      <li>Copy the generated <strong>SCSS variables</strong> → paste into <code>assets/scss/_variables.scss</code>.</li>
+      <li>Run <code>npx sass assets/scss/style.scss assets/css/style.css</code>.</li>
+      <li>Hard-refresh and verify (Section 8 Step 6 / Section 8B Step 6).</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════ 9. TROUBLESHOOTING ═══════════ -->
+  <section id="troubleshooting">
+    <h2>9. Troubleshooting / Common Pitfalls</h2>
+    <table>
+      <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td><code>Uncaught SyntaxError: Unexpected token '-'</code></td><td>Unquoted hyphenated keys in inline config</td><td>Quote keys: <code>"primary-dark"</code></td></tr>
+        <tr><td>Custom colors not rendering at all</td><td>The inline config <code>script</code> threw an error before Tailwind read it</td><td>Validate config with <code>node --check</code> on the extracted script</td></tr>
+        <tr><td>Colors changed in SCSS but site still shows old ones</td><td><code>style.css</code> not recompiled</td><td>Re-run the Sass build</td></tr>
+        <tr><td>Landing page shows old colors after header change</td><td>Landing page has its <strong>own</strong> config</td><td>Edit <code>template-landing.php</code> too</td></tr>
+        <tr><td>CDN warning in console</td><td>Play-CDN runtime build</td><td>Warning text is stripped from vendored <code>tailwind.min.js</code>; optionally move to compiled CSS via Tailwind CLI/PostCSS</td></tr>
+        <tr><td>Tab panels not switching</td><td>JS toggling <code>hidden</code> only, while CSS keys off <code>.active</code></td><td>Toggle both <code>hidden</code> and <code>active</code> classes</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip">💡 <strong>Pro tip:</strong> To validate the inline Tailwind config quickly, copy the object into a <code>.js</code> file and run <code>node --check file.js</code>. If it passes, the syntax is safe for the browser.</div>
+  </section>
+
+  <div class="footer-note">
+    Home Affairs Theme — Color System Guide &nbsp;•&nbsp; <code>doc/COLOR_GUIDE.html</code> &nbsp;•&nbsp; Generated 2026-10-26 &nbsp;•&nbsp; Interactive companion: <code>doc/COLOR_PALETTE_TOOL.html</code>.
+  </div>
+
+</div>
+</body>
+</html>

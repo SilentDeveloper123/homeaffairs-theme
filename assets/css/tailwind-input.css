@@ -1,0 +1,48 @@
+/* Tailwind CSS Input File for homeaffairs-theme */
+/* This file is compiled by: npm run build:tailwind */
+/* Output: assets/css/tailwind.css (minified, purged) */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component layer */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2.5 rounded-full text-sm shadow-md hover:shadow-lg transition-all whitespace-nowrap no-underline;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 bg-secondary hover:bg-secondary-dark text-bg-dark font-bold px-5 py-2.5 rounded-full text-sm shadow-md hover:shadow-lg transition-all whitespace-nowrap no-underline;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-bg-dark font-bold px-5 py-2.5 rounded-full text-sm transition-all whitespace-nowrap no-underline;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition-all;
+    @apply focus:outline-none focus:border-secondary focus:ring-3 focus:ring-secondary/15;
+  }
+
+  .section-heading {
+    @apply text-2xl font-bold text-bg-dark relative;
+  }
+
+  .section-heading::after {
+    @apply content-[''] absolute bottom-0 left-0 w-12 h-1 bg-secondary rounded-full;
+  }
+}
+
+/* Utility overrides */
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2;
+  }
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px];
+  }
+}

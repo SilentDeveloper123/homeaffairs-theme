@@ -1,0 +1,51 @@
+@use 'variables' as *;
+
+.glightbox-clean {
+  .gslide-description { background: transparent; }
+
+  .gslide-title {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-weight: 700; color: $color-bg-dark;
+  }
+
+  .gslide-desc {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; color: $gray-500;
+  }
+}
+
+.gclose {
+  border: 2px solid rgba(255,255,255,0.2) !important;
+  border-radius: 50% !important; transition: all 0.2s;
+
+  &:hover { border-color: $color-secondary !important; background: $color-secondary !important; }
+}
+
+.gnext, .gprev {
+  border-radius: 50% !important; transition: all 0.2s;
+
+  &:hover { background: $color-secondary !important; }
+}
+
+.glightbox-clean .gprev,
+.glightbox-clean .gnext { background: rgba($color-bg-dark, 0.7); }
+
+.gslide-image img { border-radius: 12px !important; }
+
+.goverlay { background: rgba($color-bg-dark, 0.95) !important; backdrop-filter: blur(8px); }
+
+/* ── Gallery lightbox trigger ── */
+.gallery-trigger {
+  cursor: pointer; position: relative; overflow: hidden;
+
+  &::after {
+    content: '\f002'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+    position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center;
+    background: rgba($color-bg-dark, 0.5); color: white; font-size: clamp(1.5rem, 1.25rem + 1vw, 1.75rem);
+    opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(2px);
+  }
+
+  &:hover::after { opacity: 1; }
+}
+
+.gallery-trigger.video-trigger::after { content: '\f144'; font-size: clamp(2rem, 1.75rem + 1vw, 2.25rem); }

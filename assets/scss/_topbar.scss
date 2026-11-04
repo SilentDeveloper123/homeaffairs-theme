@@ -1,0 +1,29 @@
+@use 'variables' as *;
+
+// CSS custom property used by sticky nav row (top: var(--topbar-height))
+// Set as a static fallback; JS overrides it dynamically after load.
+:root {
+  --topbar-height: 38px; // desktop default (py-2 + text-xs line-height)
+}
+@media (max-width: 639px) {
+  :root { --topbar-height: 34px; } // mobile default (py-2 + text-[11px])
+}
+
+.topbar {
+  background: $color-bg-dark;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+
+  // Ensure minimum font size for WCAG legibility
+  font-size: #{$text-xs};
+
+  a {
+    // Ensure contrast — white on dark maroon (meets 4.5:1)
+    color: rgba(255,255,255,0.85);
+    &:hover { color: $color-secondary-light; }
+    &:focus-visible {
+      outline: 2px solid $color-secondary;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+}
