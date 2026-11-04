@@ -742,76 +742,119 @@ function ha_notice_icon_admin_footer() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// HIDE DEFAULT CONTENT EDITOR FOR CPTS & CUSTOM FIELD PAGES
+// HIDE DEFAULT WYSIWYG EDITOR & FEATURED IMAGE ON PAGE TEMPLATES & CPTS
 // ═══════════════════════════════════════════════════════════════════
 
 /**
- * Remove default editor support for custom post types and custom field pages
+ * Helper to determine if a page uses a custom page template or is the front page
  */
-add_action( 'admin_init', 'ha_hide_default_editor_for_custom_fields' );
-function ha_hide_default_editor_for_custom_fields() {
+function ha_is_custom_page_template( $post_id = 0 ) {
+	if ( ! $post_id ) {
+		if ( isset( $_GET['post'] ) ) {
+			$post_id = (int) $_GET['post'];
+		} elseif ( isset( $_POST['post_ID'] ) ) {
+			$post_id = (int) $_POST['post_ID'];
+		}
+	}
+
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$front_page_id = (int) get_option( 'page_on_front' );
+	if ( $front_page_id > 0 && $post_id === $front_page_id ) {
+		return true;
+	}
+
+	$template = get_post_meta( $post_id, '_wp_page_template', true );
+	if ( ! empty( $template ) && 'default' !== $template ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Remove default editor and thumbnail support for custom post types and page templates
+ */
+add_action( 'admin_init', 'ha_hide_default_editor_and_thumbnail_for_templates' );
+function ha_hide_default_editor_and_thumbnail_for_templates() {
 	// 1. Remove editor from Custom Post Types
 	remove_post_type_support( 'special_notice', 'editor' );
 	remove_post_type_support( 'news_announcement', 'editor' );
 
-	// 2. Remove editor from Pages with Custom Fields
-	$post_id = 0;
-	if ( isset( $_GET['post'] ) ) {
-		$post_id = (int) $_GET['post'];
-	} elseif ( isset( $_POST['post_ID'] ) ) {
-		$post_id = (int) $_POST['post_ID'];
-	}
-
-	if ( ! $post_id ) {
-		return;
-	}
-
-	$front_page_id = (int) get_option( 'page_on_front' );
-	$template      = get_post_meta( $post_id, '_wp_page_template', true );
-
-	$custom_field_templates = array(
-		'page-templates/template-home.php',
-	);
-
-	if ( ( $front_page_id > 0 && $post_id === $front_page_id ) || in_array( $template, $custom_field_templates, true ) ) {
+	// 2. Remove editor & thumbnail from Pages using Page Templates / Front Page
+	if ( ha_is_custom_page_template() ) {
 		remove_post_type_support( 'page', 'editor' );
+		remove_post_type_support( 'page', 'thumbnail' );
 	}
 }
 
 /**
- * Clean CSS fail-safe to suppress the default content box on custom field screens
+ * Remove meta boxes for page templates
+ */
+add_action( 'add_meta_boxes', 'ha_remove_meta_boxes_for_page_templates', 99, 2 );
+function ha_remove_meta_boxes_for_page_templates( $post_type, $post ) {
+	if ( 'page' !== $post_type || ! is_a( $post, 'WP_Post' ) ) {
+		return;
+	}
+
+	if ( ha_is_custom_page_template( $post->ID ) ) {
+		remove_post_type_support( 'page', 'editor' );
+		remove_post_type_support( 'page', 'thumbnail' );
+		if ( function_exists( 'remove_meta_box' ) ) {
+			remove_meta_box( 'postimagediv', 'page', 'side' );
+			remove_meta_box( 'postdivrich', 'page', 'normal' );
+		}
+	}
+}
+
+/**
+ * CSS fail-safe to suppress the default editor and featured image on custom field & page template screens
  */
 add_action( 'admin_head', 'ha_admin_hide_editor_styles' );
 function ha_admin_hide_editor_styles() {
 	global $post, $current_screen;
 
-	$hide = false;
+	$hide_editor    = false;
+	$hide_thumbnail = false;
 
 	// Custom post types with custom fields
 	if ( isset( $current_screen->post_type ) && in_array( $current_screen->post_type, array( 'special_notice', 'news_announcement' ), true ) ) {
-		$hide = true;
+		$hide_editor = true;
 	}
 
-	// Pages with custom fields
-	if ( isset( $post->ID ) ) {
-		$front_page_id = (int) get_option( 'page_on_front' );
-		$template      = get_post_meta( $post->ID, '_wp_page_template', true );
-		if ( ( $front_page_id > 0 && $post->ID === $front_page_id ) || 'page-templates/template-home.php' === $template ) {
-			$hide = true;
+	// Pages with custom page template or front page
+	if ( isset( $current_screen->post_type ) && 'page' === $current_screen->post_type && isset( $post->ID ) ) {
+		if ( ha_is_custom_page_template( $post->ID ) ) {
+			$hide_editor    = true;
+			$hide_thumbnail = true;
 		}
 	}
 
-	if ( $hide ) {
-		echo '<style>
-			#postdivrich,
+	if ( $hide_editor || $hide_thumbnail ) {
+		echo '<style id="ha-hide-editor-thumbnail-styles">' . "\n";
+		if ( $hide_editor ) {
+			echo '#postdivrich,
 			#postdivrich.postarea,
+			#wp-content-wrap,
+			#wp-content-editor-container,
 			.editor-block-list__layout,
 			.block-editor-block-list__layout,
 			.block-editor-writing-flow__click-redirect,
-			.block-editor-default-block-appender {
+			.block-editor-default-block-appender,
+			.edit-post-visual-editor {
 				display: none !important;
-			}
-		</style>';
+			}' . "\n";
+		}
+		if ( $hide_thumbnail ) {
+			echo '#postimagediv,
+			.editor-post-featured-image,
+			.components-panel__body:has(.editor-post-featured-image) {
+				display: none !important;
+			}' . "\n";
+		}
+		echo '</style>' . "\n";
 	}
 }
 
@@ -827,22 +870,55 @@ function ha_admin_template_switch_script() {
 	?>
 	<script>
 	jQuery(function ($) {
-		function checkTemplateEditorVisibility() {
+		function isPageTemplateSelected(tmpl) {
+			if (!tmpl) return false;
+			return tmpl !== 'default' && tmpl !== '';
+		}
+
+		function checkTemplateVisibility() {
 			var tmpl = $('#page_template').val();
 			var postType = $('input#post_type').val() || '';
 
-			if (postType === 'special_notice' || postType === 'news_announcement' || tmpl === 'page-templates/template-home.php') {
+			// Custom post types
+			if (postType === 'special_notice' || postType === 'news_announcement') {
 				$('#postdivrich').hide();
 				$('.block-editor-block-list__layout').hide();
-			} else if (postType === 'page') {
-				$('#postdivrich').show();
-				$('.block-editor-block-list__layout').show();
+			}
+
+			// Pages
+			if (postType === 'page' || (!postType && $('#page_template').length)) {
+				var isTmpl = isPageTemplateSelected(tmpl);
+
+				if (isTmpl || $('body').hasClass('page-template')) {
+					if (tmpl && tmpl !== 'default') {
+						$('#postdivrich').hide();
+						$('#postimagediv').hide();
+						$('.block-editor-block-list__layout').hide();
+						$('.edit-post-visual-editor').hide();
+						$('.editor-post-featured-image').closest('.components-panel__body').hide();
+						$('.editor-post-featured-image').hide();
+
+						if (window.wp && wp.data && wp.data.dispatch) {
+							try {
+								wp.data.dispatch('core/edit-post').removeEditorPanel('featured-image');
+							} catch (e) {}
+						}
+					} else if (tmpl === 'default') {
+						$('#postdivrich').show();
+						$('#postimagediv').show();
+						$('.block-editor-block-list__layout').show();
+						$('.edit-post-visual-editor').show();
+						$('.editor-post-featured-image').closest('.components-panel__body').show();
+						$('.editor-post-featured-image').show();
+					}
+				}
 			}
 		}
 
-		$(document).on('change', '#page_template', checkTemplateEditorVisibility);
-		setTimeout(checkTemplateEditorVisibility, 300);
-		setTimeout(checkTemplateEditorVisibility, 800);
+		$(document).on('change', '#page_template', checkTemplateVisibility);
+		setTimeout(checkTemplateVisibility, 200);
+		setTimeout(checkTemplateVisibility, 600);
+		setTimeout(checkTemplateVisibility, 1200);
 	});
 	</script>
 	<?php
