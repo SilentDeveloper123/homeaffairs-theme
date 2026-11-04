@@ -1,8 +1,12 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+
+$contact_form_title = ha_get_theme_option( 'ha_contact_form_title' );
 ?>
 <div>
-  <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-6"><?php echo esc_html( ha_get_theme_option( 'ha_contact_form_title', __( 'Quick Inquiry', 'homeaffairs' ) ) ); ?></h4>
+  <?php if ( ! empty( $contact_form_title ) ) : ?>
+    <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-6"><?php echo esc_html( $contact_form_title ); ?></h4>
+  <?php endif; ?>
   <form action="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" method="get" class="space-y-3">
     <input type="text" name="name" placeholder="<?php esc_attr_e( 'Your Name', 'homeaffairs' ); ?>" class="w-full bg-white/[0.06] border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-secondary transition-colors">
     <input type="email" name="email" placeholder="<?php esc_attr_e( 'Email Address', 'homeaffairs' ); ?>" class="w-full bg-white/[0.06] border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-secondary transition-colors">

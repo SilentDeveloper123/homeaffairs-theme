@@ -25,18 +25,18 @@
 </div>
 
 <?php
-$ha_email              = ha_get_theme_option( 'ha_email', 'info@moha.gov.lk' );
-$ha_ministry_name      = ha_get_theme_option( 'ha_ministry_name', __( 'Ministry of Public Administration, Provincial Councils and Local Government', 'homeaffairs' ) );
-$ha_division_name      = ha_get_theme_option( 'ha_division_name', __( 'Home Affairs Division', 'homeaffairs' ) );
-$ha_emblem_url         = ha_get_theme_image_url( 'ha_emblem', 'full', get_template_directory_uri() . '/assets/images/emblem-sri-lanka.svg' );
-$ha_gov_gateway_url      = ha_get_theme_option( 'ha_gov_gateway_url', 'https://www.gov.lk' );
-$ha_gov_gateway_logo_url = ha_get_theme_option( 'ha_gov_gateway_logo_url', 'https://moha.gov.lk/web/images/gov.png' );
-$ha_search_placeholder   = ha_get_theme_option( 'ha_search_placeholder', __( 'Search...', 'homeaffairs' ) );
-$phone                   = ha_get_theme_option( 'ha_telephone', '+94 112 050 450' );
-$phone_url               = preg_replace( '/[^\d+]/', '', $phone );
-$cta_text                = ha_get_theme_option( 'ha_cta_button_text', __( 'Circuit Booking', 'homeaffairs' ) );
-$cta_icon                = ha_get_theme_icon( 'ha_cta_button_icon', 'fas fa-calendar-check' );
-$cta_link                = ha_get_theme_option( 'ha_cta_button_link', '#' );
+$ha_email                = ha_get_theme_option( 'ha_email' );
+$ha_ministry_name        = ha_get_theme_option( 'ha_ministry_name' );
+$ha_division_name        = ha_get_theme_option( 'ha_division_name' );
+$ha_emblem_url           = ha_get_theme_image_url( 'ha_emblem', 'full', get_template_directory_uri() . '/assets/images/emblem-sri-lanka.svg' );
+$ha_gov_gateway_url      = ha_get_theme_option( 'ha_gov_gateway_url' );
+$ha_gov_gateway_logo_url = ha_get_theme_option( 'ha_gov_gateway_logo_url' );
+$ha_search_placeholder   = ha_get_theme_option( 'ha_search_placeholder' );
+$phone                   = ha_get_theme_option( 'ha_telephone' );
+$phone_url               = $phone ? preg_replace( '/[^\d+]/', '', $phone ) : '';
+$cta_text                = ha_get_theme_option( 'ha_cta_button_text' );
+$cta_icon                = ha_get_theme_icon( 'ha_cta_button_icon', '' );
+$cta_link                = ha_get_theme_option( 'ha_cta_button_link' );
 ?>
 
 <!-- ═══ TOPBAR ═══ -->
@@ -45,11 +45,19 @@ $cta_link                = ha_get_theme_option( 'ha_cta_button_link', '#' );
   <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-y-1.5 px-4 sm:px-6 lg:px-8">
     
     <!-- Phone & Email -->
+    <?php if ( ! empty( $phone ) || ! empty( $ha_email ) ) : ?>
     <div class="flex items-center gap-2.5 sm:gap-4 topbar-contact min-w-0 shrink-0">
-      <a href="tel:<?php echo esc_attr( $phone_url ); ?>" class="flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-phone-alt text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="topbar-phone font-medium text-[11px] sm:text-xs whitespace-nowrap"><?php echo esc_html( $phone ); ?></span></a>
-      <span class="hidden sm:block w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true"></span>
-      <a href="mailto:<?php echo esc_attr( $ha_email ); ?>" class="hidden sm:flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-envelope text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="font-medium text-[11px] sm:text-xs"><?php echo esc_html( $ha_email ); ?></span></a>
+      <?php if ( ! empty( $phone ) ) : ?>
+        <a href="tel:<?php echo esc_attr( $phone_url ); ?>" class="flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-phone-alt text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="topbar-phone font-medium text-[11px] sm:text-xs whitespace-nowrap"><?php echo esc_html( $phone ); ?></span></a>
+      <?php endif; ?>
+      <?php if ( ! empty( $phone ) && ! empty( $ha_email ) ) : ?>
+        <span class="hidden sm:block w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true"></span>
+      <?php endif; ?>
+      <?php if ( ! empty( $ha_email ) ) : ?>
+        <a href="mailto:<?php echo esc_attr( $ha_email ); ?>" class="hidden sm:flex items-center gap-1.5 text-white/90 hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light rounded transition-colors shrink-0 whitespace-nowrap"><i class="fas fa-envelope text-[10px] sm:text-[11px] text-secondary-light shrink-0" aria-hidden="true"></i><span class="font-medium text-[11px] sm:text-xs"><?php echo esc_html( $ha_email ); ?></span></a>
+      <?php endif; ?>
     </div>
+    <?php endif; ?>
 
     <!-- Topbar Right Side Container (Menu + Gov Gateway + Language Switcher) -->
     <div class="flex flex-wrap md:flex-nowrap w-auto items-center justify-end gap-2 sm:gap-3.5 md:gap-2 xl:gap-3.5 shrink-0 ml-auto">
@@ -73,9 +81,11 @@ $cta_link                = ha_get_theme_option( 'ha_cta_button_link', '#' );
       <span class="hidden lg:block w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true"></span>
 
       <!-- Smart Gateway to Government of Sri Lanka -->
+      <?php if ( ! empty( $ha_gov_gateway_url ) && ! empty( $ha_gov_gateway_logo_url ) ) : ?>
       <a href="<?php echo esc_url( $ha_gov_gateway_url ); ?>" target="_blank" rel="noopener noreferrer" class="gov-gateway inline-flex items-center shrink-0 rounded opacity-95 hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-light transition-opacity" aria-label="<?php esc_attr_e( 'Smart Gateway to Government of Sri Lanka', 'homeaffairs' ); ?>" title="<?php esc_attr_e( 'Smart Gateway to Government of Sri Lanka', 'homeaffairs' ); ?>">
         <img src="<?php echo esc_url( $ha_gov_gateway_logo_url ); ?>" alt="<?php esc_attr_e( 'Smart Gateway to Government of Sri Lanka', 'homeaffairs' ); ?>" width="68" height="20" class="h-4 sm:h-5 w-auto" loading="lazy" decoding="async">
       </a>
+      <?php endif; ?>
 
       <span class="hidden sm:block w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true"></span>
 

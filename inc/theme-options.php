@@ -65,54 +65,42 @@ function ha_attach_theme_options() {
         ->set_page_parent( 'themes.php' )
         ->add_tab( __( 'Site Identity', 'homeaffairs' ), array(
             Field::make( 'text', 'ha_site_title', __( 'Site Title', 'homeaffairs' ) )
-                ->set_default_value( get_option( 'blogname' ) )
                 ->set_help_text( __( 'Syncs with Settings > General and Customizer > Site Identity.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_site_tagline', __( 'Tagline', 'homeaffairs' ) )
-                ->set_default_value( get_option( 'blogdescription' ) )
                 ->set_help_text( __( 'Syncs with Settings > General and Customizer > Site Identity.', 'homeaffairs' ) ),
             Field::make( 'image', 'ha_site_icon', __( 'Site Icon (Favicon)', 'homeaffairs' ) )
                 ->set_help_text( __( 'Syncs with Customizer > Site Identity. Upload a square PNG at least 512×512.', 'homeaffairs' ) ),
         ) )
         ->add_tab( __( 'Branding & Header', 'homeaffairs' ), array(
             Field::make( 'text', 'ha_ministry_name', __( 'Ministry Name', 'homeaffairs' ) )
-                ->set_default_value( 'Ministry of Public Administration, Provincial Councils and Local Government' )
                 ->set_help_text( __( 'Parent ministry name shown in the header and footer branding hierarchy.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_division_name', __( 'Division Name', 'homeaffairs' ) )
-                ->set_default_value( 'Home Affairs Division' )
                 ->set_help_text( __( 'Highlighted division name shown prominently beneath the ministry name in header and footer branding.', 'homeaffairs' ) ),
             Field::make( 'image', 'ha_emblem', __( 'National Emblem (Header & Footer)', 'homeaffairs' ) )
                 ->set_help_text( __( 'Official government emblem displayed beside the brand text in both header and footer branding. Leave empty to use the bundled Sri Lankan national emblem SVG.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_gov_gateway_url', __( 'Gov.lk Gateway URL', 'homeaffairs' ) )
-                ->set_default_value( 'https://www.gov.lk' )
                 ->set_attribute( 'placeholder', 'https://www.gov.lk' ),
             Field::make( 'text', 'ha_gov_gateway_logo_url', __( 'Gov.lk Gateway Logo URL', 'homeaffairs' ) )
-                ->set_default_value( 'https://moha.gov.lk/web/images/gov.png' )
                 ->set_attribute( 'placeholder', 'https://moha.gov.lk/web/images/gov.png' ),
             Field::make( 'text', 'ha_search_placeholder', __( 'Search Placeholder', 'homeaffairs' ) )
-                ->set_default_value( 'Search...' )
                 ->set_attribute( 'placeholder', 'Search...' ),
         ) )
         ->add_tab( __( 'Content', 'homeaffairs' ), array(
             Field::make( 'text', 'ha_copyright_text', __( 'Copyright Text', 'homeaffairs' ) )
-                ->set_default_value( '© ' . date( 'Y' ) . ' Home Affairs Division — Sri Lanka. All Rights Reserved.' )
+                ->set_attribute( 'placeholder', '© ' . date( 'Y' ) . ' Home Affairs Division — Sri Lanka. All Rights Reserved.' )
                 ->set_help_text( __( 'Copyright notice in the footer bar.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_last_update_date', __( 'Last Update Date', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', date( 'F j, Y' ) )
                 ->set_help_text( __( 'Optional custom date displayed as "Last Update: <Date>" in the footer. Leave empty to automatically use the latest update date.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_gic_url', __( 'GIC Link URL', 'homeaffairs' ) )
-                ->set_default_value( 'https://gic.gov.lk/' )
                 ->set_attribute( 'placeholder', 'https://gic.gov.lk/' )
                 ->set_help_text( __( 'Target link URL for the Government Information Center badge in the footer.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_gic_logo_url', __( 'GIC Logo URL', 'homeaffairs' ) )
-                ->set_default_value( 'https://moha.gov.lk/web/images/gic_en.gif' )
                 ->set_attribute( 'placeholder', 'https://moha.gov.lk/web/images/gic_en.gif' )
                 ->set_help_text( __( 'Image URL for the Government Information Center badge in the footer.', 'homeaffairs' ) ),
-            Field::make( 'text', 'ha_footer_menu_title', __( 'Footer Menu Column Title', 'homeaffairs' ) )
-                ->set_default_value( __( 'Related Links', 'homeaffairs' ) ),
-            Field::make( 'text', 'ha_contact_form_title', __( 'Contact Form Column Title', 'homeaffairs' ) )
-                ->set_default_value( __( 'Quick Inquiry', 'homeaffairs' ) ),
-            Field::make( 'text', 'ha_map_column_title', __( 'Map Column Title', 'homeaffairs' ) )
-                ->set_default_value( __( 'Find Us', 'homeaffairs' ) ),
+            Field::make( 'text', 'ha_footer_menu_title', __( 'Footer Menu Column Title', 'homeaffairs' ) ),
+            Field::make( 'text', 'ha_contact_form_title', __( 'Contact Form Column Title', 'homeaffairs' ) ),
+            Field::make( 'text', 'ha_map_column_title', __( 'Map Column Title', 'homeaffairs' ) ),
         ) )
         ->add_tab( __( 'Contact', 'homeaffairs' ), array(
             Field::make( 'textarea', 'ha_address', __( 'Official Address', 'homeaffairs' ) )
@@ -121,12 +109,10 @@ function ha_attach_theme_options() {
             Field::make( 'text', 'ha_telephone', __( 'General / Hotline Telephone', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', '+94 112 050 450' ),
             Field::make( 'text', 'ha_email', __( 'General / Hotline Email', 'homeaffairs' ) )
-                ->set_default_value( 'info@moha.gov.lk' )
                 ->set_attribute( 'placeholder', 'info@moha.gov.lk' ),
             Field::make( 'text', 'ha_fax', __( 'General / Hotline Fax', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', '+94 112 050 451' ),
             Field::make( 'text', 'ha_website_url', __( 'Website URL / Label', 'homeaffairs' ) )
-                ->set_default_value( 'www.moha.gov.lk' )
                 ->set_attribute( 'placeholder', 'www.moha.gov.lk' )
                 ->set_help_text( __( 'Official website URL or display text shown in the footer contact block.', 'homeaffairs' ) ),
         ) )
@@ -150,7 +136,6 @@ function ha_attach_theme_options() {
                 ->set_help_text( __( 'Label for the header CTA button (branding row on desktop, primary row on mobile).', 'homeaffairs' ) ),
             Field::make( 'icon', 'ha_cta_button_icon', __( 'Button Icon (Font Awesome)', 'homeaffairs' ) )
                 ->set_width( 30 )
-                ->set_default_value( 'calendar-check' )
                 ->add_fontawesome_options()
                 ->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome). Existing icon values are safely preserved.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_cta_button_link', __( 'Button Link', 'homeaffairs' ) )
