@@ -246,9 +246,9 @@ function ha_special_notice_column_content( $column, $post_id ) {
 			$file = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_attachment' ) : '';
 			$url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'notice_url' ) : '';
 			if ( $file ) {
-				echo '<a href="' . esc_url( $file ) . '" target="_blank" class="button button-small" style="color:#135e96;"><span class="dashicons dashicons-pdf" style="font-size:16px;line-height:24px;vertical-align:middle;margin-right:2px;"></span>' . esc_html__( 'PDF File', 'homeaffairs' ) . '</a>';
+				echo '<a href="' . esc_url( $file ) . '" target="_blank" class="button button-small" style="color:#135e96;"><i class="fas fa-file-pdf" style="color:#d9534f;margin-right:4px;"></i>' . esc_html__( 'PDF File', 'homeaffairs' ) . '</a>';
 			} elseif ( $url ) {
-				echo '<a href="' . esc_url( $url ) . '" target="_blank" class="button button-small"><span class="dashicons dashicons-admin-links" style="font-size:16px;line-height:24px;vertical-align:middle;margin-right:2px;"></span>' . esc_html__( 'Link', 'homeaffairs' ) . '</a>';
+				echo '<a href="' . esc_url( $url ) . '" target="_blank" class="button button-small"><i class="fas fa-link" style="color:#0073aa;margin-right:4px;"></i>' . esc_html__( 'Link', 'homeaffairs' ) . '</a>';
 			} else {
 				echo '<span style="color:#999;">&mdash;</span>';
 			}
@@ -283,7 +283,7 @@ function ha_news_announcement_column_content( $column, $post_id ) {
 			if ( $thumb_url ) {
 				echo '<img src="' . esc_url( $thumb_url ) . '" style="width:48px;height:36px;object-fit:cover;border-radius:4px;border:1px solid #ddd;" />';
 			} else {
-				echo '<span style="display:inline-block;width:48px;height:36px;background:#f0f0f0;border-radius:4px;border:1px solid #ddd;line-height:36px;text-align:center;color:#aaa;"><span class="dashicons dashicons-format-image" style="font-size:18px;line-height:36px;"></span></span>';
+				echo '<span style="display:inline-block;width:48px;height:36px;background:#f0f0f0;border-radius:4px;border:1px solid #ddd;line-height:36px;text-align:center;color:#aaa;"><i class="fas fa-image" style="font-size:16px;line-height:36px;color:#aaa;"></i></span>';
 			}
 			break;
 
@@ -299,9 +299,9 @@ function ha_news_announcement_column_content( $column, $post_id ) {
 			$file = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'news_attachment' ) : '';
 			$url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'news_attachment_url' ) : '';
 			if ( $file ) {
-				echo '<a href="' . esc_url( $file ) . '" target="_blank" class="button button-small" style="color:#135e96;"><span class="dashicons dashicons-pdf" style="font-size:16px;line-height:24px;vertical-align:middle;margin-right:2px;"></span>' . esc_html__( 'PDF', 'homeaffairs' ) . '</a>';
+				echo '<a href="' . esc_url( $file ) . '" target="_blank" class="button button-small" style="color:#135e96;"><i class="fas fa-file-pdf" style="color:#d9534f;margin-right:4px;"></i>' . esc_html__( 'PDF', 'homeaffairs' ) . '</a>';
 			} elseif ( $url ) {
-				echo '<a href="' . esc_url( $url ) . '" target="_blank" class="button button-small"><span class="dashicons dashicons-admin-links" style="font-size:16px;line-height:24px;vertical-align:middle;margin-right:2px;"></span>' . esc_html__( 'Link', 'homeaffairs' ) . '</a>';
+				echo '<a href="' . esc_url( $url ) . '" target="_blank" class="button button-small"><i class="fas fa-link" style="color:#0073aa;margin-right:4px;"></i>' . esc_html__( 'Link', 'homeaffairs' ) . '</a>';
 			} else {
 				echo '<span style="color:#bbb;">&mdash;</span>';
 			}

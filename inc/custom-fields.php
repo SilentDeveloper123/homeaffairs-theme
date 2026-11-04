@@ -334,11 +334,10 @@ function ha_register_carbon_fields() {
 			Field::make( 'complex', 'ha_home_qa1_items', __( 'Quick Access Section 1 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
-					Field::make( 'icon', 'qa_icon', __( 'Icon (Font Awesome / Dashicons)', 'homeaffairs' ) )
+					Field::make( 'icon', 'qa_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
 						->set_default_value( 'file-alt' )
 						->add_fontawesome_options()
-						->add_dashicons_options()
-						->set_help_text( __( 'Select icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
+						->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa_title', __( 'Title', 'homeaffairs' ) )
 						->set_default_value( 'Circulars' )
@@ -453,11 +452,10 @@ function ha_register_carbon_fields() {
 			Field::make( 'complex', 'ha_home_qa3_items', __( 'Quick Access Section 3 Items', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
-					Field::make( 'icon', 'qa3_icon', __( 'Icon (Font Awesome / Dashicons)', 'homeaffairs' ) )
+					Field::make( 'icon', 'qa3_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
 						->set_default_value( 'file-arrow-down' )
 						->add_fontawesome_options()
-						->add_dashicons_options()
-						->set_help_text( __( 'Select icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
+						->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_title', __( 'Title', 'homeaffairs' ) )
 						->set_default_value( 'Publications & Downloads' )
@@ -498,11 +496,10 @@ function ha_register_carbon_fields() {
 				->set_default_value( 'Contact your nearest Divisional Secretariat or reach our ministry helpdesk directly — we\'re here to help every citizen, every day.' )
 				->set_help_text( __( 'Supporting body copy displayed below heading.', 'homeaffairs' ) ),
 
-			Field::make( 'icon', 'ha_home_cta_btn_icon', __( 'Link Button Icon', 'homeaffairs' ) )
+			Field::make( 'icon', 'ha_home_cta_btn_icon', __( 'Link Button Icon (Font Awesome)', 'homeaffairs' ) )
 				->set_default_value( 'phone-alt' )
 				->add_fontawesome_options()
-				->add_dashicons_options()
-				->set_help_text( __( 'Select icon from the visual icon picker for the action button.', 'homeaffairs' ) ),
+				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker for the action button.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'ha_home_cta_btn_text', __( 'Link Button Text', 'homeaffairs' ) )
 				->set_default_value( 'Contact Us' )
@@ -552,11 +549,10 @@ function ha_register_carbon_fields() {
 	Container::make( 'post_meta', 'ha_container_special_notice_info', __( 'Special Notice Information', 'homeaffairs' ) )
 		->where( 'post_type', '=', 'special_notice' )
 		->add_fields( array(
-			Field::make( 'icon', 'notice_icon', __( 'Notice Icon', 'homeaffairs' ) )
+			Field::make( 'icon', 'notice_icon', __( 'Notice Icon (Font Awesome)', 'homeaffairs' ) )
 				->set_default_value( 'bullhorn' )
 				->add_fontawesome_options()
-				->add_dashicons_options()
-				->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome / Dashicons).', 'homeaffairs' ) ),
+				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
 
 			Field::make( 'text', 'notice_custom_title', __( 'Custom Display Title (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Optional shorter headline for the homepage tile. If left blank, the main Post Title above will be used.', 'homeaffairs' ) ),
@@ -708,6 +704,13 @@ function ha_extend_carbon_icon_options( $options, $field_name = '' ) {
 		}
 	}
 
+	// Enforce exclusively Font Awesome icons: filter out any non-fontawesome icon providers
+	foreach ( $options as $key => $opt ) {
+		if ( isset( $opt['provider'] ) && 'fontawesome' !== $opt['provider'] ) {
+			unset( $options[ $key ] );
+		}
+	}
+
 	return $options;
 }
 
@@ -763,7 +766,7 @@ function ha_notice_icon_admin_footer() {
 				// Wrapper
 				var $wrap = $('<div class="ha-icon-picker-field ha-icon-picker-cf" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;"></div>');
 				var $preview = $('<div class="ha-icon-preview-box" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #ccd0d4;border-radius:4px;background:#f9f9f9;min-width:120px;height:30px;"><i style="font-size:16px;color:#800000;width:18px;text-align:center;"></i><span class="ha-icon-label" style="font-size:12px;color:#444;"></span></div>');
-				var $chooseBtn = $('<button type="button" class="button ha-icon-choose" style="display:inline-flex;align-items:center;gap:4px;"><span class="dashicons dashicons-plus" style="font-size:14px;width:14px;height:14px;margin-top:3px;"></span> <?php echo esc_js( __( 'Browse Icons', 'homeaffairs' ) ); ?></button>');
+				var $chooseBtn = $('<button type="button" class="button ha-icon-choose" style="display:inline-flex;align-items:center;gap:4px;"><i class="fas fa-plus" style="font-size:12px;margin-right:2px;"></i> <?php echo esc_js( __( 'Browse Icons', 'homeaffairs' ) ); ?></button>');
 
 				$wrap.append($preview).append($chooseBtn);
 				$input.after($wrap);

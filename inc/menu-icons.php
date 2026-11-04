@@ -49,7 +49,7 @@ function ha_menu_item_icon_fields( $item_id, $item, $depth, $args ) {
 
 		<div style="display:flex;gap:4px">
 			<button type="button" class="button ha-icon-choose" data-item-id="<?php echo esc_attr( $item_id ); ?>">
-				<span class="dashicons dashicons-plus" style="font-size:14px;width:14px;height:14px;margin-top:3px"></span> <?php esc_html_e( 'Choose Icon', 'homeaffairs' ); ?>
+				<i class="fas fa-plus" style="font-size:12px;margin-right:3px"></i> <?php esc_html_e( 'Choose Icon', 'homeaffairs' ); ?>
 			</button>
 			<button type="button" class="button ha-icon-remove-btn" data-item-id="<?php echo esc_attr( $item_id ); ?>" style="display:<?php echo $icon ? 'inline-block' : 'none'; ?>"><?php esc_html_e( 'Remove', 'homeaffairs' ); ?></button>
 		</div>

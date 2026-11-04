@@ -105,30 +105,39 @@ function ha_resolve_file_url( $file_val ) {
  */
 function ha_get_icon_class( $icon, $default = 'fas fa-info-circle' ) {
 	if ( is_array( $icon ) ) {
-		if ( ! empty( $icon['class'] ) ) {
+		if ( ! empty( $icon['class'] ) && ( strpos( $icon['class'], 'fa' ) !== false ) ) {
 			return $icon['class'];
 		}
 		if ( ! empty( $icon['icon'] ) ) {
-			$prefix = ( ! empty( $icon['provider'] ) && 'dashicons' === $icon['provider'] ) ? 'dashicons dashicons-' : 'fas fa-';
-			return $prefix . ltrim( $icon['icon'], 'fa-' );
+			return 'fas fa-' . ltrim( $icon['icon'], 'fa-' );
 		}
 		if ( ! empty( $icon['value'] ) ) {
-			$prefix = ( ! empty( $icon['provider'] ) && 'dashicons' === $icon['provider'] ) ? 'dashicons dashicons-' : 'fas fa-';
-			return $prefix . ltrim( $icon['value'], 'fa-' );
+			return 'fas fa-' . ltrim( $icon['value'], 'fa-' );
 		}
 	}
 	if ( is_string( $icon ) && ! empty( trim( $icon ) ) ) {
 		$icon = trim( $icon );
-		if ( strpos( $icon, 'fas ' ) === 0 || strpos( $icon, 'far ' ) === 0 || strpos( $icon, 'fab ' ) === 0 || strpos( $icon, 'dashicons ' ) === 0 ) {
+		if ( strpos( $icon, 'fas ' ) === 0 || strpos( $icon, 'far ' ) === 0 || strpos( $icon, 'fab ' ) === 0 ) {
 			return $icon;
 		}
-		if ( strpos( $icon, 'dashicons-' ) === 0 ) {
-			return 'dashicons ' . $icon;
+		if ( strpos( $icon, 'dashicons-' ) === 0 || strpos( $icon, 'dashicons ' ) === 0 ) {
+			$slug = str_replace( array( 'dashicons ', 'dashicons-' ), '', $icon );
+			$dash_to_fa = array(
+				'pdf'          => 'file-pdf',
+				'admin-links'  => 'link',
+				'bell'         => 'bell',
+				'megaphone'    => 'bullhorn',
+				'format-image' => 'image',
+				'download'     => 'download',
+				'plus'         => 'plus',
+			);
+			$slug = isset( $dash_to_fa[ $slug ] ) ? $dash_to_fa[ $slug ] : $slug;
+			return 'fas fa-' . ltrim( $slug, 'fa-' );
 		}
 		if ( strpos( $icon, 'fa-' ) === 0 ) {
 			return 'fas ' . $icon;
 		}
-		return 'fas fa-' . $icon;
+		return 'fas fa-' . ltrim( $icon, 'fa-' );
 	}
 	return $default;
 }

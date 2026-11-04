@@ -164,12 +164,11 @@ function ha_attach_theme_options() {
                 ->set_width( 70 )
                 ->set_attribute( 'placeholder', 'Circuit Booking' )
                 ->set_help_text( __( 'Label for the header CTA button (branding row on desktop, primary row on mobile).', 'homeaffairs' ) ),
-            Field::make( 'icon', 'ha_cta_button_icon', __( 'Button Icon', 'homeaffairs' ) )
+            Field::make( 'icon', 'ha_cta_button_icon', __( 'Button Icon (Font Awesome)', 'homeaffairs' ) )
                 ->set_width( 30 )
                 ->set_default_value( 'calendar-check' )
                 ->add_fontawesome_options()
-                ->add_dashicons_options()
-                ->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome / Dashicons). Existing icon values are safely preserved.', 'homeaffairs' ) ),
+                ->set_help_text( __( 'Select an icon from the visual icon picker (Font Awesome). Existing icon values are safely preserved.', 'homeaffairs' ) ),
             Field::make( 'text', 'ha_cta_button_link', __( 'Button Link', 'homeaffairs' ) )
                 ->set_attribute( 'placeholder', 'https://example.com/circuit-booking' )
                 ->set_help_text( __( 'Destination URL for the header CTA button.', 'homeaffairs' ) ),
@@ -249,7 +248,7 @@ function ha_render_export_tab() {
             <?php esc_html_e( 'Download all theme options as a JSON file. Use this to back up your settings or transfer them to another site.', 'homeaffairs' ); ?>
         </p>
         <a href="<?php echo esc_url( $export_url ); ?>" class="button button-primary">
-            <span style="display: inline-flex; align-items: center; gap: 6px;"><span class="dashicons dashicons-download" style="width: 16px; height: 16px; font-size: 16px;"></span><?php esc_html_e( 'Export Options (JSON)', 'homeaffairs' ); ?></span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-download" style="margin-right:6px;"></i><?php esc_html_e( 'Export Options (JSON)', 'homeaffairs' ); ?></span>
         </a>
     </div>
     <hr style="margin: 20px 0;">
