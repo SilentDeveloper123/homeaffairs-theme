@@ -450,7 +450,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
       'cat'        => __( 'Featured News', 'homeaffairs' ),
       'date'       => 'February 4, 2026',
       'date_short' => 'Feb 04, 2026',
-      'image'      => content_url( '/uploads/sites/4/2026/07/9_Independence_Day_78th.jpeg' ),
+      'image'      => $ha_uri . '/assets/images/news/Independence_Day_78th.jpg',
       'link'       => $ha_news,
       'is_pdf'     => false,
     ),
