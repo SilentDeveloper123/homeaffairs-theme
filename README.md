@@ -79,7 +79,7 @@ Follow these steps when setting up the theme on a new local or staging environme
 ### 1. Download Ignored Media Assets
 Because image assets (banners, sliders, gallery, governance portraits, district images) are large, they are excluded from Git to keep repository operations fast.
 
-- 📥 **Download Assets**: [MOHA Theme Assets (Google Drive)](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN)
+- 📥 **Download Assets**: [Home Affairs Theme Assets (Google Drive)](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN) (includes `assets-images.zip`)
 - Place/extract the downloaded folders into `assets/images/`:
   ```
   assets/images/
