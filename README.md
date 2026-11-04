@@ -90,6 +90,57 @@ npm run build
 # 5. Configure theme options under Appearance → Theme Options
 ```
 
+## Git & Branching Workflow
+
+This repository uses a two-tier branching model (`main` & `dev`):
+
+- **`main`**: Production-ready code only. Merged only after testing and review.
+- **`dev`**: Active development branch. All feature branches branch from here.
+
+### Developer Step-by-Step Guide:
+
+1. **Switch to `dev` and pull latest changes**:
+   ```bash
+   git checkout dev
+   git pull origin dev
+   ```
+
+2. **Create your own local branch**:
+   ```bash
+   git checkout -b feature/your-task-name
+   # Examples:
+   # git checkout -b feature/slider-update
+   # git checkout -b fix/contact-form
+   ```
+
+3. **Commit your work**:
+   ```bash
+   git add .
+   git commit -m "feat: describe your change"
+   ```
+
+4. **Sync with latest `dev` before pushing**:
+   ```bash
+   git fetch origin
+   git merge origin/dev
+   ```
+
+5. **Push and create a Pull Request to `dev`**:
+   ```bash
+   git push -u origin feature/your-task-name
+   ```
+   - On GitHub, create a Pull Request targeting **`base: dev`**.
+   - Once reviewed, merge it into `dev`.
+
+6. **Production Release (`dev` → `main`)**:
+   - After reviewing the changes on `dev`, merge `dev` into `main`:
+   ```bash
+   git checkout main
+   git pull origin main
+   git merge --no-ff dev -m "release: merge dev into main"
+   git push origin main
+   ```
+
 ## Dependencies
 
 | Dependency | Type | Source |
