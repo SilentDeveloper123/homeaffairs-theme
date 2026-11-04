@@ -77,7 +77,7 @@ function ha_register_post_types_and_taxonomies() {
 		'hierarchical'       => false,
 		'menu_position'      => 20,
 		'menu_icon'          => 'dashicons-bell',
-		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ),
+		'supports'           => array( 'title', 'thumbnail', 'excerpt', 'revisions' ),
 		'taxonomies'         => array( 'notice_category' ),
 		'show_in_rest'       => true,
 	);
@@ -151,7 +151,7 @@ function ha_register_post_types_and_taxonomies() {
 		'hierarchical'       => false,
 		'menu_position'      => 21,
 		'menu_icon'          => 'dashicons-megaphone',
-		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author' ),
+		'supports'           => array( 'title', 'thumbnail', 'excerpt', 'revisions', 'author' ),
 		'taxonomies'         => array( 'news_category' ),
 		'show_in_rest'       => true,
 	);

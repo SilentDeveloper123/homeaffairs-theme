@@ -555,3 +555,109 @@ function ha_notice_icon_admin_footer() {
 	</script>
 	<?php
 }
+// ═══════════════════════════════════════════════════════════════════
+// HIDE DEFAULT CONTENT EDITOR FOR CPTS & CUSTOM FIELD PAGES
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Remove default editor support for custom post types and custom field pages
+ */
+add_action( 'admin_init', 'ha_hide_default_editor_for_custom_fields' );
+function ha_hide_default_editor_for_custom_fields() {
+	// 1. Remove editor from Custom Post Types
+	remove_post_type_support( 'special_notice', 'editor' );
+	remove_post_type_support( 'news_announcement', 'editor' );
+
+	// 2. Remove editor from Pages with Custom Fields
+	$post_id = 0;
+	if ( isset( $_GET['post'] ) ) {
+		$post_id = (int) $_GET['post'];
+	} elseif ( isset( $_POST['post_ID'] ) ) {
+		$post_id = (int) $_POST['post_ID'];
+	}
+
+	if ( ! $post_id ) {
+		return;
+	}
+
+	$front_page_id = (int) get_option( 'page_on_front' );
+	$template      = get_post_meta( $post_id, '_wp_page_template', true );
+
+	$custom_field_templates = array(
+		'page-templates/template-home.php',
+	);
+
+	if ( ( $front_page_id > 0 && $post_id === $front_page_id ) || in_array( $template, $custom_field_templates, true ) ) {
+		remove_post_type_support( 'page', 'editor' );
+	}
+}
+
+/**
+ * Clean CSS fail-safe to suppress the default content box on custom field screens
+ */
+add_action( 'admin_head', 'ha_admin_hide_editor_styles' );
+function ha_admin_hide_editor_styles() {
+	global $post, $current_screen;
+
+	$hide = false;
+
+	// Custom post types with custom fields
+	if ( isset( $current_screen->post_type ) && in_array( $current_screen->post_type, array( 'special_notice', 'news_announcement' ), true ) ) {
+		$hide = true;
+	}
+
+	// Pages with custom fields
+	if ( isset( $post->ID ) ) {
+		$front_page_id = (int) get_option( 'page_on_front' );
+		$template      = get_post_meta( $post->ID, '_wp_page_template', true );
+		if ( ( $front_page_id > 0 && $post->ID === $front_page_id ) || 'page-templates/template-home.php' === $template ) {
+			$hide = true;
+		}
+	}
+
+	if ( $hide ) {
+		echo '<style>
+			#postdivrich,
+			#postdivrich.postarea,
+			.editor-block-list__layout,
+			.block-editor-block-list__layout,
+			.block-editor-writing-flow__click-redirect,
+			.block-editor-default-block-appender {
+				display: none !important;
+			}
+		</style>';
+	}
+}
+
+/**
+ * Dynamic JavaScript toggle when user switches template in Page Attributes
+ */
+add_action( 'admin_footer', 'ha_admin_template_switch_script' );
+function ha_admin_template_switch_script() {
+	global $pagenow;
+	if ( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) ) {
+		return;
+	}
+	?>
+	<script>
+	jQuery(function ($) {
+		function checkTemplateEditorVisibility() {
+			var tmpl = $('#page_template').val();
+			var postType = $('input#post_type').val() || '';
+
+			if (postType === 'special_notice' || postType === 'news_announcement' || tmpl === 'page-templates/template-home.php') {
+				$('#postdivrich').hide();
+				$('.block-editor-block-list__layout').hide();
+			} else if (postType === 'page') {
+				$('#postdivrich').show();
+				$('.block-editor-block-list__layout').show();
+			}
+		}
+
+		$(document).on('change', '#page_template', checkTemplateEditorVisibility);
+		setTimeout(checkTemplateEditorVisibility, 300);
+		setTimeout(checkTemplateEditorVisibility, 800);
+	});
+	</script>
+	<?php
+}
