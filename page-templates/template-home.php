@@ -360,10 +360,12 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
     
 <?php if ( "hide" !== $ha_home_show_news ) :
-  $news_sec_title     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
-  $news_sec_subtitle  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
-  $news_view_all_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_text' ) : '';
-  $news_view_all      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
+  $news_sec_title             = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_title' ) : '';
+  $news_sec_subtitle          = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_subtitle' ) : '';
+  $news_view_all_text         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_text' ) : '';
+  $news_view_all              = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_view_all_url' ) : '';
+  $news_featured_btn_text     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_btn_text' ) : '';
+  $news_featured_pdf_btn_text = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_pdf_btn_text' ) : '';
   
   $featured_cat_slug = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $page_id, 'ha_home_news_featured_category' ) : '';
   $featured_cat_slug = $featured_cat_slug ?: 'featured-news';
@@ -398,8 +400,9 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         $img_url = 'https://placehold.co/1600x980?text=News+Image';
       }
       $file_url = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment' ) : '';
-      $ext_url  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
-      $link_url = ! empty( $file_url ) ? $file_url : ( ! empty( $ext_url ) ? $ext_url : get_permalink( $np_id ) );
+      $ext_url    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_attachment_url' ) : '';
+      $link_url   = ! empty( $file_url ) ? $file_url : ( ! empty( $ext_url ) ? $ext_url : get_permalink( $np_id ) );
+      $custom_btn = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $np_id, 'news_custom_btn_text' ) : '';
 
       return array(
         'title'      => $title,
@@ -410,6 +413,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         'image'      => $img_url,
         'link'       => $link_url,
         'is_pdf'     => ! empty( $file_url ),
+        'custom_btn' => $custom_btn,
       );
     }
   }
@@ -544,7 +548,32 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
 
           <!-- Card Footer -->
           <div class="px-5 py-3.5 bg-slate-50/50 text-xs font-bold text-primary flex items-center justify-between border-t border-gray-100 shrink-0">
-            <span><?php echo $featured_news['is_pdf'] ? esc_html__( 'Download Document (PDF)', 'homeaffairs' ) : esc_html__( 'Read Full Article', 'homeaffairs' ); ?></span>
+            <span><?php
+              $f_btn_text = '';
+              if ( ! empty( $featured_news['custom_btn'] ) ) {
+                $f_btn_text = $featured_news['custom_btn'];
+              } elseif ( $featured_news['is_pdf'] ) {
+                $f_btn_text = ! empty( $news_featured_pdf_btn_text ) ? $news_featured_pdf_btn_text : ( ! empty( $news_featured_btn_text ) ? $news_featured_btn_text : __( 'Download Document (PDF)', 'homeaffairs' ) );
+              } else {
+                $f_btn_text = ! empty( $news_featured_btn_text ) ? $news_featured_btn_text : __( 'Read Full Article', 'homeaffairs' );
+              }
+
+              $curr_lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
+              if ( 'si' === $curr_lang ) {
+                if ( strcasecmp( trim( $f_btn_text ), 'Read Full Article' ) === 0 ) {
+                  $f_btn_text = 'සම්පූර්ණ ලිපිය කියවන්න';
+                } elseif ( strcasecmp( trim( $f_btn_text ), 'Download Document (PDF)' ) === 0 ) {
+                  $f_btn_text = 'ලේඛනය බාගත කරන්න (PDF)';
+                }
+              } elseif ( 'ta' === $curr_lang ) {
+                if ( strcasecmp( trim( $f_btn_text ), 'Read Full Article' ) === 0 ) {
+                  $f_btn_text = 'முழு கட்டுரையை வாசிக்க';
+                } elseif ( strcasecmp( trim( $f_btn_text ), 'Download Document (PDF)' ) === 0 ) {
+                  $f_btn_text = 'ஆவணத்தைப் பதிவிறக்குக (PDF)';
+                }
+              }
+              echo esc_html( $f_btn_text );
+            ?></span>
             <i class="fas fa-chevron-right text-[10px] text-secondary group-hover:translate-x-1 transition-transform"></i>
           </div>
         </a>

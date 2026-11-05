@@ -259,6 +259,14 @@ function ha_register_carbon_fields() {
 				->set_options( 'ha_get_news_category_options' )
 				->set_default_value( 'featured-news' )
 				->set_help_text( __( 'Category used for the Main Card (most recent post). Default: Featured News.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_featured_btn_text', __( 'Featured News Card Button (Text)', 'homeaffairs' ) )
+				->set_attribute( 'placeholder', __( 'Read Full Article', 'homeaffairs' ) )
+				->set_help_text( __( 'Button text label for the main featured news card (e.g. Read Full Article).', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'ha_home_news_featured_pdf_btn_text', __( 'Featured News Card PDF Button (Text)', 'homeaffairs' ) )
+				->set_attribute( 'placeholder', __( 'Download Document (PDF)', 'homeaffairs' ) )
+				->set_help_text( __( 'Button text label for the main featured news card when the article is a PDF document.', 'homeaffairs' ) ),
 		) );
 
 
@@ -572,6 +580,9 @@ function ha_register_carbon_fields() {
 
 			Field::make( 'text', 'news_attachment_url', __( 'Attachment External Link (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Alternative external URL for documents hosted elsewhere.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'news_custom_btn_text', __( 'Custom Button Text (Optional)', 'homeaffairs' ) )
+				->set_help_text( __( 'Optional custom button text for this news article. Overrides the section default button text.', 'homeaffairs' ) ),
 		) );
 }
 
