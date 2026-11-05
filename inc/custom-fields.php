@@ -437,6 +437,7 @@ function ha_register_carbon_fields() {
 						->set_help_text( __( 'Destination URL for card and button.', 'homeaffairs' ) ),
 
 					Field::make( 'text', 'qa3_badge', __( 'Category Badge (Optional)', 'homeaffairs' ) )
+						->set_attribute( 'placeholder', __( 'Resources', 'homeaffairs' ) )
 						->set_help_text( __( 'Top-right small badge text (e.g. Resources, Education, Public Services).', 'homeaffairs' ) ),
 				) )
 				->set_header_template( '<%- qa3_title ? qa3_title : "Item " + ($_index + 1) %>' ),

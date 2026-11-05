@@ -974,6 +974,14 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         $q_btn   = ! empty( $item['qa3_btn_text'] ) ? $item['qa3_btn_text'] : '';
         $q_url   = ! empty( $item['qa3_url'] ) ? $item['qa3_url'] : '#';
         $q_badge = ! empty( $item['qa3_badge'] ) ? $item['qa3_badge'] : '';
+        if ( ! empty( $q_badge ) ) {
+          $lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
+          if ( 'si' === $lang && strcasecmp( trim( $q_badge ), 'resources' ) === 0 ) {
+            $q_badge = 'සම්පත්';
+          } elseif ( 'ta' === $lang && strcasecmp( trim( $q_badge ), 'resources' ) === 0 ) {
+            $q_badge = 'வளங்கள்';
+          }
+        }
       ?>
       <div class="group relative bg-white border border-slate-200/90 hover:border-secondary rounded-2xl p-5 shadow-2xs hover:shadow-md hover:-translate-y-1 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between overflow-hidden">
         <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
