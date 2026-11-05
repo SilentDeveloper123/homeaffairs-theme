@@ -57,6 +57,8 @@ homeaffairs-theme/
 │        online-services, procurements, publications, rti, scholarships, services,
 │        special-notices, transfer-procedures, vacancies, who-we-are)
 ├── doc/                       # Documentation
+│   ├── CARBON_FIELDS_GUIDE.html # Complete Carbon Fields developer guide (interactive HTML)
+│   ├── CARBON_FIELDS_GUIDE.pdf  # Complete Carbon Fields developer guide (printable PDF)
 │   ├── COLOR_GUIDE.md         # Color system guide (markdown)
 │   ├── COLOR_GUIDE.html       # Color system guide (styled HTML)
 │   ├── COLOR_PALETTE_TOOL.html# Interactive palette generator + live preview + copy-ready code
@@ -79,11 +81,15 @@ homeaffairs-theme/
 
 Follow these steps when setting up the theme on a new local or staging environment:
 
-### 1. Download Ignored Media Assets
-Because image assets (banners, sliders, gallery, governance portraits, district images) are large, they are excluded from Git to keep repository operations fast.
+### 1. Download Ignored Media Assets & Database Backups
+Because large media assets, database dumps, and full codebase archives are excluded from Git, they are stored and synchronized in Google Drive:
 
-- 📥 **Download Assets**: [Home Affairs Theme Assets (Google Drive)](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN) (includes `assets-images.zip`)
-- Place/extract the downloaded folders into `assets/images/`:
+- 📁 **Google Drive Folder**: [Ignored Files On Git](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link)
+  1. `images/` (**Assets/Images**): Theme media, banners, news photos (`Independence_Day_78th.jpg`), staff portraits, and district graphics. Place in `assets/images/`.
+  2. `Database/` (**Database backups**): Full MySQL dumps of `mohadb` (`mohadb_backup_2026-11-05.sql` & `.zip`).
+  3. `File Backup/` (**htdocs/moha folder backup zip**): Complete snapshot archive of the `c:\xampp\htdocs\moha` environment (`moha_backup_2026-11-05.zip`).
+
+- Extract media assets into `assets/images/`:
   ```
   assets/images/
   ├── banner/
@@ -123,7 +129,9 @@ The following files and directories are ignored in `.gitignore`:
 
 | Ignored Path | Purpose | How to Obtain / Restore |
 |---|---|---|
-| `assets/images/` | Theme images, banners, staff portraits, and district graphics | Download from [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN) and place in `assets/images/` |
+| `assets/images/` | Theme images, banners, staff portraits, and district graphics | Synchronized with `images/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
+| `Database Backups` | MySQL database dumps (`.sql`, `.zip`) | Stored in `Database/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
+| `File Backups` | Full `htdocs/moha` codebase archives (`.zip`) | Stored in `File Backup/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
 | `vendor/` | PHP libraries (Carbon Fields) | Run `composer install` |
 | `node_modules/` | Front-end build tools (Sass, Tailwind CSS) | Run `npm install` |
 | `composer.lock` | Composer lockfile | Managed locally |
@@ -275,6 +283,10 @@ Also note: `template-landing.php` is a standalone document with its **own** inli
 
 - `assets/css/style.css` is a **compiled artifact** — always edit `assets/scss/*.scss`
 - No green brand styling (`#43c000` or green utilities as brand colors); emerald is reserved for semantic "Active/Available" status
+- **No-Seeder Policy**: When custom fields or theme options are empty, never render dummy or fallback seeder text (`+94 112 050 450`, `info@moha.gov.lk`, etc.). Cleanly output empty text or suppress the HTML block. Use `->set_attribute('placeholder', ...)` instead of `->set_default_value(...)` so admin hints do not pollute the database.
+- **Font Awesome Icons Exclusivity**: All custom field icons must strictly use Font Awesome via `Field::make('icon', ...)->add_fontawesome_options()` (zero Dashicons in custom fields). Rely exclusively on Carbon Fields' built-in React visual icon picker; do NOT inject legacy jQuery wrapper buttons or modal overlays over Carbon Fields inputs.
+- **Customizable Action Buttons**: Homepage sections provide dedicated custom fields for action buttons (e.g. `ha_home_notices_btn_text` for *Column Button (Text)* and `ha_home_news_view_all_text` for *View All Button (Text)*).
+- **Trilingual Taxonomy Terms**: `news_category` taxonomy terms are translated in the database for Sinhala (`si`), Tamil (`ta`), and English (`en`), maintaining identical system slugs for seamless querying.
 - Slide backgrounds use opacity transitions, not display toggles
 - All jQuery wrapped in `jQuery(function ($) { })`
 - All user-facing strings escaped: `esc_html__()`, `esc_attr__()`, `esc_url()`
@@ -302,8 +314,12 @@ get_footer();
 
 It will appear in the WP Admin Page Attributes → Template dropdown automatically.
 
-## Developer References
+## Developer References & Internal Guides
 
+- **[Carbon Fields Developer Guide (HTML)](doc/CARBON_FIELDS_GUIDE.html)**: Comprehensive manual for creating, modifying, and fetching custom fields and theme options in this theme.
+- **[Carbon Fields Developer Guide (PDF)](doc/CARBON_FIELDS_GUIDE.pdf)**: Printable A4 manual for developers and system administrators.
+- **[Color System Guide](doc/COLOR_GUIDE.md)**: Official color tokens, hierarchy, and usage guide.
+- **[Interactive Palette Tool](doc/COLOR_PALETTE_TOOL.html)**: Browser-based theme color customizer.
 - **[Carbon Fields Documentation](https://docs.carbonfields.net/)**: Official documentation for Carbon Fields (containers, fields, complex repeaters, theme options, and Gutenberg blocks).
 - **[WordPress Functions Reference](https://developer.wordpress.org/reference/functions/)**: Official developer documentation for core WordPress functions, hooks, and template tags.
 - **[WordPress Codex](https://codex.wordpress.org/)**: Comprehensive manual and reference for WordPress core architecture and legacy implementations.
