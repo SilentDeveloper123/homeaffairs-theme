@@ -378,3 +378,198 @@ function ha_get_theme_icon( $field_name, $default = 'fas fa-info-circle' ) {
 	return ha_get_icon_class( $icon, $default );
 }
 
+/**
+ * Filter an already-formatted date string to substitute accurate Gregorian months and days in Tamil and Sinhala
+ *
+ * @param string      $date Formatted date string
+ * @param string|null $lang Language code ('en', 'si', 'ta')
+ * @return string
+ */
+function ha_filter_localized_date_string( $date, $lang = null ) {
+	if ( ! is_string( $date ) || '' === $date ) {
+		return $date;
+	}
+
+	if ( null === $lang ) {
+		$lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
+	}
+
+	if ( 'ta' === $lang ) {
+		static $ta_map = array(
+			// Core WordPress archaic Tamil sidereal solar months mapping to official Gregorian Tamil
+			'தை'        => 'ஜனவரி',
+			'மாசி'      => 'பெப்ரவரி',
+			'பங்குனி'   => 'மார்ச்',
+			'சித்திரை'  => 'ஏப்ரல்',
+			'வைகாசி'    => 'மே',
+			'ஆனி'       => 'ஜூன்',
+			'ஆடி'       => 'ஜூலை',
+			'ஆவணி'      => 'ஆகஸ்ட்',
+			'புரட்டாதி' => 'செப்டம்பர்',
+			'ஐப்பசி'    => 'அக்டோபர்',
+			'கார்த்திகை' => 'நவம்பர்',
+			'மார்கழி'   => 'டிசம்பர்',
+
+			// Full English month names
+			'January'   => 'ஜனவரி',
+			'February'  => 'பெப்ரவரி',
+			'March'     => 'மார்ச்',
+			'April'     => 'ஏப்ரல்',
+			'May'       => 'மே',
+			'June'      => 'ஜூன்',
+			'July'      => 'ஜூலை',
+			'August'    => 'ஆகஸ்ட்',
+			'September' => 'செப்டம்பர்',
+			'October'   => 'அக்டோபர்',
+			'November'  => 'நவம்பர்',
+			'December'  => 'டிசம்பர்',
+
+			// Abbreviated English month names (3-letter)
+			'Jan'       => 'ஜன.',
+			'Feb'       => 'பெப்.',
+			'Mar'       => 'மார்.',
+			'Apr'       => 'ஏப்.',
+			'Jun'       => 'ஜூன்',
+			'Jul'       => 'ஜூலை',
+			'Aug'       => 'ஆக.',
+			'Sep'       => 'செப்.',
+			'Oct'       => 'அக்.',
+			'Nov'       => 'நவ.',
+			'Dec'       => 'டிச.',
+
+			// Days of week
+			'Monday'    => 'திங்கள்',
+			'Tuesday'   => 'செவ்வாய்',
+			'Wednesday' => 'புதன்',
+			'Thursday'  => 'வியாழன்',
+			'Friday'    => 'வெள்ளி',
+			'Saturday'  => 'சனி',
+			'Sunday'    => 'ஞாயிறு',
+			'Mon'       => 'திங்.',
+			'Tue'       => 'செவ்.',
+			'Wed'       => 'புதன்',
+			'Thu'       => 'வியா.',
+			'Fri'       => 'வெள்.',
+			'Sat'       => 'சனி',
+			'Sun'       => 'ஞாயி.',
+		);
+		return strtr( $date, $ta_map );
+	}
+
+	if ( 'si' === $lang ) {
+		static $si_map = array(
+			// Full English month names
+			'January'   => 'ජනවාරි',
+			'February'  => 'පෙබරවාරි',
+			'March'     => 'මාර්තු',
+			'April'     => 'අප්‍රේල්',
+			'May'       => 'මැයි',
+			'June'      => 'ජූනි',
+			'July'      => 'ජූලි',
+			'August'    => 'අගෝස්තු',
+			'September' => 'සැප්තැම්බර්',
+			'October'   => 'ඔක්තෝබර්',
+			'November'  => 'නොවැම්බර්',
+			'December'  => 'දෙසැම්බර්',
+
+			// Abbreviated English month names
+			'Jan'       => 'ජන.',
+			'Feb'       => 'පෙබ.',
+			'Mar'       => 'මාර්තු',
+			'Apr'       => 'අප්‍රේල්',
+			'Jun'       => 'ජූනි',
+			'Jul'       => 'ජූලි',
+			'Aug'       => 'අගෝ.',
+			'Sep'       => 'සැප්.',
+			'Oct'       => 'ඔක්.',
+			'Nov'       => 'නොවැ.',
+			'Dec'       => 'දෙසැ.',
+
+			// Days of week
+			'Monday'    => 'සඳුදා',
+			'Tuesday'   => 'අඟහරුවාදා',
+			'Wednesday' => 'බදාදා',
+			'Thursday'  => 'බ්‍රහස්පතින්දා',
+			'Friday'    => 'සිකුරාදා',
+			'Saturday'  => 'සෙනසුරාදා',
+			'Sunday'    => 'ඉරිදා',
+			'Mon'       => 'සඳුදා',
+			'Tue'       => 'අඟහ.',
+			'Wed'       => 'බදාදා',
+			'Thu'       => 'බ්‍රහස්.',
+			'Fri'       => 'සිකු.',
+			'Sat'       => 'සෙන.',
+			'Sun'       => 'ඉරිදා',
+		);
+		return strtr( $date, $si_map );
+	}
+
+	return $date;
+}
+
+/**
+ * Localize and format a date in English, Sinhala, or Tamil.
+ *
+ * @param mixed       $date_or_post Post ID, WP_Post, timestamp, or date string. Defaults to current post.
+ * @param string      $format       PHP date format string. Defaults to get_option('date_format').
+ * @param string|null $lang         Language code ('en', 'si', 'ta'). Defaults to active language.
+ * @return string Localized date string.
+ */
+function ha_format_date( $date_or_post = null, $format = '', $lang = null ) {
+	if ( empty( $format ) ) {
+		$format = get_option( 'date_format', 'F j, Y' );
+	}
+
+	if ( null === $lang ) {
+		$lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
+	}
+
+	$timestamp = null;
+	if ( null === $date_or_post ) {
+		$timestamp = get_the_time( 'U' );
+		if ( ! $timestamp ) {
+			$timestamp = current_time( 'timestamp' );
+		}
+	} elseif ( is_numeric( $date_or_post ) && (int) $date_or_post > 2000000000 ) {
+		$timestamp = (int) $date_or_post;
+	} elseif ( is_numeric( $date_or_post ) || $date_or_post instanceof WP_Post ) {
+		$post = get_post( $date_or_post );
+		if ( $post && ! empty( $post->post_date ) ) {
+			$timestamp = strtotime( $post->post_date );
+		} else {
+			$timestamp = current_time( 'timestamp' );
+		}
+	} elseif ( is_string( $date_or_post ) ) {
+		$parsed = strtotime( $date_or_post );
+		$timestamp = false !== $parsed ? $parsed : current_time( 'timestamp' );
+	} else {
+		$timestamp = current_time( 'timestamp' );
+	}
+
+	$formatted = wp_date( $format, $timestamp );
+	return ha_filter_localized_date_string( $formatted, $lang );
+}
+
+/**
+ * Global date filters for WordPress core date outputs
+ */
+add_filter( 'wp_date', 'ha_filter_wp_date_callback', 20, 4 );
+function ha_filter_wp_date_callback( $date, $format, $timestamp, $timezone ) {
+	return ha_filter_localized_date_string( $date );
+}
+
+add_filter( 'get_the_date', 'ha_filter_get_the_date_callback', 20, 3 );
+function ha_filter_get_the_date_callback( $the_date, $format, $post ) {
+	return ha_filter_localized_date_string( $the_date );
+}
+
+add_filter( 'get_the_modified_date', 'ha_filter_get_the_modified_date_callback', 20, 3 );
+function ha_filter_get_the_modified_date_callback( $the_date, $format, $post ) {
+	return ha_filter_localized_date_string( $the_date );
+}
+
+add_filter( 'date_i18n', 'ha_filter_date_i18n_callback', 20, 4 );
+function ha_filter_date_i18n_callback( $date, $format, $timestamp, $gmt ) {
+	return ha_filter_localized_date_string( $date );
+}
+

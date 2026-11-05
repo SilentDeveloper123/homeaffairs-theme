@@ -302,7 +302,7 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
               <i class="fas fa-circle text-[4px] text-secondary shrink-0" aria-hidden="true"></i>
               <span class="ticker-title font-medium text-white"><?php the_title(); ?></span>
               <span class="ticker-sep text-secondary font-bold mx-1">-</span>
-              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php echo esc_html( get_the_date( 'd F Y' ) ); ?></span>
+              <span class="ticker-date text-secondary-light/90 text-[10px] sm:text-[11px] font-medium"><?php echo esc_html( function_exists( 'ha_format_date' ) ? ha_format_date( get_the_ID(), 'd F Y' ) : get_the_date( 'd F Y' ) ); ?></span>
             </a>
           <?php
             endwhile;
@@ -405,8 +405,8 @@ $hero_visible = ( 'hide' !== $ha_home_show_slider || 'hide' !== $ha_home_show_no
         'title'      => $title,
         'desc'       => $desc,
         'cat'        => $cat_name,
-        'date'       => get_the_date( 'F j, Y', $np_id ),
-        'date_short' => get_the_date( 'M d, Y', $np_id ),
+        'date'       => function_exists( 'ha_format_date' ) ? ha_format_date( $np_id, 'F j, Y' ) : get_the_date( 'F j, Y', $np_id ),
+        'date_short' => function_exists( 'ha_format_date' ) ? ha_format_date( $np_id, 'M d, Y' ) : get_the_date( 'M d, Y', $np_id ),
         'image'      => $img_url,
         'link'       => $link_url,
         'is_pdf'     => ! empty( $file_url ),
