@@ -20,7 +20,7 @@ $lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language()
 $labels = array(
 	'sidebar_title' => array( 'en' => 'Sub Units', 'si' => 'උප ඒකක', 'ta' => 'துணை அலகுகள்' ),
 	'scope_title'   => array( 'en' => 'Scope of the Division', 'si' => 'අංශයේ විෂය පථය', 'ta' => 'பிரிவின் நோக்கம்' ),
-	'duty_title'    => array( 'en' => 'Duty of the Division', 'si' => 'අංශයේ කාර්යභාරය', 'ta' => 'පිරිවින් கடமை' ),
+	'duty_title'    => array( 'en' => 'Duty of the Division', 'si' => 'අංශයේ කාර්යභාරය', 'ta' => 'பிரிவின் கடமை' ),
 	'head_title'    => array( 'en' => 'Head of Division', 'si' => 'අංශ ප්‍රධානී', 'ta' => 'பிரிவுத் தலைவர்' ),
 	'subunits_title'=> array( 'en' => 'Sub-Units', 'si' => 'උප ඒකක', 'ta' => 'துணை அலகுகள்' ),
 	'mobile'        => array( 'en' => 'Mobile', 'si' => 'ජංගම', 'ta' => 'கைப்பேசி' ),
