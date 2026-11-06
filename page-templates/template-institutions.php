@@ -152,20 +152,20 @@ if ( 'si' === $lang ) {
 		</h1>
 	</div>
 
-	<!-- All 4 Cards Displayed in One Unified Responsive Grid -->
-	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+	<!-- All 4 Cards Displayed in a 2x2 Grid Layout -->
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
 		<?php foreach ( $institutions as $inst ) : ?>
-			<a href="<?php echo esc_url( $inst['url'] ); ?>" <?php if ( ! empty( $inst['target'] ) && '_blank' === $inst['target'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?> class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm hover:-translate-y-1 hover:shadow-md hover:border-secondary transition-all duration-300 group no-underline flex flex-col justify-between">
+			<a href="<?php echo esc_url( $inst['url'] ); ?>" <?php if ( ! empty( $inst['target'] ) && '_blank' === $inst['target'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?> class="bg-white border border-gray-200/80 rounded-2xl p-6 sm:p-8 shadow-sm hover:-translate-y-1 hover:shadow-md hover:border-secondary transition-all duration-300 group no-underline flex flex-col justify-between">
 				<div>
-					<div class="flex items-center gap-3 mb-4">
-						<div class="w-11 h-11 rounded-xl bg-primary-darker/5 text-primary-darker group-hover:bg-primary-darker group-hover:text-secondary flex items-center justify-center transition-colors shrink-0 shadow-xs">
-							<i class="fas <?php echo esc_attr( $inst['icon'] ); ?> text-lg" aria-hidden="true"></i>
+					<div class="flex items-center gap-4 mb-4">
+						<div class="w-12 h-12 rounded-xl bg-primary-darker/5 text-primary-darker group-hover:bg-primary-darker group-hover:text-secondary flex items-center justify-center transition-colors shrink-0 shadow-xs">
+							<i class="fas <?php echo esc_attr( $inst['icon'] ); ?> text-xl" aria-hidden="true"></i>
 						</div>
-						<h3 class="text-base font-extrabold text-slate-900 group-hover:text-primary-darker transition-colors m-0 leading-snug">
+						<h3 class="text-lg font-extrabold text-slate-900 group-hover:text-primary-darker transition-colors m-0 leading-snug">
 							<?php echo esc_html( $inst['title'] ); ?>
 						</h3>
 					</div>
-					<p class="text-xs text-gray-500 leading-relaxed mb-6">
+					<p class="text-sm text-gray-500 leading-relaxed mb-6">
 						<?php echo esc_html( $inst['summary'] ); ?>
 					</p>
 				</div>
