@@ -434,7 +434,7 @@ function ha_division_edit_columns( $columns ) {
 	$new_columns['division_icon']    = __( 'Icon', 'homeaffairs' );
 	$new_columns['title']            = __( 'Title of Division', 'homeaffairs' );
 	$new_columns['division_head']    = __( 'Head of Division', 'homeaffairs' );
-	$new_columns['division_subunits']= __( 'Sub-Units', 'homeaffairs' );
+	$new_columns['division_subunits']= __( 'Sub-Units / Divisions', 'homeaffairs' );
 	$new_columns['date']             = __( 'Date', 'homeaffairs' );
 	return $new_columns;
 }

@@ -18,11 +18,11 @@ $lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language()
 
 // Localized headings
 $labels = array(
-	'sidebar_title' => array( 'en' => 'Sub Units', 'si' => 'උප ඒකක', 'ta' => 'துணை அலகுகள்' ),
+	'sidebar_title' => array( 'en' => 'Sub Units / Divisions', 'si' => 'උප ඒකක / අංශ', 'ta' => 'துணை அலகுகள் / பிரிவுகள்' ),
 	'scope_title'   => array( 'en' => 'Scope of the Division', 'si' => 'අංශයේ විෂය පථය', 'ta' => 'பிரிவின் நோக்கம்' ),
 	'duty_title'    => array( 'en' => 'Duty of the Division', 'si' => 'අංශයේ කාර්යභාරය', 'ta' => 'பிரிவின் கடமை' ),
 	'head_title'    => array( 'en' => 'Head of Division', 'si' => 'අංශ ප්‍රධානී', 'ta' => 'பிரிவுத் தலைவர்' ),
-	'subunits_title'=> array( 'en' => 'Sub-Units', 'si' => 'උප ඒකක', 'ta' => 'துணை அலகுகள்' ),
+	'subunits_title'=> array( 'en' => 'Sub Units / Divisions', 'si' => 'උප ඒකක / අංශ', 'ta' => 'துணை அலகுகள் / பிரிவுகள்' ),
 	'mobile'        => array( 'en' => 'Mobile', 'si' => 'ජංගම', 'ta' => 'கைப்பேசி' ),
 	'phone_fax'     => array( 'en' => 'Phone / Fax', 'si' => 'දුරකථන / ෆැක්ස්', 'ta' => 'தொலைபேசி / தொலைநகல்' ),
 	'email'         => array( 'en' => 'Email', 'si' => 'විද්‍යුත් තැපෑල', 'ta' => 'மின்னஞ்சல்' ),
@@ -85,7 +85,7 @@ $placeholder_photo = 'https://placehold.co/1817x2565/591521/ffffff?text=Photo';
 				<?php if ( ! empty( $sub_units ) ) : ?>
 					<nav class="space-y-0.5">
 						<?php foreach ( $sub_units as $s_idx => $sub ) :
-							$sub_title = ! empty( $sub['sub_unit_title'] ) ? $sub['sub_unit_title'] : ( 'Sub Unit ' . ( $s_idx + 1 ) );
+							$sub_title = ! empty( $sub['sub_unit_title'] ) ? $sub['sub_unit_title'] : ( 'Sub Unit / Division ' . ( $s_idx + 1 ) );
 							$target_id = 'sub-unit-' . ( $s_idx + 1 );
 						?>
 							<a href="#<?php echo esc_attr( $target_id ); ?>" class="div-side-link">
@@ -201,7 +201,7 @@ $placeholder_photo = 'https://placehold.co/1817x2565/591521/ffffff?text=Photo';
 					</h2>
 					<div class="space-y-6">
 						<?php foreach ( $sub_units as $s_idx => $sub ) :
-							$sub_title = ! empty( $sub['sub_unit_title'] ) ? $sub['sub_unit_title'] : ( 'Sub Unit ' . ( $s_idx + 1 ) );
+							$sub_title = ! empty( $sub['sub_unit_title'] ) ? $sub['sub_unit_title'] : ( 'Sub Unit / Division ' . ( $s_idx + 1 ) );
 							$target_id = 'sub-unit-' . ( $s_idx + 1 );
 							$team      = isset( $sub['sub_unit_team'] ) && is_array( $sub['sub_unit_team'] ) ? $sub['sub_unit_team'] : array();
 						?>

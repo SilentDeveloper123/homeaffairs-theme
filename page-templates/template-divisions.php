@@ -53,7 +53,7 @@ $labels = array(
 	'total_divs'     => array( 'en' => 'Total Divisions', 'si' => 'මුළු අංශ', 'ta' => 'மொத்தப் பிரிவுகள்' ),
 	'established'    => array( 'en' => 'Established', 'si' => 'ආරම්භය', 'ta' => 'நிறுவப்பட்டது' ),
 	'est_year'       => array( 'en' => '2016', 'si' => '2016', 'ta' => '2016' ),
-	'sub_units'      => array( 'en' => 'Sub-Units', 'si' => 'උප ඒකක', 'ta' => 'துணை அலகுகள்' ),
+	'sub_units'      => array( 'en' => 'Sub Units / Divisions', 'si' => 'උප ඒකක / අංශ', 'ta' => 'துணை அலகுகள் / பிரிவுகள்' ),
 	'jurisdiction'   => array( 'en' => 'Jurisdiction', 'si' => 'බල ප්‍රදේශය', 'ta' => 'அதிகார வரம்பு' ),
 	'juris_val'      => array( 'en' => 'Island-wide', 'si' => 'දිවයින පුරා', 'ta' => 'நாடளாவிய ரீதியில்' ),
 	'btn_explore'    => array( 'en' => 'Explore Division', 'si' => 'අංශය ගවේෂණය කරන්න', 'ta' => 'பிரிவை ஆராய்க' ),

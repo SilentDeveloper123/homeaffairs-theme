@@ -611,7 +611,7 @@ function ha_register_carbon_fields() {
 					'hide' => __( 'Hide', 'homeaffairs' ),
 				) )
 				->set_default_value( 'show' )
-				->set_help_text( __( 'Controls visibility of the Quick Facts card (Total Divisions, Sub-Units, Jurisdiction).', 'homeaffairs' ) ),
+				->set_help_text( __( 'Controls visibility of the Quick Facts card (Total Divisions, Sub-Units / Divisions, Jurisdiction).', 'homeaffairs' ) ),
 
 			Field::make( 'radio', 'ha_divisions_show_grid', __( 'Divisions Grid Section', 'homeaffairs' ) )
 				->set_options( array(
@@ -688,17 +688,17 @@ function ha_register_carbon_fields() {
 		) );
 
 	// 3. Sub-Units Container
-	Container::make( 'post_meta', 'ha_container_division_sub_units', __( 'Division: Sub-Units', 'homeaffairs' ) )
+	Container::make( 'post_meta', 'ha_container_division_sub_units', __( 'Division: Sub-Units / Divisions', 'homeaffairs' ) )
 		->where( 'post_type', '=', 'ha-division' )
 		->or_where( 'post_type', '=', 'ha_division' )
 		->add_fields( array(
-			Field::make( 'complex', 'division_sub_units', __( 'Sub-Units', 'homeaffairs' ) )
+			Field::make( 'complex', 'division_sub_units', __( 'Sub-Units / Divisions', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
 				->add_fields( array(
-					Field::make( 'text', 'sub_unit_title', __( 'Sub Unit Title', 'homeaffairs' ) )
+					Field::make( 'text', 'sub_unit_title', __( 'Sub Unit / Division Title', 'homeaffairs' ) )
 						->set_help_text( __( 'Title of the sub-unit (e.g. Information Technology Unit).', 'homeaffairs' ) ),
 
-					Field::make( 'complex', 'sub_unit_team', __( 'Sub Unit Team Profiles', 'homeaffairs' ) )
+					Field::make( 'complex', 'sub_unit_team', __( 'Sub Unit / Division Team Profiles', 'homeaffairs' ) )
 						->set_layout( 'tabbed-horizontal' )
 						->add_fields( array(
 							Field::make( 'image', 'member_photo', __( 'Photo (Size: 1817px × 2565px)', 'homeaffairs' ) )
@@ -717,7 +717,7 @@ function ha_register_carbon_fields() {
 						) )
 						->set_header_template( '<%- member_name ? member_name : "Member" %>' ),
 				) )
-				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit" %>' ),
+				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit / Division" %>' ),
 		) );
 
 }
