@@ -694,14 +694,12 @@ function ha_register_carbon_fields() {
 		->add_fields( array(
 			Field::make( 'complex', 'division_sub_units', __( 'Sub-Units', 'homeaffairs' ) )
 				->set_layout( 'tabbed-vertical' )
-				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit " + ($_index + 1) %>' )
 				->add_fields( array(
 					Field::make( 'text', 'sub_unit_title', __( 'Sub Unit Title', 'homeaffairs' ) )
 						->set_help_text( __( 'Title of the sub-unit (e.g. Information Technology Unit).', 'homeaffairs' ) ),
 
 					Field::make( 'complex', 'sub_unit_team', __( 'Sub Unit Team Profiles', 'homeaffairs' ) )
 						->set_layout( 'tabbed-horizontal' )
-						->set_header_template( '<%- member_name ? member_name : "Member " + ($_index + 1) %>' )
 						->add_fields( array(
 							Field::make( 'image', 'member_photo', __( 'Photo (Size: 1817px × 2565px)', 'homeaffairs' ) )
 								->set_value_type( 'url' )
@@ -716,8 +714,10 @@ function ha_register_carbon_fields() {
 							Field::make( 'text', 'member_phone', __( 'Land Line Number', 'homeaffairs' ) ),
 
 							Field::make( 'text', 'member_email', __( 'Email Address', 'homeaffairs' ) ),
-						) ),
-				) ),
+						) )
+						->set_header_template( '<%- member_name ? member_name : "Member" %>' ),
+				) )
+				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit" %>' ),
 		) );
 
 }
