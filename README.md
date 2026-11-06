@@ -86,8 +86,8 @@ Because large media assets, database dumps, and full codebase archives are exclu
 
 - 📁 **Google Drive Folder**: [Ignored Files On Git](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link)
   1. `images/` (**Assets/Images**): Theme media, banners, news photos (`Independence_Day_78th.jpg`), staff portraits, and district graphics. Place in `assets/images/`.
-  2. `Database/` (**Database backups**): Full MySQL dumps of `mohadb` (`mohadb_backup_2026-11-05.sql` & `.zip`).
-  3. `File Backup/` (**htdocs/moha folder backup zip**): Complete snapshot archive of the `c:\xampp\htdocs\moha` environment (`moha_backup_2026-11-05.zip`).
+  2. `Database/` (**Database backups**): Full MySQL dumps of `mohadb` (`mohadb_backup_2026-11-06.sql` & `.zip`).
+  3. `File Backup/` (**htdocs/moha folder backup zip**): Complete snapshot archive of the `c:\xampp\htdocs\moha` environment (`moha_backup_2026-11-06.zip`).
 
 - Extract media assets into `assets/images/`:
   ```
@@ -130,8 +130,8 @@ The following files and directories are ignored in `.gitignore`:
 | Ignored Path | Purpose | How to Obtain / Restore |
 |---|---|---|
 | `assets/images/` | Theme images, banners, staff portraits, and district graphics | Synchronized with `images/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
-| `Database Backups` | MySQL database dumps (`.sql`, `.zip`) | Stored in `Database/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
-| `File Backups` | Full `htdocs/moha` codebase archives (`.zip`) | Stored in `File Backup/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
+| `Database Backups` | MySQL database dumps (`.sql`, `.zip` — `mohadb_backup_2026-11-06.sql`) | Stored in `Database/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
+| `File Backups` | Full `htdocs/moha` codebase archives (`.zip` — `moha_backup_2026-11-06.zip`) | Stored in `File Backup/` folder on [Google Drive](https://drive.google.com/drive/folders/1m-JVmrvxQVkqPbjRB2Ri-FrD3JMO7hjN?usp=drive_link) |
 | `vendor/` | PHP libraries (Carbon Fields) | Run `composer install` |
 | `node_modules/` | Front-end build tools (Sass, Tailwind CSS) | Run `npm install` |
 | `composer.lock` | Composer lockfile | Managed locally |
@@ -295,6 +295,8 @@ Also note: `template-landing.php` is a standalone document with its **own** inli
 - Text domain: `homeaffairs`
 - All page templates follow `template-{slug}.php` naming (new ones must too)
 - Tab panels key off `.gov-tab-panel.active` in CSS — JS must toggle both `hidden` and `active`
+- **Global GLightbox Photo Galleries**: All photo galleries across single news/announcements, Media Center albums, Media Hub, Circuit Bungalows, and core WordPress content galleries are unified under GLightbox 3.3.0 with touch navigation, zoom, and captions (`window.haInitLightbox`).
+- **Divisions Pagination & MSLS Auto-Sync**: The `/divisions/` landing page rewrite collision with single CPTs is resolved via high-priority rewrite rule `^divisions/page/([0-9]+)/?$`, and divisions across English, Sinhala, and Tamil automatically synchronize their Multisite Language Switcher (MSLS) relationships on post save.
 
 ## Adding a New Page Template
 
