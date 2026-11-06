@@ -2751,6 +2751,7 @@ function ha_seed_org_chart_nodes( $blog_id = null ) {
 			carbon_set_post_meta( $post_id, 'org_cross_link_target', array(
 				array(
 					'type'      => 'post',
+					'subtype'   => 'ha_org_node',
 					'id'        => $target_id,
 					'post_type' => 'ha_org_node',
 				),
@@ -2761,6 +2762,7 @@ function ha_seed_org_chart_nodes( $blog_id = null ) {
 				carbon_set_post_meta( $post_id, 'org_cross_link_anchor', array(
 					array(
 						'type'      => 'post',
+						'subtype'   => 'ha_org_node',
 						'id'        => $anchor_id,
 						'post_type' => 'ha_org_node',
 					),
@@ -2784,6 +2786,7 @@ function ha_seed_org_chart_nodes( $blog_id = null ) {
 		carbon_set_post_meta( $gov_page_id, 'gov_chart_root_node', array(
 			array(
 				'type'      => 'post',
+				'subtype'   => 'ha_org_node',
 				'id'        => $root_id,
 				'post_type' => 'ha_org_node',
 			),

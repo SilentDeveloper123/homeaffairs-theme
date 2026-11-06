@@ -891,3 +891,76 @@ function ha_sync_governance_page_msls_links( $post_id, $post ) {
 
 	$syncing = false;
 }
+
+
+/**
+ * Auto-sync Multisite Language Switcher (MSLS) relationships for Institutions pages
+ */
+add_action( 'save_post_page', 'ha_sync_institutions_page_msls_links', 20, 2 );
+function ha_sync_institutions_page_msls_links( $post_id, $post ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! is_multisite() || ! $post || 'publish' !== $post->post_status ) {
+		return;
+	}
+
+	$tmpl = get_post_meta( $post_id, '_wp_page_template', true );
+	$slug = $post->post_name;
+	if ( 'page-templates/template-institutions.php' !== $tmpl && 'institutions' !== $slug ) {
+		return;
+	}
+
+	static $syncing = false;
+	if ( $syncing ) {
+		return;
+	}
+	$syncing = true;
+
+	$languages = array(
+		'en_US' => 4,
+		'si_LK' => 2,
+		'ta_LK' => 3,
+	);
+
+	$page_ids = array();
+	foreach ( $languages as $lang => $bid ) {
+		switch_to_blog( $bid );
+		$found = get_posts( array(
+			'post_type'      => 'page',
+			'meta_key'       => '_wp_page_template',
+			'meta_value'     => 'page-templates/template-institutions.php',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+		) );
+		if ( empty( $found ) ) {
+			$found = get_posts( array(
+				'post_type'      => 'page',
+				'name'           => 'institutions',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+			) );
+		}
+		if ( ! empty( $found ) ) {
+			$page_ids[ $lang ] = (int) $found[0]->ID;
+		}
+		restore_current_blog();
+	}
+
+	if ( count( $page_ids ) > 1 ) {
+		foreach ( $page_ids as $lang => $id ) {
+			$bid = $languages[ $lang ];
+			$other_links = array();
+			foreach ( $page_ids as $o_lang => $o_id ) {
+				if ( $o_lang !== $lang ) {
+					$other_links[ $o_lang ] = $o_id;
+				}
+			}
+			switch_to_blog( $bid );
+			update_option( "msls_{$id}", $other_links );
+			restore_current_blog();
+		}
+	}
+
+	$syncing = false;
+}

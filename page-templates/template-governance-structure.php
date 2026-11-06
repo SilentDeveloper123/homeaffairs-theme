@@ -134,7 +134,9 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 			<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
 				<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
 				<div class="gov-profile-img shrink-0">
-					<img loading="lazy" decoding="async" src="<?php echo esc_url( $minister_photo_src ); ?>" alt="<?php echo esc_attr( $gov_minister_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+					<a href="<?php echo esc_url( $minister_photo_src ); ?>" class="glightbox block" data-gallery="gov-leadership" data-title="<?php echo esc_attr( $gov_minister_title ); ?>" data-description="<?php echo esc_attr( $gov_minister_subtitle ); ?>">
+						<img loading="lazy" decoding="async" src="<?php echo esc_url( $minister_photo_src ); ?>" alt="<?php echo esc_attr( $gov_minister_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm hover:opacity-95 transition-opacity" onerror="this.onerror=null;this.src='<?php echo esc_url( $placeholder_photo ); ?>';">
+					</a>
 				</div>
 				<div class="text-center sm:text-left flex-1">
 					<?php if ( ! empty( $gov_minister_subtitle ) ) : ?>
@@ -155,7 +157,9 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 			<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
 				<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
 				<div class="gov-profile-img shrink-0">
-					<img loading="lazy" decoding="async" src="<?php echo esc_url( $secretary_photo_src ); ?>" alt="<?php echo esc_attr( $gov_secretary_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+					<a href="<?php echo esc_url( $secretary_photo_src ); ?>" class="glightbox block" data-gallery="gov-leadership" data-title="<?php echo esc_attr( $gov_secretary_title ); ?>" data-description="<?php echo esc_attr( $gov_secretary_subtitle ); ?>">
+						<img loading="lazy" decoding="async" src="<?php echo esc_url( $secretary_photo_src ); ?>" alt="<?php echo esc_attr( $gov_secretary_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm hover:opacity-95 transition-opacity" onerror="this.onerror=null;this.src='<?php echo esc_url( $placeholder_photo ); ?>';">
+					</a>
 				</div>
 				<div class="text-center sm:text-left flex-1">
 					<?php if ( ! empty( $gov_secretary_subtitle ) ) : ?>
@@ -206,7 +210,9 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 					<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
 						<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
 							<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
-								<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_min_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_min_name ); ?>" class="w-full h-full object-cover" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+								<a href="<?php echo esc_url( $tab_min_photo_src ); ?>" class="glightbox block w-full h-full" data-gallery="gov-messages" data-title="<?php echo esc_attr( $gov_tab_min_name ); ?>" data-description="<?php echo esc_attr( $gov_tab_min_designation ); ?>">
+									<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_min_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_min_name ); ?>" class="w-full h-full object-cover hover:opacity-95 transition-opacity" onerror="this.onerror=null;this.src='<?php echo esc_url( $placeholder_photo ); ?>';">
+								</a>
 							</div>
 							<div>
 								<?php if ( ! empty( $gov_tab_min_designation ) ) : ?>
@@ -256,7 +262,9 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 					<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
 						<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
 							<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
-								<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_sec_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_sec_name ); ?>" class="w-full h-full object-cover" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+								<a href="<?php echo esc_url( $tab_sec_photo_src ); ?>" class="glightbox block w-full h-full" data-gallery="gov-messages" data-title="<?php echo esc_attr( $gov_tab_sec_name ); ?>" data-description="<?php echo esc_attr( $gov_tab_sec_designation ); ?>">
+									<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_sec_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_sec_name ); ?>" class="w-full h-full object-cover hover:opacity-95 transition-opacity" onerror="this.onerror=null;this.src='<?php echo esc_url( $placeholder_photo ); ?>';">
+								</a>
 							</div>
 							<div>
 								<?php if ( ! empty( $gov_tab_sec_designation ) ) : ?>
@@ -468,6 +476,22 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 	// ========================================================
 	// Interactive Org Chart Logic
 	// ========================================================
+	function isNodeVisibleInTree( el ) {
+		if ( ! el ) return false;
+		var branch = el.closest('.org-branch');
+		if ( branch && branch.classList.contains('is-hidden') ) return false;
+
+		var cur = el.parentElement;
+		while ( cur && cur !== canvas ) {
+			if ( cur.classList.contains('staff-subtree') && ! cur.classList.contains('is-expanded') ) {
+				return false;
+			}
+			cur = cur.parentElement;
+		}
+		var rect = el.getBoundingClientRect();
+		return rect.width > 0 && rect.height > 0;
+	}
+
 	function updateCrossConnectors() {
 		var svg = document.getElementById('orgCrossConnectors');
 		if ( ! svg ) return;
@@ -493,24 +517,14 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 
 			if ( ! targetCard ) return;
 
-			// Visibility checks
-			var sourceBranch = sourceCard.closest('.org-branch');
-			var targetBranch = targetCard.closest('.org-branch');
-			if ( sourceBranch && sourceBranch.classList.contains('is-hidden') ) return;
-			if ( targetBranch && targetBranch.classList.contains('is-hidden') ) return;
-
-			var sourceSubtree = sourceCard.closest('.staff-subtree');
-			if ( sourceSubtree && ! sourceSubtree.classList.contains('is-expanded') ) return;
-			var targetSubtree = targetCard.closest('.staff-subtree');
-			if ( targetSubtree && ! targetSubtree.classList.contains('is-expanded') ) return;
+			// Comprehensive visibility checks (ancestor branches & subtrees)
+			if ( ! isNodeVisibleInTree( sourceCard ) || ! isNodeVisibleInTree( targetCard ) ) return;
 
 			var rSource = sourceCard.getBoundingClientRect();
 			var rTarget = targetCard.getBoundingClientRect();
-			if ( rSource.width === 0 || rTarget.width === 0 ) return;
 
 			if ( style === 'bracket' && anchorCard ) {
-				var anchorSubtree = anchorCard.closest('.staff-subtree');
-				if ( ! anchorSubtree || anchorSubtree.classList.contains('is-expanded') ) {
+				if ( isNodeVisibleInTree( anchorCard ) ) {
 					var xSource = Math.round( ( rSource.left + rSource.width / 2 - canvasRect.left ) / zoom );
 					var ySource = Math.round( ( rSource.bottom - canvasRect.top ) / zoom );
 					var xTarget = Math.round( ( rTarget.left + rTarget.width / 2 - canvasRect.left ) / zoom );
@@ -736,18 +750,25 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 						parentBranch.classList.remove('is-hidden');
 					}
 					
-					var parentSubtree = card.closest('.staff-subtree');
-					if ( parentSubtree && ! parentSubtree.classList.contains('is-expanded') ) {
-						parentSubtree.classList.add('is-expanded');
-						var parentLi = parentSubtree.closest('li');
-						var toggleBtn = parentLi ? parentLi.querySelector('.staff-toggle') : null;
-						if ( toggleBtn ) {
-							toggleBtn.classList.add('expanded');
-							toggleBtn.innerHTML = '− Staff';
+					// Expand ALL ancestor staff-subtrees so deeply nested nodes become visible
+					var cur = card.parentElement;
+					while ( cur && cur !== canvas ) {
+						if ( cur.classList.contains('staff-subtree') ) {
+							if ( ! cur.classList.contains('is-expanded') ) {
+								cur.classList.add('is-expanded');
+							}
+							var parentLi = cur.closest('li');
+							var toggleBtn = parentLi ? parentLi.querySelector(':scope > .staff-toggle') : null;
+							if ( toggleBtn ) {
+								toggleBtn.classList.add('expanded');
+								toggleBtn.innerHTML = '− Staff';
+							}
 						}
+						cur = cur.parentElement;
 					}
 				}
 			});
+			setTimeout(updateCrossConnectors, 50);
 		});
 	}
 
