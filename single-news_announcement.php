@@ -37,9 +37,14 @@ get_header(); ?>
           <article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden' ); ?>>
             
             <?php if ( $feat_img ) : ?>
-              <div class="relative w-full h-72 sm:h-96 lg:h-[420px] bg-gray-100 overflow-hidden">
-                <img src="<?php echo esc_url( $feat_img ); ?>" alt="<?php echo esc_attr( $disp_title ); ?>" class="w-full h-full object-cover">
-              </div>
+              <a href="<?php echo esc_url( $feat_img ); ?>" class="glightbox block relative w-full h-72 sm:h-96 lg:h-[420px] bg-gray-100 overflow-hidden group cursor-pointer" data-gallery="news-gallery-<?php echo esc_attr( $post_id ); ?>" data-title="<?php echo esc_attr( $disp_title ); ?>">
+                <img src="<?php echo esc_url( $feat_img ); ?>" alt="<?php echo esc_attr( $disp_title ); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+                  <span class="w-12 h-12 rounded-full bg-white/90 text-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <i class="fas fa-search-plus text-base text-secondary"></i>
+                  </span>
+                </div>
+              </a>
             <?php endif; ?>
 
             <div class="p-6 sm:p-8 lg:p-10">
@@ -109,14 +114,19 @@ get_header(); ?>
                       $g_capt = ! empty( $g_item['gallery_caption'] ) ? $g_item['gallery_caption'] : '';
                       if ( ! $g_img ) continue;
                     ?>
-                      <div class="group relative rounded-xl overflow-hidden shadow-2xs border border-gray-100 aspect-video bg-gray-100">
+                      <a href="<?php echo esc_url( $g_img ); ?>" class="glightbox group relative block rounded-xl overflow-hidden shadow-2xs border border-gray-100 aspect-video bg-gray-100 cursor-pointer" data-gallery="news-gallery-<?php echo esc_attr( $post_id ); ?>" data-title="<?php echo esc_attr( $g_capt ?: $disp_title ); ?>">
                         <img src="<?php echo esc_url( $g_img ); ?>" alt="<?php echo esc_attr( $g_capt ?: $disp_title ); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+                          <span class="w-8 h-8 rounded-full bg-white/90 text-primary flex items-center justify-center shadow-md">
+                            <i class="fas fa-search-plus text-xs text-secondary"></i>
+                          </span>
+                        </div>
                         <?php if ( $g_capt ) : ?>
-                          <div class="absolute inset-x-0 bottom-0 bg-black/60 text-white text-[10px] p-1.5 truncate">
+                          <div class="absolute inset-x-0 bottom-0 bg-black/60 text-white text-[10px] p-1.5 truncate pointer-events-none">
                             <?php echo esc_html( $g_capt ); ?>
                           </div>
                         <?php endif; ?>
-                      </div>
+                      </a>
                     <?php endforeach; ?>
                   </div>
                 </div>

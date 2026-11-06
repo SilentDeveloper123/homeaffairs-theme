@@ -405,6 +405,24 @@ $videos_json = json_encode( $video_gallery );
 
 	function openLightbox( title ) {
 		if ( currentImages.length === 0 ) { return; }
+		if ( typeof GLightbox !== 'undefined' ) {
+			var glElements = currentImages.map(function( imgUrl, i ) {
+				return {
+					href: imgUrl,
+					type: 'image',
+					title: ( title || 'Photo Gallery' ) + ' (' + ( i + 1 ) + '/' + currentImages.length + ')'
+				};
+			});
+			var instance = GLightbox({
+				elements: glElements,
+				startAt: currentIndex || 0,
+				touchNavigation: true,
+				loop: true,
+				zoomable: true
+			});
+			instance.open();
+			return;
+		}
 		lbImg.src = currentImages[ currentIndex ];
 		var titleEl = document.getElementById('lb-title');
 		var counterEl = document.getElementById('lb-counter');

@@ -141,9 +141,14 @@ $bungalow = [
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <?php foreach ( $bungalow['rooms'] as $room ) : ?>
                         <div class="bg-slate-50 rounded-xl border border-slate-200/60 overflow-hidden flex flex-col justify-between">
-                            <div class="h-32 bg-slate-200">
-                                <img loading="lazy" decoding="async" src="<?php echo esc_url( $room['image'] ); ?>" alt="<?php echo esc_attr( $room['type'] ); ?>" class="w-full h-full object-cover">
-                            </div>
+                            <a href="<?php echo esc_url( $room['image'] ); ?>" class="glightbox block h-32 bg-slate-200 overflow-hidden cursor-pointer group/room relative" data-gallery="colombo-rooms" data-title="<?php echo esc_attr( $room['type'] ); ?> - <?php echo esc_attr( $room['rate'] ); ?>">
+                                <img loading="lazy" decoding="async" src="<?php echo esc_url( $room['image'] ); ?>" alt="<?php echo esc_attr( $room['type'] ); ?>" class="w-full h-full object-cover group-hover/room:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-black/0 group-hover/room:bg-black/25 flex items-center justify-center opacity-0 group-hover/room:opacity-100 transition-opacity pointer-events-none">
+                                    <span class="w-8 h-8 rounded-full bg-white/90 text-primary flex items-center justify-center shadow-md">
+                                        <i class="fas fa-search-plus text-xs text-secondary"></i>
+                                    </span>
+                                </div>
+                            </a>
                             <div class="p-3.5 space-y-1.5 flex-1 flex flex-col justify-between">
                                 <div>
                                     <h4 class="text-xs font-bold text-primary-dark"><?php echo esc_html( $room['type'] ); ?></h4>
@@ -167,13 +172,16 @@ $bungalow = [
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <?php foreach ( $bungalow['nearby_places'] as $place ) : ?>
                         <div class="group bg-slate-50 rounded-xl border border-slate-200/60 overflow-hidden hover:border-secondary/50 hover:shadow-md transition-all duration-300">
-                            <div class="h-28 overflow-hidden bg-slate-200 relative">
+                            <a href="<?php echo esc_url( $place['image'] ); ?>" class="glightbox block h-28 overflow-hidden bg-slate-200 relative cursor-pointer" data-gallery="colombo-places" data-title="<?php echo esc_attr( $place['title'] ); ?> (<?php echo esc_attr( $place['distance'] ); ?>)">
                                 <img loading="lazy" decoding="async" src="<?php echo esc_url( $place['image'] ); ?>" alt="<?php echo esc_attr( $place['title'] ); ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                                 <span class="absolute bottom-2 left-2 text-[10px] font-bold text-white bg-secondary/80 px-2 py-0.5 rounded-md">
                                     <i class="fas fa-route text-[8px] mr-1"></i> <?php echo esc_html( $place['distance'] ); ?>
                                 </span>
-                            </div>
+                                <span class="absolute top-2 right-2 w-7 h-7 bg-black/50 hover:bg-secondary text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="fas fa-search-plus text-[10px] text-secondary group-hover:text-primary"></i>
+                                </span>
+                            </a>
                             <div class="p-3">
                                 <h4 class="text-xs font-bold text-primary-dark line-clamp-2 leading-tight group-hover:text-secondary transition-colors">
                                     <?php echo esc_html( $place['title'] ); ?>
@@ -328,6 +336,24 @@ var galleryImages = <?php echo json_encode( $bungalow['gallery'] ); ?>;
 var currentSlideIndex = 0;
 
 function openGalleryLightbox(index) {
+    if (typeof GLightbox !== 'undefined' && typeof galleryImages !== 'undefined' && galleryImages.length > 0) {
+        var glElements = galleryImages.map(function(imgUrl, idx) {
+            return {
+                href: imgUrl,
+                type: 'image',
+                title: '<?php echo esc_js( $bungalow['name'] ); ?> (' + (idx + 1) + '/' + galleryImages.length + ')'
+            };
+        });
+        var instance = GLightbox({
+            elements: glElements,
+            startAt: index || 0,
+            touchNavigation: true,
+            loop: true,
+            zoomable: true
+        });
+        instance.open();
+        return;
+    }
     currentSlideIndex = index;
     updateLightboxImage();
     document.getElementById('gallery-modal').classList.remove('hidden');

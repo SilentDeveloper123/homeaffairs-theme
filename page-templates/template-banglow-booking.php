@@ -675,6 +675,24 @@ document.addEventListener('DOMContentLoaded', function() {
 // Lightbox Slider Functions
 function openSliderModal(slidesArray, initialIndex) {
     if (!slidesArray || slidesArray.length === 0) return;
+    if (typeof GLightbox !== 'undefined') {
+        var glElements = slidesArray.map(function(s, idx) {
+            return {
+                href: s.url,
+                type: 'image',
+                title: (s.caption || 'Bungalow Gallery') + ' (' + (idx + 1) + '/' + slidesArray.length + ')'
+            };
+        });
+        var instance = GLightbox({
+            elements: glElements,
+            startAt: initialIndex || 0,
+            touchNavigation: true,
+            loop: true,
+            zoomable: true
+        });
+        instance.open();
+        return;
+    }
     activeSlideArray = slidesArray;
     currentSlideIndex = initialIndex || 0;
     updateSliderView();

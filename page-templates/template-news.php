@@ -867,6 +867,106 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (e.target === modal) closeModal();
             });
         }
+
+        // Photo Album Lightbox (GLightbox with custom modal fallback)
+        var mcLbModal = document.getElementById('mc-photo-lightbox');
+        var mcLbImg = document.getElementById('mc-lb-img');
+        var mcLbTitle = document.getElementById('mc-lb-title');
+        var mcLbCounter = document.getElementById('mc-lb-counter');
+        var mcLbClose = document.getElementById('mc-lb-close');
+        var mcLbPrev = document.getElementById('mc-lb-prev');
+        var mcLbNext = document.getElementById('mc-lb-next');
+        var currentAlbumImages = [];
+        var currentAlbumIndex = 0;
+        var currentAlbumTitle = '';
+
+        function openFallbackLightbox(album) {
+            currentAlbumImages = album.images || [];
+            currentAlbumIndex = 0;
+            currentAlbumTitle = album.title || 'Photo Gallery';
+            if (currentAlbumImages.length === 0) return;
+
+            updateFallbackView();
+            mcLbModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFallbackLightbox() {
+            if (mcLbModal) mcLbModal.classList.add('hidden');
+            if (mcLbImg) mcLbImg.src = '';
+            document.body.style.overflow = '';
+        }
+
+        function updateFallbackView() {
+            if (!mcLbImg || currentAlbumImages.length === 0) return;
+            mcLbImg.src = currentAlbumImages[currentAlbumIndex];
+            if (mcLbTitle) mcLbTitle.textContent = currentAlbumTitle;
+            if (mcLbCounter) mcLbCounter.textContent = (currentAlbumIndex + 1) + ' / ' + currentAlbumImages.length;
+        }
+
+        if (mcLbClose) mcLbClose.addEventListener('click', closeFallbackLightbox);
+        if (mcLbPrev) mcLbPrev.addEventListener('click', function() {
+            if (currentAlbumImages.length <= 1) return;
+            currentAlbumIndex = (currentAlbumIndex - 1 + currentAlbumImages.length) % currentAlbumImages.length;
+            updateFallbackView();
+        });
+        if (mcLbNext) mcLbNext.addEventListener('click', function() {
+            if (currentAlbumImages.length <= 1) return;
+            currentAlbumIndex = (currentAlbumIndex + 1) % currentAlbumImages.length;
+            updateFallbackView();
+        });
+        if (mcLbModal) {
+            mcLbModal.addEventListener('click', function(e) {
+                if (e.target === mcLbModal) closeFallbackLightbox();
+            });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (mcLbModal && !mcLbModal.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeFallbackLightbox();
+                else if (e.key === 'ArrowLeft') {
+                    currentAlbumIndex = (currentAlbumIndex - 1 + currentAlbumImages.length) % currentAlbumImages.length;
+                    updateFallbackView();
+                } else if (e.key === 'ArrowRight') {
+                    currentAlbumIndex = (currentAlbumIndex + 1) % currentAlbumImages.length;
+                    updateFallbackView();
+                }
+            }
+        });
+
+        // Attach click handlers to all photo album cards
+        var albumCards = document.querySelectorAll('.mc-album-card');
+        albumCards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                var rawData = this.getAttribute('data-album');
+                if (!rawData) return;
+                try {
+                    var album = JSON.parse(rawData);
+                    if (!album || !album.images || album.images.length === 0) return;
+
+                    if (typeof GLightbox !== 'undefined') {
+                        var glElements = album.images.map(function(imgUrl, i) {
+                            return {
+                                href: imgUrl,
+                                type: 'image',
+                                title: album.title + ' (' + (i + 1) + '/' + album.images.length + ')'
+                            };
+                        });
+                        var lb = GLightbox({
+                            elements: glElements,
+                            touchNavigation: true,
+                            loop: true,
+                            zoomable: true
+                        });
+                        lb.open();
+                        return;
+                    }
+
+                    openFallbackLightbox(album);
+                } catch(e) {
+                    console.error('Error opening album lightbox:', e);
+                }
+            });
+        });
     })();
 
 

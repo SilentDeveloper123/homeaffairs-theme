@@ -12,7 +12,14 @@ get_header(); ?>
           <?php while ( have_posts() ) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden' ); ?>>
               <?php if ( has_post_thumbnail() ) : ?>
-                <?php the_post_thumbnail( 'full', array( 'class' => 'w-full h-64 sm:h-80 lg:h-96 object-cover', 'loading' => 'eager', 'decoding' => 'async' ) ); ?>
+                <a href="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'full' ) ); ?>" class="glightbox block overflow-hidden group cursor-pointer relative" data-title="<?php the_title_attribute(); ?>">
+                  <?php the_post_thumbnail( 'full', array( 'class' => 'w-full h-64 sm:h-80 lg:h-96 object-cover group-hover:scale-105 transition-transform duration-500', 'loading' => 'eager', 'decoding' => 'async' ) ); ?>
+                  <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+                    <span class="w-12 h-12 rounded-full bg-white/90 text-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                      <i class="fas fa-search-plus text-base text-secondary"></i>
+                    </span>
+                  </div>
+                </a>
               <?php endif; ?>
               <div class="p-8 lg:p-10">
                 <div class="flex flex-wrap items-center gap-4 text-xs text-gray-600 mb-5">

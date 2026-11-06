@@ -388,10 +388,67 @@ jQuery(function ($) {
     }
   });
 
-  // ── Lightbox ──
-  if (typeof GLightbox !== 'undefined') {
-    GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true, zoomable: true, draggable: true });
+  // ── Lightbox Auto-Binding & Initialization for All Galleries ──
+  function haInitLightbox() {
+    if (typeof GLightbox === 'undefined') return null;
+
+    var imageRegex = /\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i;
+
+    // 1. Grouped Core WordPress Block Galleries & Classic Galleries
+    document.querySelectorAll('.wp-block-gallery, .gallery, .blocks-gallery-grid').forEach(function (galleryEl, gIdx) {
+      var galleryId = galleryEl.id || ('ha-gallery-' + (gIdx + 1));
+      galleryEl.querySelectorAll('a').forEach(function (anchor) {
+        var href = anchor.getAttribute('href');
+        if (href && imageRegex.test(href)) {
+          anchor.classList.add('glightbox');
+          if (!anchor.hasAttribute('data-gallery')) {
+            anchor.setAttribute('data-gallery', galleryId);
+          }
+          var img = anchor.querySelector('img');
+          if (img && !anchor.hasAttribute('data-title')) {
+            var caption = anchor.closest('figure') ? anchor.closest('figure').querySelector('figcaption') : null;
+            var title = (caption && caption.textContent.trim()) || img.getAttribute('alt') || img.getAttribute('title');
+            if (title) {
+              anchor.setAttribute('data-title', title);
+            }
+          }
+        }
+      });
+    });
+
+    // 2. Standalone image links in entry-content and articles
+    document.querySelectorAll('.entry-content a, article a').forEach(function (anchor) {
+      var href = anchor.getAttribute('href');
+      if (href && imageRegex.test(href) && !anchor.classList.contains('glightbox')) {
+        anchor.classList.add('glightbox');
+        var img = anchor.querySelector('img');
+        if (img && !anchor.hasAttribute('data-title')) {
+          var caption = anchor.closest('figure') ? anchor.closest('figure').querySelector('figcaption') : null;
+          var title = (caption && caption.textContent.trim()) || img.getAttribute('alt') || img.getAttribute('title');
+          if (title) {
+            anchor.setAttribute('data-title', title);
+          }
+        }
+      }
+    });
+
+    // 3. Initialize GLightbox instance
+    if (window.haLightbox && typeof window.haLightbox.destroy === 'function') {
+      try { window.haLightbox.destroy(); } catch (e) {}
+    }
+    window.haLightbox = GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true,
+      zoomable: true,
+      draggable: true
+    });
+
+    return window.haLightbox;
   }
+
+  window.haInitLightbox = haInitLightbox;
+  haInitLightbox();
 
   // ── AOS-style scroll animations ──
   if ('IntersectionObserver' in window) {
