@@ -14,15 +14,14 @@ $post_id = get_the_ID();
 $lang    = function_exists( 'ha_get_current_language' ) ? ha_get_current_language() : 'en';
 
 // -----------------------------------------------------------------------------
-// 1. Inner Title Section Meta
+// 1. Inner Title Section Meta (Subtitle removed per user request)
 // -----------------------------------------------------------------------------
-$show_header     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_show_header' ) : 'show';
-$show_header     = ( 'hide' === $show_header ) ? 'hide' : 'show';
-$header_tag      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_header_tag' ) : '';
-$header_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_header_title' ) : '';
-$header_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_header_subtitle' ) : '';
+$show_header  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_show_header' ) : 'show';
+$show_header  = ( 'hide' === $show_header ) ? 'hide' : 'show';
+$header_tag   = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_header_tag' ) : '';
+$header_title = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'overview_header_title' ) : '';
 
-$has_header = ( 'show' === $show_header && ( ! empty( $header_title ) || ! empty( $header_tag ) || ! empty( $header_subtitle ) ) );
+$has_header = ( 'show' === $show_header && ( ! empty( $header_title ) || ! empty( $header_tag ) ) );
 
 // -----------------------------------------------------------------------------
 // 2. Introduction Section Meta
@@ -141,10 +140,23 @@ $email       = function_exists( 'ha_get_theme_option' ) ? ha_get_theme_option( '
 $address     = function_exists( 'ha_get_theme_option' ) ? ha_get_theme_option( 'ha_address' ) : '';
 $phone_clean = $phone ? preg_replace( '/[^\d+]/', '', $phone ) : '';
 
-$contact_url = home_url( '/contact-us/' );
-if ( function_exists( 'ha_get_theme_option' ) && ha_get_theme_option( 'ha_cta_button_link' ) ) {
-	$contact_url = ha_get_theme_option( 'ha_cta_button_link' );
+// Link to the Contact Us page corresponding to the current language version
+$contact_page = get_posts( array(
+	'post_type'      => 'page',
+	'meta_key'       => '_wp_page_template',
+	'meta_value'     => 'page-templates/template-contact-us.php',
+	'post_status'    => 'publish',
+	'posts_per_page' => 1,
+) );
+if ( empty( $contact_page ) ) {
+	$contact_page = get_posts( array(
+		'post_type'      => 'page',
+		'name'           => 'contact-us',
+		'post_status'    => 'publish',
+		'posts_per_page' => 1,
+	) );
 }
+$contact_url = ! empty( $contact_page ) ? get_permalink( $contact_page[0]->ID ) : home_url( '/contact-us/' );
 ?>
 
 <!-- MAIN BODY CONTENT SECTION -->
@@ -161,9 +173,6 @@ if ( function_exists( 'ha_get_theme_option' ) && ha_get_theme_option( 'ha_cta_bu
         <?php endif; ?>
         <?php if ( ! empty( $header_title ) ) : ?>
           <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-darker tracking-tight"><?php echo esc_html( $header_title ); ?></h1>
-        <?php endif; ?>
-        <?php if ( ! empty( $header_subtitle ) ) : ?>
-          <p class="text-gray-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed"><?php echo esc_html( $header_subtitle ); ?></p>
         <?php endif; ?>
       </div>
     <?php endif; ?>
