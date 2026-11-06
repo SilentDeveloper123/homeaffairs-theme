@@ -720,6 +720,169 @@ function ha_register_carbon_fields() {
 				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit / Division" %>' ),
 		) );
 
+	// -------------------------------------------------------------------------
+	// OVERVIEW PAGE TEMPLATE (page-templates/template-overview.php)
+	// -------------------------------------------------------------------------
+
+	// 1. Overview: Inner Title Section
+	Container::make( 'post_meta', 'ha_container_overview_header', __( 'Overview: Inner Title Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_header', __( 'Inner Title Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the top Inner Title and Sub Title header.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_header_tag', __( 'Badge / Tag Text (Optional)', 'homeaffairs' ) )
+				->set_help_text( __( 'Small uppercase badge displayed above the title (e.g. ABOUT THE DIVISION).', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_header_title', __( 'Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Main page title for the inner section (e.g. Overview).', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_header_subtitle', __( 'Sub Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Descriptive subtitle displayed below the title.', 'homeaffairs' ) ),
+		) );
+
+	// 2. Overview: Introduction Section
+	Container::make( 'post_meta', 'ha_container_overview_intro', __( 'Overview: Introduction Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_intro', __( 'Introduction Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Introduction section.', 'homeaffairs' ) ),
+
+			Field::make( 'icon', 'overview_intro_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_intro_title', __( 'Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title of the Introduction section.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'overview_intro_desc', __( 'Description', 'homeaffairs' ) )
+				->set_help_text( __( 'Detailed description content (WYSIWYG editor).', 'homeaffairs' ) ),
+		) );
+
+	// 3. Overview: Vision & Mission Section
+	Container::make( 'post_meta', 'ha_container_overview_vision_mission', __( 'Overview: Vision & Mission Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_vision_mission', __( 'Vision & Mission Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Vision & Mission cards.', 'homeaffairs' ) ),
+
+			Field::make( 'html', 'ha_overview_vm_sep1', __( 'Vision Card', 'homeaffairs' ) )
+				->set_html( '<div style="padding:8px 12px;background:#fef6e7;border-left:4px solid #dfa21f;font-weight:bold;font-size:13px;color:#591521;">' .
+					esc_html__( 'Vision Card Details', 'homeaffairs' ) .
+				'</div>' ),
+
+			Field::make( 'icon', 'overview_vision_icon', __( 'Vision Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon for Vision card.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_vision_title', __( 'Vision Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title for the Vision card.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'overview_vision_desc', __( 'Vision Description', 'homeaffairs' ) )
+				->set_rows( 4 )
+				->set_help_text( __( 'Description text for the Vision card.', 'homeaffairs' ) ),
+
+			Field::make( 'html', 'ha_overview_vm_sep2', __( 'Mission Card', 'homeaffairs' ) )
+				->set_html( '<div style="padding:8px 12px;background:#fef6e7;border-left:4px solid #591521;font-weight:bold;font-size:13px;color:#591521;">' .
+					esc_html__( 'Mission Card Details', 'homeaffairs' ) .
+				'</div>' ),
+
+			Field::make( 'icon', 'overview_mission_icon', __( 'Mission Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon for Mission card.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_mission_title', __( 'Mission Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title for the Mission card.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'overview_mission_desc', __( 'Mission Description', 'homeaffairs' ) )
+				->set_rows( 4 )
+				->set_help_text( __( 'Description text for the Mission card.', 'homeaffairs' ) ),
+		) );
+
+	// 4. Overview: Objectives Section
+	Container::make( 'post_meta', 'ha_container_overview_objectives', __( 'Overview: Objectives Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_objectives', __( 'Objectives Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Objectives section.', 'homeaffairs' ) ),
+
+			Field::make( 'icon', 'overview_objectives_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon for Objectives.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_objectives_title', __( 'Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title of the Objectives section.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'overview_objectives_desc', __( 'Description', 'homeaffairs' ) )
+				->set_help_text( __( 'Objectives description and bullet points (WYSIWYG editor).', 'homeaffairs' ) ),
+		) );
+
+	// 5. Overview: Strategies Section
+	Container::make( 'post_meta', 'ha_container_overview_strategies', __( 'Overview: Strategies Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_strategies', __( 'Strategies Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Strategies section.', 'homeaffairs' ) ),
+
+			Field::make( 'icon', 'overview_strategies_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon for Strategies.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_strategies_title', __( 'Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title of the Strategies section.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'overview_strategies_desc', __( 'Description', 'homeaffairs' ) )
+				->set_help_text( __( 'Strategies description and bullet points (WYSIWYG editor).', 'homeaffairs' ) ),
+		) );
+
+	// 6. Overview: Main Functions Section
+	Container::make( 'post_meta', 'ha_container_overview_functions', __( 'Overview: Main Functions Section', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-overview.php' )
+		->add_fields( array(
+			Field::make( 'radio', 'overview_show_functions', __( 'Main Functions Section Visibility', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Main Functions section.', 'homeaffairs' ) ),
+
+			Field::make( 'icon', 'overview_functions_icon', __( 'Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon for Main Functions.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'overview_functions_title', __( 'Title', 'homeaffairs' ) )
+				->set_help_text( __( 'Title of the Main Functions section.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'overview_functions_desc', __( 'Description', 'homeaffairs' ) )
+				->set_help_text( __( 'Main functions description and bullet points (WYSIWYG editor).', 'homeaffairs' ) ),
+		) );
+
 }
 
 /**
