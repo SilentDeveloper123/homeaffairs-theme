@@ -567,18 +567,37 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 
 		// If toggling node with anchor or target, ensure connected nodes also open
 		var card = li.querySelector('.org-card');
-		if ( card && card.hasAttribute('data-cross-target') && isExpanded ) {
-			var tId = card.getAttribute('data-cross-target');
-			var tCard = document.getElementById(tId);
-			if ( tCard ) {
-				var tLi = tCard.closest('li');
-				var tSubtree = tLi ? tLi.querySelector('.staff-subtree') : null;
-				var tBtn = tLi ? tLi.querySelector('.staff-toggle') : null;
-				if ( tSubtree && ! tSubtree.classList.contains('is-expanded') ) {
-					tSubtree.classList.add('is-expanded');
-					if ( tBtn ) {
-						tBtn.classList.add('expanded');
-						tBtn.innerHTML = '− Staff';
+		if ( card && isExpanded ) {
+			// 1. If this card targets another node (e.g. AS Admin targeting AS Training)
+			if ( card.hasAttribute('data-cross-target') ) {
+				var tId = card.getAttribute('data-cross-target');
+				var tCard = document.getElementById( tId );
+				if ( tCard ) {
+					var tLi = tCard.closest('li');
+					var tSubtree = tLi ? tLi.querySelector(':scope > .staff-subtree') : null;
+					var tBtn = tLi ? tLi.querySelector('.staff-toggle') : null;
+					if ( tSubtree && ! tSubtree.classList.contains('is-expanded') ) {
+						tSubtree.classList.add('is-expanded');
+						if ( tBtn ) {
+							tBtn.classList.add('expanded');
+							tBtn.innerHTML = '− Staff';
+						}
+					}
+				}
+			}
+			// 2. If this card is targeted by another node (e.g. AS Training targeted by AS Admin)
+			if ( card.id ) {
+				var sCard = document.querySelector('[data-cross-target="' + card.id + '"]');
+				if ( sCard ) {
+					var sLi = sCard.closest('li');
+					var sSubtree = sLi ? sLi.querySelector(':scope > .staff-subtree') : null;
+					var sBtn = sLi ? sLi.querySelector('.staff-toggle') : null;
+					if ( sSubtree && ! sSubtree.classList.contains('is-expanded') ) {
+						sSubtree.classList.add('is-expanded');
+						if ( sBtn ) {
+							sBtn.classList.add('expanded');
+							sBtn.innerHTML = '− Staff';
+						}
 					}
 				}
 			}
@@ -586,6 +605,15 @@ $txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශ�
 
 		setTimeout(updateCrossConnectors, 50);
 	};
+
+	// Fallback delegation for any .staff-toggle
+	document.addEventListener('click', function( e ) {
+		var btn = e.target.closest('.staff-toggle');
+		if ( btn && ! btn.hasAttribute('onclick') ) {
+			e.preventDefault();
+			window.toggleStaff( btn );
+		}
+	});
 
 	var chartContainer = document.getElementById('interactiveOrgChartSection');
 	var viewport = document.getElementById('orgChartViewport');

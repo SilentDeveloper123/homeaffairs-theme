@@ -270,9 +270,22 @@ function ha_render_org_subtree( $node_id, $tree_data, $depth = 1 ) {
 				$html .= "\t\t\t\t" . ha_render_org_card_markup( $next_cpost ) . "\n";
 				$html .= "\t\t\t" . '</div>' . "\n";
 
-				// Subtree of pair (attached to first card)
-				$pair_children = isset( $tree_data['by_parent'][ $cid ] ) ? $tree_data['by_parent'][ $cid ] : array();
-				$pair_child_mode = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $cid, 'org_children_mode' ) : 'always';
+				// Subtree of pair (attached to pair, collecting children from both cards)
+				$pair_children = array();
+				if ( isset( $tree_data['by_parent'][ $cid ] ) ) {
+					$pair_children = array_merge( $pair_children, $tree_data['by_parent'][ $cid ] );
+				}
+				if ( $next_cid && isset( $tree_data['by_parent'][ $next_cid ] ) ) {
+					$pair_children = array_merge( $pair_children, $tree_data['by_parent'][ $next_cid ] );
+				}
+				$pair_child_mode = 'always';
+				if ( function_exists( 'carbon_get_post_meta' ) ) {
+					$m1 = carbon_get_post_meta( $cid, 'org_children_mode' );
+					$m2 = $next_cid ? carbon_get_post_meta( $next_cid, 'org_children_mode' ) : '';
+					if ( 'collapsible' === $m1 || 'collapsible' === $m2 ) {
+						$pair_child_mode = 'collapsible';
+					}
+				}
 				if ( ! empty( $pair_children ) ) {
 					if ( 'collapsible' === $pair_child_mode ) {
 						$html .= "\t\t\t" . '<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>' . "\n";
