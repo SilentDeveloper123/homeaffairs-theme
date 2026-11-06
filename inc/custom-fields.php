@@ -584,6 +584,142 @@ function ha_register_carbon_fields() {
 			Field::make( 'text', 'news_custom_btn_text', __( 'Custom Button Text (Optional)', 'homeaffairs' ) )
 				->set_help_text( __( 'Optional custom button text for this news article. Overrides the section default button text.', 'homeaffairs' ) ),
 		) );
+
+	// ═══════════════════════════════════════════════════════════════════
+	// DIVISIONS LANDING PAGE TEMPLATE (template-divisions.php)
+	// ═══════════════════════════════════════════════════════════════════
+	Container::make( 'post_meta', 'ha_container_divisions_visibility', __( 'Divisions Page: Section Visibility', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-divisions.php' )
+		->add_fields( array(
+			Field::make( 'html', 'ha_divisions_vis_intro', __( 'Section Toggles', 'homeaffairs' ) )
+				->set_html( '<div style="padding:10px 14px;background:#f0f6fc;border-left:4px solid #0056b3;border-radius:3px;font-size:13px;line-height:1.5;">' .
+					'<strong>' . esc_html__( 'Section Visibility Controls:', 'homeaffairs' ) . '</strong> ' .
+					esc_html__( 'Use the radio buttons below to individually show or hide each section on the Divisions Landing Page.', 'homeaffairs' ) .
+				'</div>' ),
+
+			Field::make( 'radio', 'ha_divisions_show_intro', __( 'Introduction Area', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the top Introduction heading and description block.', 'homeaffairs' ) ),
+
+			Field::make( 'radio', 'ha_divisions_show_facts', __( 'Quick Facts Area', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the Quick Facts card (Total Divisions, Sub-Units, Jurisdiction).', 'homeaffairs' ) ),
+
+			Field::make( 'radio', 'ha_divisions_show_grid', __( 'Divisions Grid Section', 'homeaffairs' ) )
+				->set_options( array(
+					'show' => __( 'Show', 'homeaffairs' ),
+					'hide' => __( 'Hide', 'homeaffairs' ),
+				) )
+				->set_default_value( 'show' )
+				->set_help_text( __( 'Controls visibility of the 9-per-page Divisions card grid and pagination.', 'homeaffairs' ) ),
+		) );
+
+	Container::make( 'post_meta', 'ha_container_divisions_intro', __( 'Divisions Page: Introduction Area', 'homeaffairs' ) )
+		->where( 'post_template', '=', 'page-templates/template-divisions.php' )
+		->add_fields( array(
+			Field::make( 'text', 'ha_divisions_intro_title', __( 'Title', 'homeaffairs' ) )
+				->set_default_value( 'Introduction' )
+				->set_help_text( __( 'Main heading for the introduction area.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'ha_divisions_intro_desc', __( 'Description', 'homeaffairs' ) )
+				->set_help_text( __( 'Introduction description content with formatted paragraphs.', 'homeaffairs' ) ),
+		) );
+
+
+	// ═══════════════════════════════════════════════════════════════════
+	// HA-DIVISION CUSTOM POST TYPE FIELDS (Section-Wise Containers)
+	// ═══════════════════════════════════════════════════════════════════
+
+	// 1. Overview & Scope Container
+	Container::make( 'post_meta', 'ha_container_division_overview', __( 'Division: Overview & Scope', 'homeaffairs' ) )
+		->where( 'post_type', '=', 'ha-division' )
+		->or_where( 'post_type', '=', 'ha_division' )
+		->add_fields( array(
+			Field::make( 'icon', 'division_icon', __( 'Division Icon (Font Awesome)', 'homeaffairs' ) )
+				->add_fontawesome_options()
+				->set_help_text( __( 'Select Font Awesome icon from the visual icon picker.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_title', __( 'Title of the Division', 'homeaffairs' ) )
+				->set_help_text( __( 'Official title of the division. If left blank, post title will be used.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'division_short_intro', __( 'Short Introduction', 'homeaffairs' ) )
+				->set_rows( 3 )
+				->set_help_text( __( 'Short summary for division grid cards.', 'homeaffairs' ) ),
+
+			Field::make( 'textarea', 'division_scope', __( 'Scope of the Division', 'homeaffairs' ) )
+				->set_rows( 4 )
+				->set_help_text( __( 'Scope and mandate of this division.', 'homeaffairs' ) ),
+
+			Field::make( 'rich_text', 'division_duty', __( 'Duty of the Division', 'homeaffairs' ) )
+				->set_help_text( __( 'Detailed duties and responsibilities (WYSIWYG editor).', 'homeaffairs' ) ),
+		) );
+
+	// 2. Head of Division Container
+	Container::make( 'post_meta', 'ha_container_division_head', __( 'Division: Head of the Division', 'homeaffairs' ) )
+		->where( 'post_type', '=', 'ha-division' )
+		->or_where( 'post_type', '=', 'ha_division' )
+		->add_fields( array(
+			Field::make( 'image', 'division_head_photo', __( 'Photo (Size: 1817px × 2565px)', 'homeaffairs' ) )
+				->set_value_type( 'url' )
+				->set_help_text( __( 'Portrait photo of Head of Division (Recommended size: 1817px × 2565px).', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_head_name', __( 'Name', 'homeaffairs' ) )
+				->set_help_text( __( 'Name of Head of Division.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_head_designation', __( 'Designation', 'homeaffairs' ) )
+				->set_help_text( __( 'Designation of Head of Division.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_head_mobile', __( 'Mobile Number', 'homeaffairs' ) )
+				->set_help_text( __( 'Mobile phone number.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_head_phone_fax', __( 'Land Line / Fax Number', 'homeaffairs' ) )
+				->set_help_text( __( 'Official landline phone number and/or fax number.', 'homeaffairs' ) ),
+
+			Field::make( 'text', 'division_head_email', __( 'Email Address', 'homeaffairs' ) )
+				->set_help_text( __( 'Official email address.', 'homeaffairs' ) ),
+		) );
+
+	// 3. Sub-Units Container
+	Container::make( 'post_meta', 'ha_container_division_sub_units', __( 'Division: Sub-Units', 'homeaffairs' ) )
+		->where( 'post_type', '=', 'ha-division' )
+		->or_where( 'post_type', '=', 'ha_division' )
+		->add_fields( array(
+			Field::make( 'complex', 'division_sub_units', __( 'Sub-Units', 'homeaffairs' ) )
+				->set_layout( 'tabbed-vertical' )
+				->set_header_template( '<%- sub_unit_title ? sub_unit_title : "Sub Unit " + ($_index + 1) %>' )
+				->add_fields( array(
+					Field::make( 'text', 'sub_unit_title', __( 'Sub Unit Title', 'homeaffairs' ) )
+						->set_help_text( __( 'Title of the sub-unit (e.g. Information Technology Unit).', 'homeaffairs' ) ),
+
+					Field::make( 'complex', 'sub_unit_team', __( 'Sub Unit Team Profiles', 'homeaffairs' ) )
+						->set_layout( 'tabbed-horizontal' )
+						->set_header_template( '<%- member_name ? member_name : "Member " + ($_index + 1) %>' )
+						->add_fields( array(
+							Field::make( 'image', 'member_photo', __( 'Photo (Size: 1817px × 2565px)', 'homeaffairs' ) )
+								->set_value_type( 'url' )
+								->set_help_text( __( 'Portrait photo (Recommended size: 1817px × 2565px).', 'homeaffairs' ) ),
+
+							Field::make( 'text', 'member_name', __( 'Name', 'homeaffairs' ) ),
+
+							Field::make( 'text', 'member_designation', __( 'Designation', 'homeaffairs' ) ),
+
+							Field::make( 'text', 'member_mobile', __( 'Mobile Number', 'homeaffairs' ) ),
+
+							Field::make( 'text', 'member_phone', __( 'Land Line Number', 'homeaffairs' ) ),
+
+							Field::make( 'text', 'member_email', __( 'Email Address', 'homeaffairs' ) ),
+						) ),
+				) ),
+		) );
+
 }
 
 /**
@@ -743,6 +879,8 @@ function ha_hide_default_editor_and_thumbnail_for_templates() {
 	// 1. Remove editor from Custom Post Types
 	remove_post_type_support( 'special_notice', 'editor' );
 	remove_post_type_support( 'news_announcement', 'editor' );
+	remove_post_type_support( 'ha-division', 'editor' );
+	remove_post_type_support( 'ha_division', 'editor' );
 
 	// 2. Remove editor & thumbnail from Pages using Page Templates / Front Page
 	if ( ha_is_custom_page_template() ) {
@@ -781,7 +919,7 @@ function ha_admin_hide_editor_styles() {
 	$hide_thumbnail = false;
 
 	// Custom post types with custom fields
-	if ( isset( $current_screen->post_type ) && in_array( $current_screen->post_type, array( 'special_notice', 'news_announcement' ), true ) ) {
+	if ( isset( $current_screen->post_type ) && in_array( $current_screen->post_type, array( 'special_notice', 'news_announcement', 'ha-division', 'ha_division' ), true ) ) {
 		$hide_editor = true;
 	}
 
@@ -841,7 +979,7 @@ function ha_admin_template_switch_script() {
 			var postType = $('input#post_type').val() || '';
 
 			// Custom post types
-			if (postType === 'special_notice' || postType === 'news_announcement') {
+			if (postType === 'special_notice' || postType === 'news_announcement' || postType === 'ha-division' || postType === 'ha_division') {
 				$('#postdivrich').hide();
 				$('.block-editor-block-list__layout').hide();
 			}

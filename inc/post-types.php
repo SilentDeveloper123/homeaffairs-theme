@@ -158,6 +158,85 @@ function ha_register_post_types_and_taxonomies() {
 
 	register_post_type( 'news_announcement', $news_cpt_args );
 
+	// ═══════════════════════════════════════════════════════════════════
+	// 3. DIVISIONS (Taxonomy: division_category | CPT: ha-division & ha_division)
+	// ═══════════════════════════════════════════════════════════════════
+
+	// Taxonomy: Division Categories
+	$div_tax_labels = array(
+		'name'                       => _x( 'Division Categories', 'taxonomy general name', 'homeaffairs' ),
+		'singular_name'              => _x( 'Division Category', 'taxonomy singular name', 'homeaffairs' ),
+		'search_items'               => __( 'Search Categories', 'homeaffairs' ),
+		'popular_items'              => __( 'Popular Categories', 'homeaffairs' ),
+		'all_items'                  => __( 'All Categories', 'homeaffairs' ),
+		'parent_item'                => __( 'Parent Category', 'homeaffairs' ),
+		'parent_item_colon'          => __( 'Parent Category:', 'homeaffairs' ),
+		'edit_item'                  => __( 'Edit Category', 'homeaffairs' ),
+		'update_item'                => __( 'Update Category', 'homeaffairs' ),
+		'add_new_item'               => __( 'Add New Category', 'homeaffairs' ),
+		'new_item_name'              => __( 'New Category Name', 'homeaffairs' ),
+		'separate_items_with_commas' => __( 'Separate categories with commas', 'homeaffairs' ),
+		'add_or_remove_items'        => __( 'Add or remove categories', 'homeaffairs' ),
+		'choose_from_most_used'      => __( 'Choose from the most used categories', 'homeaffairs' ),
+		'not_found'                  => __( 'No categories found.', 'homeaffairs' ),
+		'menu_name'                  => __( 'Division Categories', 'homeaffairs' ),
+	);
+
+	$div_tax_args = array(
+		'hierarchical'          => true,
+		'labels'                => $div_tax_labels,
+		'show_ui'               => true,
+		'show_admin_column'     => true,
+		'query_var'             => true,
+		'rewrite'               => array( 'slug' => 'division-category' ),
+		'show_in_rest'          => true,
+	);
+
+	register_taxonomy( 'division_category', array( 'ha-division', 'ha_division' ), $div_tax_args );
+
+	// CPT: Divisions (ha-division)
+	$div_cpt_labels = array(
+		'name'                  => _x( 'Divisions', 'Post type general name', 'homeaffairs' ),
+		'singular_name'         => _x( 'Division', 'Post type singular name', 'homeaffairs' ),
+		'menu_name'             => _x( 'Divisions', 'Admin Menu text', 'homeaffairs' ),
+		'name_admin_bar'        => _x( 'Division', 'Add New on Toolbar', 'homeaffairs' ),
+		'add_new'               => __( 'Add New Division', 'homeaffairs' ),
+		'add_new_item'          => __( 'Add New Division', 'homeaffairs' ),
+		'new_item'              => __( 'New Division', 'homeaffairs' ),
+		'edit_item'             => __( 'Edit Division', 'homeaffairs' ),
+		'view_item'             => __( 'View Division', 'homeaffairs' ),
+		'all_items'             => __( 'All Divisions', 'homeaffairs' ),
+		'search_items'          => __( 'Search Divisions', 'homeaffairs' ),
+		'parent_item_colon'     => __( 'Parent Divisions:', 'homeaffairs' ),
+		'not_found'             => __( 'No divisions found.', 'homeaffairs' ),
+		'not_found_in_trash'    => __( 'No divisions found in Trash.', 'homeaffairs' ),
+	);
+
+	$div_cpt_args = array(
+		'labels'             => $div_cpt_labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'divisions', 'with_front' => false ),
+		'capability_type'    => 'post',
+		'has_archive'        => false,
+		'hierarchical'       => false,
+		'menu_position'      => 22,
+		'menu_icon'          => 'dashicons-networking',
+		'supports'           => array( 'title', 'thumbnail', 'excerpt', 'revisions' ),
+		'taxonomies'         => array( 'division_category' ),
+		'show_in_rest'       => true,
+	);
+
+	register_post_type( 'ha-division', $div_cpt_args );
+
+	$div_cpt_alias_args = $div_cpt_args;
+	$div_cpt_alias_args['show_in_menu'] = false;
+	$div_cpt_alias_args['rewrite'] = false;
+	register_post_type( 'ha_division', $div_cpt_alias_args );
+
 	// Seed default taxonomy terms
 	ha_seed_notice_categories();
 	ha_seed_news_categories();
@@ -339,6 +418,54 @@ function ha_news_announcement_column_content( $column, $post_id ) {
 			} else {
 				echo '<span style="color:#bbb;">&mdash;</span>';
 			}
+			break;
+	}
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// 5. ADMIN COLUMNS: DIVISIONS (ha-division & ha_division)
+// ═══════════════════════════════════════════════════════════════════
+add_filter( 'manage_ha-division_posts_columns', 'ha_division_edit_columns' );
+add_filter( 'manage_ha_division_posts_columns', 'ha_division_edit_columns' );
+function ha_division_edit_columns( $columns ) {
+	$new_columns = array();
+	$new_columns['cb']               = isset( $columns['cb'] ) ? $columns['cb'] : '<input type="checkbox" />';
+	$new_columns['division_icon']    = __( 'Icon', 'homeaffairs' );
+	$new_columns['title']            = __( 'Title of Division', 'homeaffairs' );
+	$new_columns['division_head']    = __( 'Head of Division', 'homeaffairs' );
+	$new_columns['division_subunits']= __( 'Sub-Units', 'homeaffairs' );
+	$new_columns['date']             = __( 'Date', 'homeaffairs' );
+	return $new_columns;
+}
+
+add_action( 'manage_ha-division_posts_custom_column', 'ha_division_column_content', 10, 2 );
+add_action( 'manage_ha_division_posts_custom_column', 'ha_division_column_content', 10, 2 );
+function ha_division_column_content( $column, $post_id ) {
+	switch ( $column ) {
+		case 'division_icon':
+			$icon = function_exists( 'ha_get_post_icon' ) ? ha_get_post_icon( $post_id, 'division_icon', 'fas fa-sitemap' ) : ( function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'division_icon' ) : 'fas fa-sitemap' );
+			$icon = is_string( $icon ) ? $icon : ( function_exists( 'ha_get_icon_class' ) ? ha_get_icon_class( $icon, 'fas fa-sitemap' ) : 'fas fa-sitemap' );
+			echo '<span style="font-size:18px;color:#591521;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:#f5f0f0;border-radius:6px;border:1px solid #e2d2d4;"><i class="' . esc_attr( $icon ) . '"></i></span>';
+			break;
+
+		case 'division_head':
+			$head_name  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'division_head_name' ) : '';
+			$head_desig = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'division_head_designation' ) : '';
+			if ( $head_name ) {
+				echo '<strong>' . esc_html( $head_name ) . '</strong>';
+				if ( $head_desig ) {
+					echo '<br><span style="color:#666;font-size:12px;">' . esc_html( $head_desig ) . '</span>';
+				}
+			} else {
+				echo '<em style="color:#999;">&mdash;</em>';
+			}
+			break;
+
+		case 'division_subunits':
+			$sub_units = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'division_sub_units' ) : array();
+			$count = is_array( $sub_units ) ? count( $sub_units ) : 0;
+			echo '<span class="badge" style="display:inline-block;padding:2px 8px;border-radius:12px;background:#dfa21f;color:#591521;font-weight:700;font-size:11px;">' . esc_html( $count ) . ' ' . esc_html__( 'Units', 'homeaffairs' ) . '</span>';
 			break;
 	}
 }
