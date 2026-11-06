@@ -469,3 +469,67 @@ function ha_division_column_content( $column, $post_id ) {
 			break;
 	}
 }
+
+
+/**
+ * Auto-sync Multisite Language Switcher (MSLS) relationships for ha-division posts
+ */
+add_action( 'save_post_ha-division', 'ha_sync_division_msls_links', 20, 2 );
+add_action( 'save_post_ha_division', 'ha_sync_division_msls_links', 20, 2 );
+function ha_sync_division_msls_links( $post_id, $post ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! is_multisite() || ! $post || 'publish' !== $post->post_status ) {
+		return;
+	}
+
+	$slug = $post->post_name;
+	if ( empty( $slug ) ) {
+		return;
+	}
+
+	static $syncing = false;
+	if ( $syncing ) {
+		return;
+	}
+	$syncing = true;
+
+	$languages = array(
+		'en_US' => 4,
+		'si_LK' => 2,
+		'ta_LK' => 3,
+	);
+
+	$division_ids = array();
+	foreach ( $languages as $lang => $bid ) {
+		switch_to_blog( $bid );
+		$found = get_posts( array(
+			'post_type'      => array( 'ha-division', 'ha_division' ),
+			'name'           => $slug,
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+		) );
+		if ( ! empty( $found ) ) {
+			$division_ids[ $lang ] = (int) $found[0]->ID;
+		}
+		restore_current_blog();
+	}
+
+	if ( count( $division_ids ) > 1 ) {
+		foreach ( $division_ids as $lang => $id ) {
+			$bid = $languages[ $lang ];
+			$other_links = array();
+			foreach ( $division_ids as $o_lang => $o_id ) {
+				if ( $o_lang !== $lang ) {
+					$other_links[ $o_lang ] = $o_id;
+				}
+			}
+			switch_to_blog( $bid );
+			update_option( "msls_{$id}", $other_links );
+			restore_current_blog();
+		}
+	}
+
+	$syncing = false;
+}
