@@ -472,6 +472,18 @@ function ha_division_column_content( $column, $post_id ) {
 
 
 /**
+ * Register pagination rewrite rules for divisions landing page
+ */
+add_action( 'init', 'ha_divisions_pagination_rewrite_rules', 1 );
+function ha_divisions_pagination_rewrite_rules() {
+	add_rewrite_rule(
+		'^divisions/page/([0-9]+)/?$',
+		'index.php?pagename=divisions&paged=$matches[1]',
+		'top'
+	);
+}
+
+/**
  * Auto-sync Multisite Language Switcher (MSLS) relationships for ha-division posts
  */
 add_action( 'save_post_ha-division', 'ha_sync_division_msls_links', 20, 2 );
