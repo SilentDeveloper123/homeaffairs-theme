@@ -10,6 +10,9 @@ function crb_load() {
 require_once get_template_directory() . '/inc/setup.php';
 require_once get_template_directory() . '/inc/post-types.php';
 require_once get_template_directory() . '/inc/custom-fields.php';
+require_once get_template_directory() . '/inc/governance-fields.php';
+require_once get_template_directory() . '/inc/org-chart-renderer.php';
+require_once get_template_directory() . '/inc/org-chart-seeder.php';
 require_once get_template_directory() . '/inc/theme-options.php';
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/widgets.php';

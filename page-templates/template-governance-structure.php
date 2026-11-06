@@ -8,911 +8,413 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 get_template_part( 'template-parts/page-banner' );
+
+$post_id = get_the_ID();
+
+// Section Visibility Controllers
+$gov_show_header        = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_header' ) : 'show';
+$gov_show_profiles      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_profiles' ) : 'show';
+$gov_show_tabs          = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_tabs' ) : 'show';
+$gov_show_minister_tab  = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_minister_tab' ) : 'show';
+$gov_show_secretary_tab = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_secretary_tab' ) : 'show';
+$gov_show_chart_tab     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_show_chart_tab' ) : 'show';
+
+// Defaults
+if ( empty( $gov_show_header ) ) $gov_show_header = 'show';
+if ( empty( $gov_show_profiles ) ) $gov_show_profiles = 'show';
+if ( empty( $gov_show_tabs ) ) $gov_show_tabs = 'show';
+if ( empty( $gov_show_minister_tab ) ) $gov_show_minister_tab = 'show';
+if ( empty( $gov_show_secretary_tab ) ) $gov_show_secretary_tab = 'show';
+if ( empty( $gov_show_chart_tab ) ) $gov_show_chart_tab = 'show';
+
+// Locale detection
+$locale = get_locale();
+$is_si  = ( 0 === strpos( $locale, 'si' ) );
+$is_ta  = ( 0 === strpos( $locale, 'ta' ) );
+
+// Placeholder Image URL (1100x975 brand Maroon)
+$placeholder_photo = 'https://placehold.co/1100x975/591521/ffffff?text=Leadership+Photo';
+
+// 1. Inner Title Section Meta
+$gov_header_tag      = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_header_tag' ) : '';
+$gov_header_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_header_title' ) : '';
+$gov_header_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_header_subtitle' ) : '';
+
+// 2. Minister and Secretary Profile Section Meta
+$gov_minister_photo    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_minister_photo' ) : '';
+$gov_minister_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_minister_title' ) : '';
+$gov_minister_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_minister_subtitle' ) : '';
+$gov_minister_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_minister_desc' ) : '';
+
+$gov_secretary_photo    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_secretary_photo' ) : '';
+$gov_secretary_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_secretary_title' ) : '';
+$gov_secretary_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_secretary_subtitle' ) : '';
+$gov_secretary_desc     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_secretary_desc' ) : '';
+
+$minister_photo_src  = ! empty( $gov_minister_photo ) ? $gov_minister_photo : $placeholder_photo;
+$secretary_photo_src = ! empty( $gov_secretary_photo ) ? $gov_secretary_photo : $placeholder_photo;
+
+// 3. Tabs Section Meta
+// Minister Tab
+$gov_tab_min_photo       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_photo' ) : '';
+$gov_tab_min_designation = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_designation' ) : '';
+$gov_tab_min_name        = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_name' ) : '';
+$gov_tab_min_ministry    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_ministry' ) : '';
+$gov_tab_min_message     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_message' ) : '';
+$gov_tab_min_phone       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_phone' ) : '';
+$gov_tab_min_fax         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_fax' ) : '';
+$gov_tab_min_email       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_email' ) : '';
+$gov_tab_min_address     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_min_address' ) : '';
+
+$tab_min_photo_src = ! empty( $gov_tab_min_photo ) ? $gov_tab_min_photo : $placeholder_photo;
+
+// Secretary Tab
+$gov_tab_sec_photo       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_photo' ) : '';
+$gov_tab_sec_designation = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_designation' ) : '';
+$gov_tab_sec_name        = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_name' ) : '';
+$gov_tab_sec_ministry    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_ministry' ) : '';
+$gov_tab_sec_message     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_message' ) : '';
+$gov_tab_sec_phone       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_phone' ) : '';
+$gov_tab_sec_fax         = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_fax' ) : '';
+$gov_tab_sec_email       = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_email' ) : '';
+$gov_tab_sec_address     = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_tab_sec_address' ) : '';
+
+$tab_sec_photo_src = ! empty( $gov_tab_sec_photo ) ? $gov_tab_sec_photo : $placeholder_photo;
+
+// Chart Settings
+$gov_chart_title    = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_chart_title' ) : '';
+$gov_chart_subtitle = function_exists( 'carbon_get_post_meta' ) ? carbon_get_post_meta( $post_id, 'gov_chart_subtitle' ) : '';
+
+// Active initial tab
+$default_active_tab = 'tab-structure';
+if ( 'hide' === $gov_show_chart_tab ) {
+	if ( 'hide' !== $gov_show_minister_tab ) {
+		$default_active_tab = 'tab-minister';
+	} elseif ( 'hide' !== $gov_show_secretary_tab ) {
+		$default_active_tab = 'tab-secretary';
+	}
+}
+
+// UI text translations
+$txt_minister_tab  = $is_si ? 'අමාත්‍යතුමාගේ පණිවිඩය' : ( $is_ta ? 'அமைச்சரின் செய்தி' : "Minister's Message" );
+$txt_secretary_tab = $is_si ? 'ලේකම්තුමාගේ පණිවිඩය' : ( $is_ta ? 'செயலாளரின் செய்தி' : "Secretary's Message" );
+$txt_chart_tab     = $is_si ? 'ආයතනික ව්‍යුහ සටහන' : ( $is_ta ? 'நிறுவனக் கட்டமைப்பு வரைபடம்' : 'Organizational Structure Chart' );
+$txt_contact       = $is_si ? 'සබඳතා තොරතුරු' : ( $is_ta ? 'தொடர்பு விபரங்கள்' : 'Contact Details' );
+$txt_expand_staff  = $is_si ? 'සියලු කාර්ය මණ්ඩලය විහිදුවන්න' : ( $is_ta ? 'அனைத்து பணியாளர்களையும் விரிவுபடுத்துக' : 'Expand All Staff' );
+$txt_download_chart= $is_si ? 'සටහන බාගත කරන්න' : ( $is_ta ? 'வரைபடத்தைப் பதிவிறக்குக' : 'Download Chart' );
+$txt_search_holder = $is_si ? 'තනතුර සොයන්න...' : ( $is_ta ? 'பதவியைத் தேடுக...' : 'Search designation...' );
+$txt_acronyms_hdr  = $is_si ? 'කෙටි යෙදුම්:' : ( $is_ta ? 'சுருக்கக் குறியீடுகள்:' : 'Acronyms:' );
+$txt_footer_label  = $is_si ? 'ස්වදේශ කටයුතු අංශය • ආයතනික ව්‍යුහය' : ( $is_ta ? 'உள்நாட்டு அலுவல்கள் பிரிவு • நிறுவனக் கட்டமைப்பு' : 'Home Affairs Division • Organizational Chart' );
 ?>
 
 <main id="main-content" role="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
 
-	<!-- Service Page Style Center Header -->
-	<div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
-		<span class="text-[11px] font-bold tracking-[2px] uppercase px-3.5 py-1 rounded-full bg-secondary/10 text-secondary inline-block mb-3">
-			<?php esc_html_e( 'MINISTRY GOVERNANCE', 'homeaffairs' ); ?>
-		</span>
-		<h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-darker tracking-tight"><?php esc_html_e( 'Governance & Structure', 'homeaffairs' ); ?></h1>
-		
-	</div>
-
-	<!-- Dual Executive Profile Matrix -->
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-		<!-- Minister Card -->
-		<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
-			<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
-			<div class="gov-profile-img shrink-0">
-				<img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/governance/minister.jpg' ); ?>" alt="Hon. Minister" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-				<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30 text-3xl" style="display:none"><i class="fas fa-user"></i></div>
-			</div>
-			<div class="text-center sm:text-left">
-				<span class="text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest">Minister</span>
-				<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1 mb-2">Hon. (Prof.) A.H.M.H. Abayarthna</h2>
-				<p class="text-sm text-slate-600 leading-relaxed m-0">
-					Minister of Home Affairs of the Democratic Socialist Republic of Sri Lanka, overseeing policy direction, legislative governance, and strategic oversight of the Ministry's administrative framework.
-				</p>
-			</div>
+	<?php if ( 'hide' !== $gov_show_header ) : ?>
+		<!-- 1. Inner Title Section -->
+		<div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+			<?php if ( ! empty( $gov_header_tag ) ) : ?>
+				<span class="text-[11px] font-bold tracking-[2px] uppercase px-3.5 py-1 rounded-full bg-secondary/10 text-secondary inline-block mb-3">
+					<?php echo esc_html( $gov_header_tag ); ?>
+				</span>
+			<?php endif; ?>
+			<?php if ( ! empty( $gov_header_title ) ) : ?>
+				<h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-darker tracking-tight"><?php echo esc_html( $gov_header_title ); ?></h1>
+			<?php endif; ?>
+			<?php if ( ! empty( $gov_header_subtitle ) ) : ?>
+				<p class="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl mx-auto"><?php echo esc_html( $gov_header_subtitle ); ?></p>
+			<?php endif; ?>
 		</div>
+	<?php endif; ?>
 
-		<!-- Secretary Card -->
-		<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
-			<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
-			<div class="gov-profile-img shrink-0">
-				<img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/governance/secretary.jpg' ); ?>" alt="Ministry Secretary" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-				<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30 text-3xl" style="display:none"><i class="fas fa-user"></i></div>
-			</div>
-			<div class="text-center sm:text-left">
-				<span class="text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest">Secretary</span>
-				<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1 mb-2">Mr. S. Alokabandara</h2>
-				<p class="text-sm text-slate-600 leading-relaxed m-0">
-					Secretary to the Home Affairs Division, responsible for day-to-day administration, policy implementation, and coordination across all divisions and departments of the Ministry.
-				</p>
-			</div>
-		</div>
+	<?php if ( 'hide' !== $gov_show_profiles ) : ?>
+		<!-- 2. Dual Executive Profile Matrix Section -->
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-	</div>
-
-	<!-- Multi-Tab Interactive Governance Lounge -->
-	<div class="mt-12 lg:mt-16">
-
-		<!-- Tab Bar -->
-		<div class="flex flex-wrap justify-center border-b border-primary-darker/15 gap-2 sm:gap-4 pb-3">
-			<button type="button" class="gov-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-primary-darker/15 hover:border-secondary" data-tab="tab-minister">Minister's Message</button>
-			<button type="button" class="gov-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-primary-darker/15 hover:border-secondary" data-tab="tab-secretary">Secretary's Message</button>
-			<button type="button" class="gov-tab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-primary-darker text-white shadow-sm" data-tab="tab-structure">Organizational Structure Chart</button>
-		</div>
-
-		
-		<!-- Panel 1: Minister's Message -->
-		<div id="tab-minister" class="gov-tab-panel mt-8 hidden">
-			<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
-				<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
-					<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
-						<img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/governance/minister.jpg' ); ?>" alt="Hon. Minister" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-						<i class="fas fa-user text-3xl" style="display:none"></i>
-					</div>
-					<div>
-						<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Minister of Home Affairs</span>
-						<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1">Hon. (Prof.) A.H.M.H. Abayarthna</h2>
-						<p class="text-sm text-slate-600 font-medium">Minister of Home Affairs</p>
-					</div>
+			<!-- Minister Card -->
+			<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
+				<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
+				<div class="gov-profile-img shrink-0">
+					<img loading="lazy" decoding="async" src="<?php echo esc_url( $minister_photo_src ); ?>" alt="<?php echo esc_attr( $gov_minister_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
 				</div>
-
-				<div class="gov-message-text space-y-4 mb-8 text-sm text-slate-600 leading-relaxed">
-					<p>It is with great pride and a profound sense of responsibility that I address you as the Minister of Home Affairs of the Democratic Socialist Republic of Sri Lanka. Our Ministry stands as the cornerstone of civil administration, entrusted with the vital task of ensuring efficient, transparent, and citizen-centric public service delivery across every district and division of our beloved nation.</p>
-					<p>The Home Affairs Division has embarked on an ambitious modernization journey, leveraging digital technology to streamline administrative processes, enhance accessibility, and bring government services closer to the people. From the digitization of Grama Niladhari records to the establishment of integrated service delivery frameworks at the Divisional Secretariat level, our reforms are designed to build a more responsive and accountable public administration system.</p>
-					<p>I invite all citizens, public servants, and stakeholders to actively engage with our Ministry as we work tirelessly to uphold the highest standards of governance, integrity, and public service excellence.</p>
-				</div>
-
-				<div class="border-t border-primary-darker/10 pt-6">
-					<h4 class="text-sm font-extrabold text-primary-darker mb-4 flex items-center gap-2"><i class="fas fa-address-card text-secondary"></i> Contact Details</h4>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-phone-alt text-secondary"></i><span>+94 11 269 0000</span></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-fax text-secondary"></i><span>+94 11 269 0000</span></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-envelope text-secondary"></i><a href="mailto:minister@moha.gov.lk" class="text-slate-600 hover:text-primary-darker no-underline">minister@moha.gov.lk</a></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-location-dot text-secondary"></i><span>Home Affairs Division, Colombo 01</span></div>
-					</div>
+				<div class="text-center sm:text-left flex-1">
+					<?php if ( ! empty( $gov_minister_subtitle ) ) : ?>
+						<span class="text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest"><?php echo esc_html( $gov_minister_subtitle ); ?></span>
+					<?php endif; ?>
+					<?php if ( ! empty( $gov_minister_title ) ) : ?>
+						<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1 mb-2"><?php echo esc_html( $gov_minister_title ); ?></h2>
+					<?php endif; ?>
+					<?php if ( ! empty( $gov_minister_desc ) ) : ?>
+						<p class="text-sm text-slate-600 leading-relaxed m-0">
+							<?php echo nl2br( esc_html( $gov_minister_desc ) ); ?>
+						</p>
+					<?php endif; ?>
 				</div>
 			</div>
-		</div>
 
-		<!-- Panel 2: Secretary's Message -->
-		<div id="tab-secretary" class="gov-tab-panel mt-8 hidden">
-			<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
-				<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
-					<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
-						<img loading="lazy" decoding="async" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/governance/secretary.jpg' ); ?>" alt="Ministry Secretary" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-						<i class="fas fa-user text-3xl" style="display:none"></i>
-					</div>
-					<div>
-						<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Secretary</span>
-						<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1">Mr. S. Alokabandara</h2>
-						<p class="text-sm text-slate-600 font-medium">Secretary, Home Affairs Division</p>
-					</div>
+			<!-- Secretary Card -->
+			<div class="gov-profile-card bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
+				<div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-secondary to-primary-darker"></div>
+				<div class="gov-profile-img shrink-0">
+					<img loading="lazy" decoding="async" src="<?php echo esc_url( $secretary_photo_src ); ?>" alt="<?php echo esc_attr( $gov_secretary_title ); ?>" class="w-24 h-28 object-cover rounded-xl border border-secondary/30 shadow-sm" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
 				</div>
-
-				<div class="gov-message-text space-y-4 mb-8 text-sm text-slate-600 leading-relaxed">
-					<p>As the Secretary to the Home Affairs Division, it is my privilege to lead a dedicated team of public servants committed to the highest standards of administrative excellence. Our Ministry's mandate encompasses a broad spectrum of responsibilities — from overseeing the administrative apparatus of District and Divisional Secretariats to ensuring the effective functioning of the Grama Niladhari service network.</p>
-					<p>We have prioritized the strengthening of institutional capacity, the simplification of bureaucratic procedures, and the adoption of digital solutions to enhance service delivery. Our ongoing initiatives include the comprehensive digitization of land records, the automation of personnel management systems, and the establishment of efficient grievance redressal mechanisms at all administrative levels.</p>
-					<p>I extend my sincere appreciation to all officers and staff of the Ministry for their unwavering commitment, and I encourage the public to make full use of the services and information available through this portal.</p>
-				</div>
-
-				<div class="border-t border-primary-darker/10 pt-6">
-					<h4 class="text-sm font-extrabold text-primary-darker mb-4 flex items-center gap-2"><i class="fas fa-address-card text-secondary"></i> Contact Details</h4>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-phone-alt text-secondary"></i><span>+94 11 269 0000</span></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-fax text-secondary"></i><span>+94 11 269 0000</span></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-envelope text-secondary"></i><a href="mailto:secretary@moha.gov.lk" class="text-slate-600 hover:text-primary-darker no-underline">secretary@moha.gov.lk</a></div>
-						<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-location-dot text-secondary"></i><span>Home Affairs Division, Colombo 01</span></div>
-					</div>
+				<div class="text-center sm:text-left flex-1">
+					<?php if ( ! empty( $gov_secretary_subtitle ) ) : ?>
+						<span class="text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest"><?php echo esc_html( $gov_secretary_subtitle ); ?></span>
+					<?php endif; ?>
+					<?php if ( ! empty( $gov_secretary_title ) ) : ?>
+						<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1 mb-2"><?php echo esc_html( $gov_secretary_title ); ?></h2>
+					<?php endif; ?>
+					<?php if ( ! empty( $gov_secretary_desc ) ) : ?>
+						<p class="text-sm text-slate-600 leading-relaxed m-0">
+							<?php echo nl2br( esc_html( $gov_secretary_desc ) ); ?>
+						</p>
+					<?php endif; ?>
 				</div>
 			</div>
+
 		</div>
+	<?php endif; ?>
 
-		<!-- Panel 3: Organizational Structure -->
-		<div id="tab-structure" class="gov-tab-panel active mt-8 space-y-10">
+	<?php if ( 'hide' !== $gov_show_tabs ) : ?>
+		<!-- 3. Tabs Lounge Section -->
+		<div class="mt-12 lg:mt-16">
 
-			<!-- ======================================================== -->
-			<!-- SECTION 1: NEW INTERACTIVE HTML ORGANIZATIONAL CHART      -->
-			<!-- ======================================================== -->
-			<div class="org-chart-container" id="interactiveOrgChartSection">
-				<!-- Header & Actions -->
-				<div class="org-chart-header flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-					<div>
-						<h3 class="text-xl sm:text-2xl font-extrabold text-primary-darker m-0">Organizational Structure</h3>
-						<p class="text-xs sm:text-sm text-slate-600 mt-1 m-0">Click any <span class="font-bold text-primary-darker bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">+ Staff</span> button to expand subordinate operational staff branches.</p>
-					</div>
-					<div class="flex items-center gap-2 shrink-0">
-						<button type="button" id="toggleAllStaffBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white border border-primary-darker/20 text-primary-darker hover:bg-secondary hover:text-primary-darker transition-all flex items-center gap-1.5 shadow-2xs">
-							<i class="fas fa-layer-group text-secondary"></i> <span>Expand All Staff</span>
-						</button>
-						<button type="button" id="downloadChartBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-primary-darker text-white hover:bg-secondary hover:text-primary-darker transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer" title="Download Chart as Image" aria-label="Download Chart as Image">
-							<i class="fas fa-download"></i> <span>Download Chart</span>
-						</button>
-						<button type="button" id="fullscreenChartBtn" class="p-2 rounded-lg text-xs font-bold bg-white border border-primary-darker/20 text-primary-darker hover:bg-secondary hover:text-primary-darker transition-all shadow-2xs" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
-							<i class="fas fa-expand"></i>
-						</button>
-					</div>
-				</div>
+			<!-- Tab Bar -->
+			<div class="flex flex-wrap justify-center border-b border-primary-darker/15 gap-2 sm:gap-4 pb-3">
+				<?php if ( 'hide' !== $gov_show_minister_tab ) : ?>
+					<button type="button" class="gov-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all <?php echo ( 'tab-minister' === $default_active_tab ) ? 'active bg-primary-darker text-white shadow-sm' : 'bg-white text-slate-600 border border-primary-darker/15 hover:border-secondary'; ?>" data-tab="tab-minister">
+						<?php echo esc_html( $txt_minister_tab ); ?>
+					</button>
+				<?php endif; ?>
 
-				<!-- Toolbar: Division Filters, Search, and Zoom -->
-				<div class="org-chart-toolbar">
-					<!-- Division Filter Pills -->
-					<div class="flex flex-wrap items-center gap-1.5" id="orgDivisionFilters">
-						<button type="button" class="org-filter-pill active px-3 py-1 rounded-full text-xs font-bold transition-all bg-primary-darker text-white" data-div="all">All Divisions (9)</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="admin">Admin</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="home-affairs">Home Affairs Division</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="development">Development</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="investigation">Investigation</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="rar">RAR</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="technical">Technical</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="planning">Planning</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="finance">Finance</button>
-						<button type="button" class="org-filter-pill px-2.5 py-1 rounded-full text-xs font-semibold transition-all bg-white text-slate-600 border border-slate-200 hover:border-secondary" data-div="audit">Internal Audit</button>
-					</div>
+				<?php if ( 'hide' !== $gov_show_secretary_tab ) : ?>
+					<button type="button" class="gov-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all <?php echo ( 'tab-secretary' === $default_active_tab ) ? 'active bg-primary-darker text-white shadow-sm' : 'bg-white text-slate-600 border border-primary-darker/15 hover:border-secondary'; ?>" data-tab="tab-secretary">
+						<?php echo esc_html( $txt_secretary_tab ); ?>
+					</button>
+				<?php endif; ?>
 
-					<!-- Search & Zoom Tools -->
-					<div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-						<!-- Search Box -->
-						<div class="relative flex-1 sm:w-56">
-							<i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
-							<input type="text" id="orgChartSearchInput" placeholder="Search designation..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary bg-white">
+				<?php if ( 'hide' !== $gov_show_chart_tab ) : ?>
+					<button type="button" class="gov-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all <?php echo ( 'tab-structure' === $default_active_tab ) ? 'active bg-primary-darker text-white shadow-sm' : 'bg-white text-slate-600 border border-primary-darker/15 hover:border-secondary'; ?>" data-tab="tab-structure">
+						<?php echo esc_html( $txt_chart_tab ); ?>
+					</button>
+				<?php endif; ?>
+			</div>
+
+			<?php if ( 'hide' !== $gov_show_minister_tab ) : ?>
+				<!-- Panel 1: Minister's Message -->
+				<div id="tab-minister" class="gov-tab-panel mt-8 <?php echo ( 'tab-minister' === $default_active_tab ) ? 'active' : 'hidden'; ?>">
+					<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
+						<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
+							<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
+								<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_min_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_min_name ); ?>" class="w-full h-full object-cover" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+							</div>
+							<div>
+								<?php if ( ! empty( $gov_tab_min_designation ) ) : ?>
+									<span class="text-[10px] font-bold text-secondary uppercase tracking-widest"><?php echo esc_html( $gov_tab_min_designation ); ?></span>
+								<?php endif; ?>
+								<?php if ( ! empty( $gov_tab_min_name ) ) : ?>
+									<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1"><?php echo esc_html( $gov_tab_min_name ); ?></h2>
+								<?php endif; ?>
+								<?php if ( ! empty( $gov_tab_min_ministry ) ) : ?>
+									<p class="text-sm text-slate-600 font-medium"><?php echo esc_html( $gov_tab_min_ministry ); ?></p>
+								<?php endif; ?>
+							</div>
 						</div>
 
-						<!-- Zoom Controls -->
-						<div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0">
-							<button type="button" id="chartZoomOut" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Zoom Out" aria-label="Zoom Out">
-								<i class="fas fa-minus"></i>
-							</button>
-							<span id="chartZoomLabel" class="text-[11px] font-bold text-slate-600 px-1.5 min-w-[38px] text-center select-none">100%</span>
-							<button type="button" id="chartZoomIn" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Zoom In" aria-label="Zoom In">
-								<i class="fas fa-plus"></i>
-							</button>
-							<button type="button" id="chartZoomReset" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Reset Zoom" aria-label="Reset Zoom">
-								<i class="fas fa-rotate-left"></i>
-							</button>
-						</div>
+						<?php if ( ! empty( $gov_tab_min_message ) ) : ?>
+							<div class="gov-message-text space-y-4 mb-8 text-sm text-slate-600 leading-relaxed">
+								<?php echo wp_kses_post( $gov_tab_min_message ); ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $gov_tab_min_phone ) || ! empty( $gov_tab_min_fax ) || ! empty( $gov_tab_min_email ) || ! empty( $gov_tab_min_address ) ) : ?>
+							<div class="border-t border-primary-darker/10 pt-6">
+								<h4 class="text-sm font-extrabold text-primary-darker mb-4 flex items-center gap-2"><i class="fas fa-address-card text-secondary"></i> <?php echo esc_html( $txt_contact ); ?></h4>
+								<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
+									<?php if ( ! empty( $gov_tab_min_phone ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-phone-alt text-secondary"></i><span><?php echo esc_html( $gov_tab_min_phone ); ?></span></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_min_fax ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-fax text-secondary"></i><span><?php echo esc_html( $gov_tab_min_fax ); ?></span></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_min_email ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-envelope text-secondary"></i><a href="mailto:<?php echo esc_attr( $gov_tab_min_email ); ?>" class="text-slate-600 hover:text-primary-darker no-underline"><?php echo esc_html( $gov_tab_min_email ); ?></a></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_min_address ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-location-dot text-secondary"></i><span><?php echo esc_html( $gov_tab_min_address ); ?></span></div>
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
+			<?php endif; ?>
 
-				<!-- Pan & Zoom Canvas Viewport -->
-				<div class="org-chart-viewport" id="orgChartViewport">
-					<div class="org-chart-canvas relative" id="orgChartCanvas">
-						<svg id="orgCrossConnectors" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;"></svg>
-						<div class="org-tree">
-							<ul>
-								<!-- ============================================== -->
-								<!-- LEVEL 1: HON. MINISTER                         -->
-								<!-- ============================================== -->
-								<li>
-									<div class="org-card org-card-l1" data-title="Hon. Minister">
-										<div class="org-title">Hon. Minister</div>
-									</div>
-
-									<ul>
-										<!-- ============================================== -->
-										<!-- LEVEL 2: SECRETARY                             -->
-										<!-- ============================================== -->
-										<li>
-											<div class="org-card org-card-l2" data-title="Secretary">
-												<div class="org-title">Secretary</div>
-											</div>
-
-											<ul>
-												<!-- ============================================== -->
-												<!-- LEVEL 3: 8 EXECUTIVE DIVISIONS + 1 AUDIT (L4)   -->
-												<!-- ============================================== -->
-
-												<!-- 1. ADDITIONAL SECRETARY (ADMIN) -->
-												<li class="org-branch" data-division="admin">
-													<div class="org-card org-card-l3" data-title="Additional Secretary (Admin)">
-														<div class="org-title">Additional Secretary<br>(Admin)</div>
-													</div>
-													<ul>
-														<!-- SAS (Admin) -->
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (Admin)">
-																<div class="org-title">Senior Assistant Secretary<br>(Admin)</div>
-															</div>
-															<ul>
-																<!-- Assistant Secretary (Admin) -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Secretary (Admin)">
-																		<div class="org-title">Assistant Secretary<br>(Admin)</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																		<!-- Media Officer (Equal to DO Level) - Photographer and Videographer under this designation -->
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-support" data-title="Media Officer">Media Officer</div>
-																			<ul>
-																				<li class="skip-to-photo">
-																					<div class="org-card org-card-support" data-title="Photographer">Photographer</div>
-																					<ul>
-																						<li class="skip-to-asst-photo">
-																							<div class="org-card org-card-support" data-title="Assistant Photographer">Assistant<br>Photographer</div>
-																						</li>
-																					</ul>
-																				</li>
-																				<li class="skip-to-photo">
-																					<div class="org-card org-card-support" data-title="Videographer">Videographer</div>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-
-																<!-- Assistant Secretary (Training) -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Secretary (Training)">
-																		<div class="org-title">Assistant Secretary<br>(Training)</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<!-- Administrative Officer (Under AS Admin & AS Training) -->
-																		<li>
-																			<div class="org-card org-card-intermediate-a" data-title="Administrative Officer">Administrative<br>Officer</div>
-																			<ul class="ul-ao-staff">
-																				<li class="skip-to-translator">
-																					<div class="org-card org-card-intermediate-b org-card-translator" data-title="Translator"><span class="org-title">Translator</span><span class="org-sub-lang">(Sinhala - Tamil)<br>(Sinhala - English)</span></div>
-																				</li>
-																				<li class="skip-to-do-from-ao">
-																					<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																					<ul>
-																						<li class="skip-to-mso">
-																							<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																							<ul>
-																								<li class="skip-to-driver">
-																									<div class="org-card org-card-support" data-title="Driver">Driver</div>
-																								</li>
-																								<li class="skip-to-circuit-keeper">
-																									<div class="org-card org-card-support" data-title="Circuit Keeper">Circuit Keeper</div>
-																									<ul class="ul-ack">
-																										<li class="skip-to-ack">
-																											<div class="org-card org-card-support" data-title="Assistant Circuit Keeper">Assistant<br>Circuit Keeper</div>
-																										</li>
-																									</ul>
-																								</li>
-																								<li class="skip-to-oes">
-																									<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																								</li>
-																							</ul>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-
-																<!-- Legal Officer -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Legal Officer">
-																		<div class="org-title">Legal Officer</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-
-														<!-- Director IT -->
-														<li>
-															<div class="org-card org-card-l4" data-title="Director IT">
-																<div class="org-title">Director IT</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Director (IT)">
-																		<div class="org-title">Assistant Director<br>(IT)</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-icto">
-																			<div class="org-card org-card-intermediate-b" data-title="ICT Officer"><span class="org-acronym">ICTO</span></div>
-																			<ul>
-																				<li class="skip-to-icta">
-																					<div class="org-card org-card-do" data-title="ICT Assistant"><span class="org-acronym">ICTA</span></div>
-																				</li>
-																			</ul>
-																		</li>
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 2. ADDITIONAL SECRETARY (HOME AFFAIRS) -->
-												<li class="org-branch" data-division="home-affairs">
-													<div class="org-card org-card-l3" data-title="Additional Secretary (Home Affairs)">
-														<div class="org-title">Additional Secretary<br>(Home Affairs)</div>
-													</div>
-													<ul>
-														<!-- SAS (District Admin) -->
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (District Admin)">
-																<div class="org-title">Senior Assistant Secretary<br>(District Admin)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card-pair">
-																		<div class="org-card org-card-l5" data-title="Assistant Secretary"><div class="org-title">Assistant Secretary</div></div>
-																		<div class="org-card org-card-l5" data-title="Assistant Secretary"><div class="org-title">Assistant Secretary</div></div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-
-														<!-- SAS (Divisional Admin) -->
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (Divisional Admin)">
-																<div class="org-title">Senior Assistant Secretary<br>(Divisional Admin)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card-pair">
-																		<div class="org-card org-card-l5" data-title="Assistant Secretary"><div class="org-title">Assistant Secretary</div></div>
-																		<div class="org-card org-card-l5" data-title="Assistant Secretary"><div class="org-title">Assistant Secretary</div></div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-
-														<!-- SAS (Grama Niladari Admin) -->
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (Grama Niladari Admin)">
-																<div class="org-title">Senior Assistant Secretary<br>(Grama Niladari Admin)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Secretary (Grama Niladari Admin)">
-																		<div class="org-title">Assistant Secretary</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 3. ADDITIONAL SECRETARY (DEVELOPMENT) -->
-												<li class="org-branch" data-division="development">
-													<div class="org-card org-card-l3" data-title="Additional Secretary (Development)">
-														<div class="org-title">Additional Secretary<br>(Development)</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (Development)">
-																<div class="org-title">Senior Assistant Secretary<br>(Development)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Secretary (Development)">
-																		<div class="org-title">Assistant Secretary</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 4. ADDITIONAL SECRETARY (INVESTIGATION) -->
-												<li class="org-branch" data-division="investigation">
-													<div class="org-card org-card-l3" data-title="Additional Secretary (Investigation)">
-														<div class="org-title">Additional Secretary<br>(Investigation)</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (Investigation)">
-																<div class="org-title">Senior Assistant Secretary<br>(Investigation)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Assistant Secretary (Investigation)">
-																		<div class="org-title">Assistant Secretary</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-support" data-title="Investigation Officer">Investigation<br>Officer</div>
-																		</li>
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 5. ADDITIONAL SECRETARY (RAR) -->
-												<li class="org-branch" data-division="rar">
-													<div class="org-card org-card-l3" data-title="Additional Secretary (RAR)">
-														<div class="org-title">Additional Secretary<br>(RAR)</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Senior Assistant Secretary (RAR)">
-																<div class="org-title">Senior Assistant Secretary<br>(RAR)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card-pair">
-																		<div class="org-card org-card-l5" data-title="Assistant Secretary"><div class="org-title">Assistant Secretary</div></div>
-																		<div class="org-card org-card-l5" data-title="Deputy Director / Assistant Director (Planning)"><div class="org-title">Deputy Director /<br>Asst. Dir. (Planning)</div></div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 6. DIRECTOR GENERAL (TECHNICAL) -->
-												<li class="org-branch" data-division="technical">
-													<div class="org-card org-card-l3" data-title="Director General (Technical)">
-														<div class="org-title">Director General<br>(Technical)</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Chief Engineer">
-																<div class="org-title">Chief Engineer</div>
-															</div>
-															<ul>
-																<!-- Engineer -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Engineer">
-																		<div class="org-title">Engineer</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-tech-officer">
-																			<div class="org-card org-card-intermediate-b" data-title="Technical Officer">Technical Officer</div>
-																			<ul>
-																				<li class="skip-to-ta">
-																					<div class="org-card org-card-support" data-title="Technical Assistant">Technical<br>Assistant</div>
-																				</li>
-																			</ul>
-																		</li>
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-
-																<!-- Premises Manager -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Premises Manager">
-																		<div class="org-title">Premises Manager</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-apm">
-																			<div class="org-card org-card-intermediate-a" data-title="Assistant Premises Manager">Assistant Premises<br>Manager</div>
-																			<ul>
-																				<li class="skip-to-to-from-apm">
-																					<div class="org-card org-card-intermediate-b" data-title="Technical Officer">Technical Officer</div>
-																					<ul>
-																						<li class="skip-to-ta">
-																							<div class="org-card org-card-support" data-title="Technical Assistant">Technical<br>Assistant</div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-
-																<!-- Architect -->
-																<li>
-																	<div class="org-card org-card-l5" data-title="Architect">
-																		<div class="org-title">Architect</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-draftman">
-																			<div class="org-card org-card-intermediate-b" data-title="Draftman">Draftman</div>
-																		</li>
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 7. DIRECTOR GENERAL (PLANNING) -->
-												<li class="org-branch" data-division="planning">
-													<div class="org-card org-card-l3" data-title="Director General (Planning)">
-														<div class="org-title">Director General<br>(Planning)</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Director (Planning)">
-																<div class="org-title">Director (Planning)</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Deputy Director / Assistant Director (Planning)">
-																		<div class="org-title">Deputy Director /<br>Asst. Dir. (Planning)</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 8. CHIEF FINANCIAL OFFICER -->
-												<li class="org-branch" data-division="finance">
-													<div class="org-card org-card-l3" data-title="Chief Financial Officer">
-														<div class="org-title">Chief Financial Officer</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l4" data-title="Chief Accountant">
-																<div class="org-title">Chief Accountant</div>
-															</div>
-															<ul>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Accountant">
-																		<div class="org-title">Accountant</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Accountant">
-																		<div class="org-title">Accountant</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Accountant">
-																		<div class="org-title">Accountant</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-																<li>
-																	<div class="org-card org-card-l5" data-title="Accountant">
-																		<div class="org-title">Accountant</div>
-																	</div>
-																	<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-																	<ul class="staff-subtree">
-																		<li class="skip-to-do">
-																			<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																			<ul>
-																				<li class="skip-to-mso">
-																					<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																					<ul>
-																						<li class="skip-to-oes">
-																							<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																						</li>
-																					</ul>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-												<!-- 9. CHIEF INTERNAL AUDITOR (Direct from Secretary, on Level 4 row) -->
-												<li class="org-branch org-branch-direct" data-division="audit">
-													<div class="org-card org-card-l4" data-title="Chief Internal Auditor">
-														<div class="org-title">Chief Internal Auditor</div>
-													</div>
-													<ul>
-														<li>
-															<div class="org-card org-card-l5" data-title="Internal Auditor">
-																<div class="org-title">Internal Auditor</div>
-															</div>
-															<button type="button" class="staff-toggle" onclick="toggleStaff(this)">+ Staff</button>
-															<ul class="staff-subtree">
-																<li class="skip-to-do">
-																	<div class="org-card org-card-do" data-title="Development Officer"><span class="org-acronym">DO</span></div>
-																	<ul>
-																		<li class="skip-to-mso">
-																			<div class="org-card org-card-mso" data-title="Management Service Officer"><span class="org-acronym">MSO</span></div>
-																			<ul>
-																				<li class="skip-to-oes">
-																					<div class="org-card org-card-oes" data-title="Office Employees Service"><span class="org-acronym">OES</span></div>
-																				</li>
-																			</ul>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</li>
-
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
+			<?php if ( 'hide' !== $gov_show_secretary_tab ) : ?>
+				<!-- Panel 2: Secretary's Message -->
+				<div id="tab-secretary" class="gov-tab-panel mt-8 <?php echo ( 'tab-secretary' === $default_active_tab ) ? 'active' : 'hidden'; ?>">
+					<div class="bg-warm-white rounded-2xl border border-primary-darker/15 shadow-sm p-6 sm:p-8 lg:p-10">
+						<div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
+							<div class="w-24 h-28 rounded-xl border border-secondary/30 shadow-sm overflow-hidden shrink-0 bg-gradient-to-br from-primary-darker to-slate-800 flex items-center justify-center text-white/30">
+								<img loading="lazy" decoding="async" src="<?php echo esc_url( $tab_sec_photo_src ); ?>" alt="<?php echo esc_attr( $gov_tab_sec_name ); ?>" class="w-full h-full object-cover" onerror="this.src='<?php echo esc_url( $placeholder_photo ); ?>'">
+							</div>
+							<div>
+								<?php if ( ! empty( $gov_tab_sec_designation ) ) : ?>
+									<span class="text-[10px] font-bold text-secondary uppercase tracking-widest"><?php echo esc_html( $gov_tab_sec_designation ); ?></span>
+								<?php endif; ?>
+								<?php if ( ! empty( $gov_tab_sec_name ) ) : ?>
+									<h2 class="text-xl sm:text-2xl font-extrabold text-primary-darker tracking-tight mt-1"><?php echo esc_html( $gov_tab_sec_name ); ?></h2>
+								<?php endif; ?>
+								<?php if ( ! empty( $gov_tab_sec_ministry ) ) : ?>
+									<p class="text-sm text-slate-600 font-medium"><?php echo esc_html( $gov_tab_sec_ministry ); ?></p>
+								<?php endif; ?>
+							</div>
 						</div>
+
+						<?php if ( ! empty( $gov_tab_sec_message ) ) : ?>
+							<div class="gov-message-text space-y-4 mb-8 text-sm text-slate-600 leading-relaxed">
+								<?php echo wp_kses_post( $gov_tab_sec_message ); ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $gov_tab_sec_phone ) || ! empty( $gov_tab_sec_fax ) || ! empty( $gov_tab_sec_email ) || ! empty( $gov_tab_sec_address ) ) : ?>
+							<div class="border-t border-primary-darker/10 pt-6">
+								<h4 class="text-sm font-extrabold text-primary-darker mb-4 flex items-center gap-2"><i class="fas fa-address-card text-secondary"></i> <?php echo esc_html( $txt_contact ); ?></h4>
+								<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
+									<?php if ( ! empty( $gov_tab_sec_phone ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-phone-alt text-secondary"></i><span><?php echo esc_html( $gov_tab_sec_phone ); ?></span></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_sec_fax ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-fax text-secondary"></i><span><?php echo esc_html( $gov_tab_sec_fax ); ?></span></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_sec_email ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-envelope text-secondary"></i><a href="mailto:<?php echo esc_attr( $gov_tab_sec_email ); ?>" class="text-slate-600 hover:text-primary-darker no-underline"><?php echo esc_html( $gov_tab_sec_email ); ?></a></div>
+									<?php endif; ?>
+									<?php if ( ! empty( $gov_tab_sec_address ) ) : ?>
+										<div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-primary-darker/10"><i class="fas fa-location-dot text-secondary"></i><span><?php echo esc_html( $gov_tab_sec_address ); ?></span></div>
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
+			<?php endif; ?>
 
-				<!-- Acronyms Reference Bar -->
-				<div class="bg-warm-white border-t border-primary-darker/10 px-4 sm:px-6 py-3">
-					<div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
-						<div class="flex flex-wrap items-center gap-1.5">
-							<span class="font-bold text-primary-darker mr-1"><i class="fas fa-info-circle text-secondary"></i> Acronyms:</span>
-							<span><strong>DO:</strong> Development Officer</span> &bull;
-							<span><strong>MSO:</strong> Management Service Officer</span> &bull;
-							<span><strong>OES:</strong> Office Employees Service</span> &bull;
-							<span><strong>ICTO:</strong> ICT Officer</span> &bull;
-							<span><strong>ICTA:</strong> ICT Assistant</span> &bull;
-							<span><strong>RAR:</strong> Regional Administration Reforms</span>
+			<?php if ( 'hide' !== $gov_show_chart_tab ) : ?>
+				<!-- Panel 3: Organizational Structure Chart -->
+				<div id="tab-structure" class="gov-tab-panel mt-8 space-y-10 <?php echo ( 'tab-structure' === $default_active_tab ) ? 'active' : 'hidden'; ?>">
+
+					<div class="org-chart-container" id="interactiveOrgChartSection">
+						<!-- Header & Actions -->
+						<div class="org-chart-header flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+							<div>
+								<h3 class="text-xl sm:text-2xl font-extrabold text-primary-darker m-0">
+									<?php echo ! empty( $gov_chart_title ) ? esc_html( $gov_chart_title ) : esc_html__( 'Organizational Structure', 'homeaffairs' ); ?>
+								</h3>
+								<?php if ( ! empty( $gov_chart_subtitle ) ) : ?>
+									<p class="text-xs sm:text-sm text-slate-600 mt-1 m-0"><?php echo wp_kses( $gov_chart_subtitle, array( 'span' => array( 'class' => array() ), 'strong' => array() ) ); ?></p>
+								<?php endif; ?>
+							</div>
+							<div class="flex items-center gap-2 shrink-0">
+								<button type="button" id="toggleAllStaffBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white border border-primary-darker/20 text-primary-darker hover:bg-secondary hover:text-primary-darker transition-all flex items-center gap-1.5 shadow-2xs">
+									<i class="fas fa-layer-group text-secondary"></i> <span><?php echo esc_html( $txt_expand_staff ); ?></span>
+								</button>
+								<button type="button" id="downloadChartBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-primary-darker text-white hover:bg-secondary hover:text-primary-darker transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer" title="<?php echo esc_attr( $txt_download_chart ); ?>" aria-label="<?php echo esc_attr( $txt_download_chart ); ?>">
+									<i class="fas fa-download"></i> <span><?php echo esc_html( $txt_download_chart ); ?></span>
+								</button>
+								<button type="button" id="fullscreenChartBtn" class="p-2 rounded-lg text-xs font-bold bg-white border border-primary-darker/20 text-primary-darker hover:bg-secondary hover:text-primary-darker transition-all shadow-2xs" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+									<i class="fas fa-expand"></i>
+								</button>
+							</div>
 						</div>
-						<div class="shrink-0 text-slate-400 hidden sm:block">
-							<span>Home Affairs Division &bull; Organizational Chart</span>
+
+						<!-- Toolbar: Division Filters, Search, and Zoom -->
+						<div class="org-chart-toolbar">
+							<!-- Dynamic Division Filter Pills -->
+							<?php
+							if ( function_exists( 'ha_render_org_filter_pills' ) ) {
+								echo ha_render_org_filter_pills();
+							}
+							?>
+
+							<!-- Search & Zoom Tools -->
+							<div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+								<!-- Search Box -->
+								<div class="relative flex-1 sm:w-56">
+									<i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+									<input type="text" id="orgChartSearchInput" placeholder="<?php echo esc_attr( $txt_search_holder ); ?>" class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary bg-white">
+								</div>
+
+								<!-- Zoom Controls -->
+								<div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0">
+									<button type="button" id="chartZoomOut" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Zoom Out" aria-label="Zoom Out">
+										<i class="fas fa-minus"></i>
+									</button>
+									<span id="chartZoomLabel" class="text-[11px] font-bold text-slate-600 px-1.5 min-w-[38px] text-center select-none">100%</span>
+									<button type="button" id="chartZoomIn" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Zoom In" aria-label="Zoom In">
+										<i class="fas fa-plus"></i>
+									</button>
+									<button type="button" id="chartZoomReset" class="w-7 h-7 flex items-center justify-center rounded bg-white text-slate-700 hover:text-primary-darker hover:bg-slate-50 transition-colors text-xs font-bold shadow-2xs" title="Reset Zoom" aria-label="Reset Zoom">
+										<i class="fas fa-rotate-left"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- Pan & Zoom Canvas Viewport -->
+						<div class="org-chart-viewport" id="orgChartViewport">
+							<div class="org-chart-canvas relative" id="orgChartCanvas">
+								<svg id="orgCrossConnectors" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;"></svg>
+
+								<?php
+								$rendered_tree = function_exists( 'ha_render_org_tree' ) ? ha_render_org_tree( $post_id ) : false;
+								if ( false !== $rendered_tree && ! empty( $rendered_tree ) ) {
+									echo $rendered_tree;
+								}
+								?>
+							</div>
+						</div>
+
+						<!-- Acronyms Reference Bar -->
+						<div class="bg-warm-white border-t border-primary-darker/10 px-4 sm:px-6 py-3">
+							<div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+								<div class="flex flex-wrap items-center gap-1.5">
+									<span class="font-bold text-primary-darker mr-1"><i class="fas fa-info-circle text-secondary"></i> <?php echo esc_html( $txt_acronyms_hdr ); ?></span>
+									<?php if ( $is_si ) : ?>
+										<span><strong>DO:</strong> සංවර්ධන නිලධාරී</span> &bull;
+										<span><strong>MSO:</strong> කළමනාකරණ සේවා නිලධාරී</span> &bull;
+										<span><strong>OES:</strong> කාර්යාල කාර්ය සහායක සේවය</span> &bull;
+										<span><strong>ICTO:</strong> තොරතුරු හා සන්නිවේදන තාක්ෂණ නිලධාරී</span> &bull;
+										<span><strong>ICTA:</strong> තොරතුරු හා සන්නිවේදන තාක්ෂණ සහකාර</span> &bull;
+										<span><strong>RAR:</strong> කලාපීය පරිපාලන ප්‍රතිසංස්කරණ</span>
+									<?php elseif ( $is_ta ) : ?>
+										<span><strong>DO:</strong> அபிவிருத்தி அதிகாரி</span> &bull;
+										<span><strong>MSO:</strong> முகாமைத்துவ சேவை அதிகாரி</span> &bull;
+										<span><strong>OES:</strong> அலுவலகப் பணியாளர் சேவை</span> &bull;
+										<span><strong>ICTO:</strong> தகவல் தொடர்பாடல் தொழில்நுட்ப அதிகாரி</span> &bull;
+										<span><strong>ICTA:</strong> தகவல் தொடர்பாடல் தொழில்நுட்ப உதவியாளர்</span> &bull;
+										<span><strong>RAR:</strong> பிராந்திய நிர்வாக மறுசீரமைப்பு</span>
+									<?php else : ?>
+										<span><strong>DO:</strong> Development Officer</span> &bull;
+										<span><strong>MSO:</strong> Management Service Officer</span> &bull;
+										<span><strong>OES:</strong> Office Employees Service</span> &bull;
+										<span><strong>ICTO:</strong> ICT Officer</span> &bull;
+										<span><strong>ICTA:</strong> ICT Assistant</span> &bull;
+										<span><strong>RAR:</strong> Regional Administration Reforms</span>
+									<?php endif; ?>
+								</div>
+								<div class="shrink-0 text-slate-400 hidden sm:block">
+									<span><?php echo esc_html( $txt_footer_label ); ?></span>
+								</div>
+							</div>
 						</div>
 					</div>
+
 				</div>
-			</div>
-
-
+			<?php endif; ?>
 
 		</div>
-
-	</div>
+	<?php endif; ?>
 
 </main>
 
@@ -966,7 +468,6 @@ get_template_part( 'template-parts/page-banner' );
 	// ========================================================
 	// Interactive Org Chart Logic
 	// ========================================================
-	// Cross-branch connector line between AS Admin, AS Training and the single Administrative Officer flow
 	function updateCrossConnectors() {
 		var svg = document.getElementById('orgCrossConnectors');
 		if ( ! svg ) return;
@@ -981,107 +482,60 @@ get_template_part( 'template-parts/page-banner' );
 		}
 		var paths = [];
 
-		// 1. Cross-branch connector line: AS Admin + AS Training -> Administrative Officer
-		var cardAdmin = document.querySelector('[data-title="Assistant Secretary (Admin)"]');
-		var cardTraining = document.querySelector('[data-title="Assistant Secretary (Training)"]');
-		var cardAo = document.querySelector('.staff-subtree [data-title="Administrative Officer"]');
+		// 1. Dynamic Association Cross-Connectors from data-cross-target
+		var crossSourceElements = document.querySelectorAll('[data-cross-target]');
+		crossSourceElements.forEach(function( sourceCard ) {
+			var targetId = sourceCard.getAttribute('data-cross-target');
+			var targetCard = targetId ? document.getElementById(targetId) : null;
+			var style = sourceCard.getAttribute('data-cross-style') || 'elbow-bottom';
+			var anchorId = sourceCard.getAttribute('data-cross-anchor');
+			var anchorCard = anchorId ? document.getElementById(anchorId) : null;
 
-		if ( cardAdmin && cardTraining && cardAo ) {
-			var subtreeAo = cardAo.closest('.staff-subtree');
-			if ( subtreeAo && subtreeAo.classList.contains('is-expanded') ) {
-				var rAdmin = cardAdmin.getBoundingClientRect();
-				var rTraining = cardTraining.getBoundingClientRect();
+			if ( ! targetCard ) return;
 
-				var xAdmin = Math.round( ( rAdmin.left + rAdmin.width / 2 - canvasRect.left ) / zoom );
-				var yAdmin = Math.round( ( rAdmin.bottom - canvasRect.top ) / zoom );
+			// Visibility checks
+			var sourceBranch = sourceCard.closest('.org-branch');
+			var targetBranch = targetCard.closest('.org-branch');
+			if ( sourceBranch && sourceBranch.classList.contains('is-hidden') ) return;
+			if ( targetBranch && targetBranch.classList.contains('is-hidden') ) return;
 
-				var xTraining = Math.round( ( rTraining.left + rTraining.width / 2 - canvasRect.left ) / zoom );
-				var yTraining = Math.round( ( rTraining.bottom - canvasRect.top ) / zoom );
+			var sourceSubtree = sourceCard.closest('.staff-subtree');
+			if ( sourceSubtree && ! sourceSubtree.classList.contains('is-expanded') ) return;
+			var targetSubtree = targetCard.closest('.staff-subtree');
+			if ( targetSubtree && ! targetSubtree.classList.contains('is-expanded') ) return;
 
-				var yBarAo = Math.max( yAdmin, yTraining ) + 24;
-				var pathAo = 'M ' + xAdmin + ' ' + yAdmin + ' L ' + xAdmin + ' ' + yBarAo + ' L ' + xTraining + ' ' + yBarAo;
+			var rSource = sourceCard.getBoundingClientRect();
+			var rTarget = targetCard.getBoundingClientRect();
+			if ( rSource.width === 0 || rTarget.width === 0 ) return;
 
-				paths.push('<path d="' + pathAo + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
-			}
-		}
-
-		// 2. Direct connector line: Secretary -> Chief Internal Auditor
-		var cardSecretary = document.querySelector('.org-card-l2[data-title="Secretary"]');
-		var cardAudit = document.querySelector('.org-branch-direct [data-title="Chief Internal Auditor"]');
-
-		if ( cardSecretary && cardAudit ) {
-			var branchAudit = cardAudit.closest('.org-branch');
-			if ( branchAudit && ! branchAudit.classList.contains('is-hidden') ) {
-				var rSec = cardSecretary.getBoundingClientRect();
-				var rAudit = cardAudit.getBoundingClientRect();
-
-				// Originates directly from bottom right quadrant of Secretary card
-				var xSecRight = Math.round( ( rSec.left + rSec.width * 0.78 - canvasRect.left ) / zoom );
-				var ySecBottom = Math.round( ( rSec.bottom - canvasRect.top ) / zoom );
-
-				var xAudit = Math.round( ( rAudit.left + rAudit.width / 2 - canvasRect.left ) / zoom );
-				var yAuditTop = Math.round( ( rAudit.top - canvasRect.top ) / zoom );
-
-				// Horizontal bridge runs 12px below Secretary (above main L3 division crossbar)
-				var yAuditBar = ySecBottom + 12;
-
-				var pathAudit = 'M ' + xSecRight + ' ' + ySecBottom + ' L ' + xSecRight + ' ' + yAuditBar + ' L ' + xAudit + ' ' + yAuditBar + ' L ' + xAudit + ' ' + yAuditTop;
-
-				paths.push('<path d="' + pathAudit + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
-			}
-		}
-
-		// 3. Connector lines from unfinished staff flows to the relevant root flow OES Level
-		var unfinishedMappings = [
-			// Videographer connects to Assistant Photographer in Media Officer flow
-			{ title: 'Videographer', dest: 'Assistant Photographer' },
-			// Translator and Driver connect to Assistant Circuit Keeper (OES Level) in AO flow
-			{ title: 'Translator', dest: 'Assistant Circuit Keeper' },
-			{ title: 'Driver', dest: 'Assistant Circuit Keeper' },
-			// Remaining flows connect to root OES of their subtree
-			{ title: 'ICT Assistant', dest: 'Office Employees Service' },
-			{ title: 'Investigation Officer', dest: 'Office Employees Service' },
-			{ title: 'Technical Assistant', dest: 'Office Employees Service' },
-			{ title: 'Draftman', dest: 'Office Employees Service' }
-		];
-
-		unfinishedMappings.forEach(function( mapping ) {
-			var allMatchingCards = document.querySelectorAll('.org-card');
-			allMatchingCards.forEach(function( card ) {
-				var t = ( card.getAttribute('data-title') || card.innerText.trim() ).replace(/\n/g, ' ');
-				if ( t === mapping.title ) {
-					var li = card.closest('li');
-					if ( li && ! li.querySelector(':scope > ul') ) {
-						var subtree = card.closest('.staff-subtree');
-						var branch = card.closest('.org-branch');
-						if ( subtree && subtree.classList.contains('is-expanded') && ( ! branch || ! branch.classList.contains('is-hidden') ) ) {
-							var destCard = null;
-							var candidateCards = subtree.querySelectorAll('.org-card');
-							candidateCards.forEach(function( dc ) {
-								var dt = ( dc.getAttribute('data-title') || dc.innerText.trim() ).replace(/\n/g, ' ');
-								if ( ! destCard && dt === mapping.dest ) {
-									destCard = dc;
-								}
-							});
-							if ( destCard ) {
-								var rCard = card.getBoundingClientRect();
-								var rDest = destCard.getBoundingClientRect();
-
-								var xCard = Math.round( ( rCard.left + rCard.width / 2 - canvasRect.left ) / zoom );
-								var yCardBottom = Math.round( ( rCard.bottom - canvasRect.top ) / zoom );
-
-								var xDest = Math.round( ( rDest.left + rDest.width / 2 - canvasRect.left ) / zoom );
-								var yDestTop = Math.round( ( rDest.top - canvasRect.top ) / zoom );
-
-								var yBar = yDestTop - 8;
-
-								var pathD = 'M ' + xCard + ' ' + yCardBottom + ' L ' + xCard + ' ' + yBar + ' L ' + xDest + ' ' + yBar;
-								paths.push('<path d="' + pathD + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
-							}
-						}
-					}
+			if ( style === 'bracket' && anchorCard ) {
+				var anchorSubtree = anchorCard.closest('.staff-subtree');
+				if ( ! anchorSubtree || anchorSubtree.classList.contains('is-expanded') ) {
+					var xSource = Math.round( ( rSource.left + rSource.width / 2 - canvasRect.left ) / zoom );
+					var ySource = Math.round( ( rSource.bottom - canvasRect.top ) / zoom );
+					var xTarget = Math.round( ( rTarget.left + rTarget.width / 2 - canvasRect.left ) / zoom );
+					var yTarget = Math.round( ( rTarget.bottom - canvasRect.top ) / zoom );
+					var yBar = Math.max( ySource, yTarget ) + 24;
+					var pathD = 'M ' + xSource + ' ' + ySource + ' L ' + xSource + ' ' + yBar + ' L ' + xTarget + ' ' + yBar;
+					paths.push('<path d="' + pathD + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
 				}
-			});
+			} else if ( style === 'direct-right' ) {
+				var xSecRight = Math.round( ( rSource.left + rSource.width * 0.78 - canvasRect.left ) / zoom );
+				var ySecBottom = Math.round( ( rSource.bottom - canvasRect.top ) / zoom );
+				var xTarget = Math.round( ( rTarget.left + rTarget.width / 2 - canvasRect.left ) / zoom );
+				var yTargetTop = Math.round( ( rTarget.top - canvasRect.top ) / zoom );
+				var yBar = ySecBottom + 12;
+				var pathD = 'M ' + xSecRight + ' ' + ySecBottom + ' L ' + xSecRight + ' ' + yBar + ' L ' + xTarget + ' ' + yBar + ' L ' + xTarget + ' ' + yTargetTop;
+				paths.push('<path d="' + pathD + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
+			} else if ( style === 'elbow-bottom' ) {
+				var xSource = Math.round( ( rSource.left + rSource.width / 2 - canvasRect.left ) / zoom );
+				var ySourceBottom = Math.round( ( rSource.bottom - canvasRect.top ) / zoom );
+				var xTarget = Math.round( ( rTarget.left + rTarget.width / 2 - canvasRect.left ) / zoom );
+				var yTargetTop = Math.round( ( rTarget.top - canvasRect.top ) / zoom );
+				var yBar = yTargetTop - 8;
+				var pathD = 'M ' + xSource + ' ' + ySourceBottom + ' L ' + xSource + ' ' + yBar + ' L ' + xTarget + ' ' + yBar;
+				paths.push('<path d="' + pathD + '" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />');
+			}
 		});
 
 		svg.innerHTML = paths.join('');
@@ -1097,26 +551,26 @@ get_template_part( 'template-parts/page-banner' );
 		btn.classList.toggle('expanded', isExpanded);
 		btn.innerHTML = isExpanded ? '− Staff' : '+ Staff';
 
-		// If toggling AS Admin, ensure AS Training staff is also open so the shared AO is visible
+		// If toggling node with anchor or target, ensure connected nodes also open
 		var card = li.querySelector('.org-card');
-		var title = card ? card.getAttribute('data-title') : '';
-		if ( title === 'Assistant Secretary (Admin)' && isExpanded ) {
-			var cardTraining = document.querySelector('[data-title="Assistant Secretary (Training)"]');
-			if ( cardTraining ) {
-				var liTraining = cardTraining.closest('li');
-				var subtreeTraining = liTraining ? liTraining.querySelector('.staff-subtree') : null;
-				var btnTraining = liTraining ? liTraining.querySelector('.staff-toggle') : null;
-				if ( subtreeTraining && ! subtreeTraining.classList.contains('is-expanded') ) {
-					subtreeTraining.classList.add('is-expanded');
-					if ( btnTraining ) {
-						btnTraining.classList.add('expanded');
-						btnTraining.innerHTML = '− Staff';
+		if ( card && card.hasAttribute('data-cross-target') && isExpanded ) {
+			var tId = card.getAttribute('data-cross-target');
+			var tCard = document.getElementById(tId);
+			if ( tCard ) {
+				var tLi = tCard.closest('li');
+				var tSubtree = tLi ? tLi.querySelector('.staff-subtree') : null;
+				var tBtn = tLi ? tLi.querySelector('.staff-toggle') : null;
+				if ( tSubtree && ! tSubtree.classList.contains('is-expanded') ) {
+					tSubtree.classList.add('is-expanded');
+					if ( tBtn ) {
+						tBtn.classList.add('expanded');
+						tBtn.innerHTML = '− Staff';
 					}
 				}
 			}
 		}
 
-		updateCrossConnectors();
+		setTimeout(updateCrossConnectors, 50);
 	};
 
 	var chartContainer = document.getElementById('interactiveOrgChartSection');
@@ -1129,8 +583,6 @@ get_template_part( 'template-parts/page-banner' );
 	var toggleAllBtn = document.getElementById('toggleAllStaffBtn');
 	var fullscreenBtn = document.getElementById('fullscreenChartBtn');
 	var searchInput = document.getElementById('orgChartSearchInput');
-	var filterPills = document.querySelectorAll('.org-filter-pill');
-	var allBranches = document.querySelectorAll('.org-branch');
 
 	// Zoom functionality
 	var currentZoom = 1;
@@ -1238,6 +690,8 @@ get_template_part( 'template-parts/page-banner' );
 	}
 
 	// Division Filters
+	var filterPills = document.querySelectorAll('.org-filter-pill');
+	var allBranches = document.querySelectorAll('.org-branch');
 	filterPills.forEach(function( pill ) {
 		pill.addEventListener('click', function() {
 			var div = this.getAttribute('data-div');
@@ -1277,13 +731,11 @@ get_template_part( 'template-parts/page-banner' );
 				if ( title.indexOf( q ) !== -1 || cardText.indexOf( q ) !== -1 ) {
 					card.classList.add('highlight');
 					
-					// If branch is hidden, unhide it
 					var parentBranch = card.closest('.org-branch');
 					if ( parentBranch && parentBranch.classList.contains('is-hidden') ) {
 						parentBranch.classList.remove('is-hidden');
 					}
 					
-					// If card is inside staff-subtree, expand subtree
 					var parentSubtree = card.closest('.staff-subtree');
 					if ( parentSubtree && ! parentSubtree.classList.contains('is-expanded') ) {
 						parentSubtree.classList.add('is-expanded');
@@ -1307,7 +759,6 @@ get_template_part( 'template-parts/page-banner' );
 			downloadBtn.disabled = true;
 			downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Generating...</span>';
 
-			// 1. Save original UI state to restore afterwards
 			var prevTransform = canvas.style.transform;
 			var prevTransition = canvas.style.transition;
 			var subtrees = document.querySelectorAll('.staff-subtree');
@@ -1322,7 +773,6 @@ get_template_part( 'template-parts/page-banner' );
 				branchStates.push( b.classList.contains('is-hidden') );
 			});
 
-			// 2. Expand all staff subtrees and unhide all division branches so exported chart is complete
 			subtrees.forEach(function( s ) {
 				s.classList.add('is-expanded');
 			});
@@ -1330,7 +780,6 @@ get_template_part( 'template-parts/page-banner' );
 				b.classList.remove('is-hidden');
 			});
 
-			// 3. Inject temporary style override to eliminate false pseudo borders on direct branch and finance
 			var overrideStyle = document.createElement('style');
 			overrideStyle.id = 'h2c-override';
 			overrideStyle.innerHTML = 
@@ -1354,22 +803,18 @@ get_template_part( 'template-parts/page-banner' );
 				'}';
 			document.head.appendChild(overrideStyle);
 
-			// 4. Temporarily ignore interactive staff toggles during capture
 			toggles.forEach(function( t ) {
 				t.setAttribute('data-html2canvas-ignore', 'true');
 			});
 
-			// 5. Freeze transform/transition for clean 1:1 scale coordinate calculation
 			canvas.style.transition = 'none';
 			canvas.style.transform = 'none';
-			void canvas.offsetWidth; // Force synchronous reflow
+			void canvas.offsetWidth;
 
-			// Calculate cross-connectors at 1:1 unscaled dimensions
 			updateCrossConnectors();
 			var svg = document.getElementById('orgCrossConnectors');
 			var paths = svg ? Array.from(svg.querySelectorAll('path')).map(function( p ) { return p.getAttribute('d'); }) : [];
 
-			// Hide SVG element so html2canvas doesn't produce broken SVG artifacts
 			if ( svg ) svg.style.display = 'none';
 
 			setTimeout(function() {
@@ -1383,7 +828,6 @@ get_template_part( 'template-parts/page-banner' );
 						scrollX: 0,
 						scrollY: 0
 					}).then(function( renderedCanvas ) {
-						// 6. Draw clean SVG connectors on top of the rendered canvas using 2D context
 						var finalCanvas = document.createElement('canvas');
 						finalCanvas.width = renderedCanvas.width;
 						finalCanvas.height = renderedCanvas.height;
@@ -1418,7 +862,6 @@ get_template_part( 'template-parts/page-banner' );
 						console.error('Error generating chart image:', err);
 						alert('Failed to generate chart image. Please try again.');
 					}).finally(function() {
-						// 7. Cleanup & restore original UI state
 						if ( svg ) svg.style.display = '';
 						if ( overrideStyle && overrideStyle.parentNode ) {
 							overrideStyle.parentNode.removeChild(overrideStyle);
@@ -1427,7 +870,6 @@ get_template_part( 'template-parts/page-banner' );
 							t.removeAttribute('data-html2canvas-ignore');
 						});
 
-						// Restore subtrees & toggle buttons
 						subtrees.forEach(function( s, idx ) {
 							if ( subtreeStates[ idx ] ) {
 								s.classList.add('is-expanded');
@@ -1443,7 +885,6 @@ get_template_part( 'template-parts/page-banner' );
 							btn.innerHTML = isExp ? '− Staff' : '+ Staff';
 						});
 
-						// Restore branches
 						branches.forEach(function( b, idx ) {
 							if ( branchStates[ idx ] ) {
 								b.classList.add('is-hidden');
@@ -1452,7 +893,6 @@ get_template_part( 'template-parts/page-banner' );
 							}
 						});
 
-						// Restore canvas scale & transition
 						canvas.style.transform = prevTransform;
 						void canvas.offsetWidth;
 						canvas.style.transition = prevTransition;
