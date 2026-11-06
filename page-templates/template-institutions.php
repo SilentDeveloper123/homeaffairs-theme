@@ -17,7 +17,18 @@ $lang = function_exists( 'ha_get_current_language' ) ? ha_get_current_language()
 if ( 'si' === $lang ) {
 	$badge_text = 'ආයතනික නාමාවලිය';
 	$page_title = 'අනුබද්ධ ආයතන පිළිබඳ දළ විශ්ලේෂණය';
+	$lbl_prev   = 'පෙර';
+	$lbl_next   = 'ඊළඟ';
 	$institutions = array(
+		array(
+			'id'      => 'registrar-offices',
+			'title'   => 'රෙජිස්ට්‍රාර් ජනරාල් දෙපාර්තමේන්තුව',
+			'icon'    => 'fa-file-signature',
+			'url'     => 'https://www.rgd.gov.lk/web/index.php/si/',
+			'summary' => 'උපත්, මරණ සහ විවාහ ලියාපදිංචි කිරීමේ සේවා, සිවිල් තත්ත්ව ලේඛන සහ අදාළ මහජන සේවාවන් පිළිබඳ තොරතුරු ලබා ගන්න.',
+			'cta'     => 'වැඩිදුර තොරතුරු',
+			'target'  => '_blank',
+		),
 		array(
 			'id'      => 'district-secretariats',
 			'title'   => 'දිස්ත්‍රික් ලේකම් කාර්යාල',
@@ -45,20 +56,22 @@ if ( 'si' === $lang ) {
 			'cta'     => 'වැඩිදුර තොරතුරු',
 			'target'  => '_self',
 		),
-		array(
-			'id'      => 'registrar-offices',
-			'title'   => 'රෙජිස්ට්‍රාර් ජනරාල් දෙපාර්තමේන්තුව',
-			'icon'    => 'fa-file-signature',
-			'url'     => 'https://www.rgd.gov.lk/web/index.php/si/',
-			'summary' => 'උපත්, මරණ සහ විවාහ ලියාපදිංචි කිරීමේ සේවා, සිවිල් තත්ත්ව ලේඛන සහ අදාළ මහජන සේවාවන් පිළිබඳ තොරතුරු ලබා ගන්න.',
-			'cta'     => 'වැඩිදුර තොරතුරු',
-			'target'  => '_blank',
-		),
 	);
 } elseif ( 'ta' === $lang ) {
 	$badge_text = 'நிறுவன அடைவு';
 	$page_title = 'இணைந்த நிறுவனங்கள் கண்ணோட்டம்';
+	$lbl_prev   = 'முந்தைய';
+	$lbl_next   = 'அடுத்த';
 	$institutions = array(
+		array(
+			'id'      => 'registrar-offices',
+			'title'   => 'பதிவாளர் நாயகம் திணைக்களம்',
+			'icon'    => 'fa-file-signature',
+			'url'     => 'https://www.rgd.gov.lk/web/index.php/ta/',
+			'summary' => 'பிறப்பு, இறப்பு மற்றும் திருமணப் பதிவு சேவைகள், சிவில் நிலை ஆவணங்கள் மற்றும் தொடர்புடைய பொதுச் சேவைகள் பற்றிய தகவல்களை அணுகவும்.',
+			'cta'     => 'மேலும் பார்க்க',
+			'target'  => '_blank',
+		),
 		array(
 			'id'      => 'district-secretariats',
 			'title'   => 'மாவட்டச் செயலகங்கள்',
@@ -86,20 +99,22 @@ if ( 'si' === $lang ) {
 			'cta'     => 'மேலும் பார்க்க',
 			'target'  => '_self',
 		),
-		array(
-			'id'      => 'registrar-offices',
-			'title'   => 'பதிவாளர் நாயகம் திணைக்களம்',
-			'icon'    => 'fa-file-signature',
-			'url'     => 'https://www.rgd.gov.lk/web/index.php/ta/',
-			'summary' => 'பிறப்பு, இறப்பு மற்றும் திருமணப் பதிவு சேவைகள், சிவில் நிலை ஆவணங்கள் மற்றும் தொடர்புடைய பொதுச் சேவைகள் பற்றிய தகவல்களை அணுகவும்.',
-			'cta'     => 'மேலும் பார்க்க',
-			'target'  => '_blank',
-		),
 	);
 } else {
 	$badge_text = 'INSTITUTIONAL DIRECTORY';
 	$page_title = 'Affiliated Institutions Overview';
+	$lbl_prev   = 'Prev';
+	$lbl_next   = 'Next';
 	$institutions = array(
+		array(
+			'id'      => 'registrar-offices',
+			'title'   => "Registrar General's Department",
+			'icon'    => 'fa-file-signature',
+			'url'     => 'https://www.rgd.gov.lk/web/index.php/en/',
+			'summary' => 'Access information on birth, death, and marriage registration services, civil status documentation, and related public services.',
+			'cta'     => 'View More',
+			'target'  => '_blank',
+		),
 		array(
 			'id'      => 'district-secretariats',
 			'title'   => 'District Secretariats',
@@ -127,17 +142,27 @@ if ( 'si' === $lang ) {
 			'cta'     => 'View More',
 			'target'  => '_self',
 		),
-		array(
-			'id'      => 'registrar-offices',
-			'title'   => "Registrar General's Department",
-			'icon'    => 'fa-file-signature',
-			'url'     => 'https://www.rgd.gov.lk/web/index.php/en/',
-			'summary' => 'Access information on birth, death, and marriage registration services, civil status documentation, and related public services.',
-			'cta'     => 'View More',
-			'target'  => '_blank',
-		),
 	);
 }
+
+// Pagination Logic (4 items per page)
+$per_page     = 4;
+$paged        = get_query_var( 'paged' ) ? (int) get_query_var( 'paged' ) : ( get_query_var( 'page' ) ? (int) get_query_var( 'page' ) : 1 );
+$current_page = max( 1, $paged );
+$total_items  = count( $institutions );
+$total_pages  = max( 1, (int) ceil( $total_items / $per_page ) );
+$offset       = ( $current_page - 1 ) * $per_page;
+$paged_items  = array_slice( $institutions, $offset, $per_page );
+
+$paginate_links = paginate_links( array(
+	'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+	'format'    => '?paged=%#%',
+	'current'   => $current_page,
+	'total'     => $total_pages,
+	'type'      => 'array',
+	'prev_text' => '<i class="fas fa-chevron-left mr-1" aria-hidden="true"></i> ' . esc_html( $lbl_prev ),
+	'next_text' => esc_html( $lbl_next ) . ' <i class="fas fa-chevron-right ml-1" aria-hidden="true"></i>',
+) );
 ?>
 
 <main id="main-content" role="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
@@ -154,7 +179,7 @@ if ( 'si' === $lang ) {
 
 	<!-- All 4 Cards Displayed in a 2x2 Grid Layout -->
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
-		<?php foreach ( $institutions as $inst ) : ?>
+		<?php foreach ( $paged_items as $inst ) : ?>
 			<a href="<?php echo esc_url( $inst['url'] ); ?>" <?php if ( ! empty( $inst['target'] ) && '_blank' === $inst['target'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?> class="bg-white border border-gray-200/80 rounded-2xl p-6 sm:p-8 shadow-sm hover:-translate-y-1 hover:shadow-md hover:border-secondary transition-all duration-300 group no-underline flex flex-col justify-between">
 				<div>
 					<div class="flex items-center gap-4 mb-4">
@@ -175,6 +200,32 @@ if ( 'si' === $lang ) {
 				</div>
 			</a>
 		<?php endforeach; ?>
+	</div>
+
+	<!-- Pagination Controls (4 per page) -->
+	<div class="mt-12 flex justify-center">
+		<nav class="inline-flex items-center gap-1.5" aria-label="<?php esc_attr_e( 'Institutions Pagination', 'homeaffairs' ); ?>">
+			<?php if ( ! empty( $paginate_links ) && is_array( $paginate_links ) ) : ?>
+				<?php foreach ( $paginate_links as $link ) :
+					if ( strpos( $link, 'current' ) !== false ) {
+						echo '<span class="bg-primary text-secondary font-bold px-4 py-2 rounded-xl text-sm shadow-sm inline-flex items-center justify-center border border-primary">' . wp_kses_post( $link ) . '</span>';
+					} else {
+						$link = str_replace( 'page-numbers', 'page-numbers px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-slate-50 hover:text-primary transition-all border border-slate-200 shadow-xs inline-flex items-center justify-center no-underline', $link );
+						echo wp_kses_post( $link );
+					}
+				endforeach; ?>
+			<?php else : ?>
+				<span class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 cursor-not-allowed select-none inline-flex items-center">
+					<i class="fas fa-chevron-left mr-1 text-[10px]" aria-hidden="true"></i> <?php echo esc_html( $lbl_prev ); ?>
+				</span>
+				<span class="bg-primary text-secondary font-bold px-4 py-2 rounded-xl text-sm shadow-sm border border-primary inline-flex items-center justify-center">
+					1
+				</span>
+				<span class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 cursor-not-allowed select-none inline-flex items-center">
+					<?php echo esc_html( $lbl_next ); ?> <i class="fas fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i>
+				</span>
+			<?php endif; ?>
+		</nav>
 	</div>
 
 </main>
