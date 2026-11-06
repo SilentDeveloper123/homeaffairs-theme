@@ -24,7 +24,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-map-marked-alt',
 			'url'     => home_url( '/institutions/district-secretariats/' ),
 			'summary' => 'සම්බන්ධතා තොරතුරු, ප්‍රාදේශීය සිතියම් සහ එක් එක් දිස්ත්‍රික්කය සඳහා පරිපාලන තොරතුරු ඇතුළත් ශ්‍රී ලංකාවේ සියලුම දිස්ත්‍රික් ලේකම් කාර්යාල 25 හි සම්පූර්ණ නාමාවලිය ලබා ගන්න.',
-			'cta'     => 'නාමාවලිය බලන්න',
+			'cta'     => 'වැඩිදුර තොරතුරු',
 			'target'  => '_self',
 		),
 		array(
@@ -33,7 +33,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-sitemap',
 			'url'     => home_url( '/institutions/divisional-secretariats/' ),
 			'summary' => 'විස්තීර්ණ නිලධාරී තොරතුරු, සම්බන්ධතා දත්ත සහ පරිපාලන බලප්‍රදේශ විස්තර සමඟින් සියලුම ප්‍රාදේශීය ලේකම් කොට්ඨාස 331 පිරික්සන්න.',
-			'cta'     => 'නාමාවලිය බලන්න',
+			'cta'     => 'වැඩිදුර තොරතුරු',
 			'target'  => '_self',
 		),
 		array(
@@ -42,7 +42,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-home',
 			'url'     => home_url( '/institutions/grama-niladhari/' ),
 			'summary' => 'නිලධාරී පැතිකඩ, සම්බන්ධතා අංක සහ ප්‍රාදේශීය පරිපාලන සීමාවන් සමඟ ග්‍රාම නිලධාරී වසම් 14,000කට අධික පුළුල් ජාලය ගවේෂණය කරන්න.',
-			'cta'     => 'ප්‍රවේශ වන්න',
+			'cta'     => 'වැඩිදුර තොරතුරු',
 			'target'  => '_self',
 		),
 		array(
@@ -51,7 +51,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-file-signature',
 			'url'     => 'https://www.rgd.gov.lk/web/index.php/si/',
 			'summary' => 'උපත්, මරණ සහ විවාහ ලියාපදිංචි කිරීමේ සේවා, සිවිල් තත්ත්ව ලේඛන සහ අදාළ මහජන සේවාවන් පිළිබඳ තොරතුරු ලබා ගන්න.',
-			'cta'     => 'ප්‍රවේශ වන්න',
+			'cta'     => 'වැඩිදුර තොරතුරු',
 			'target'  => '_blank',
 		),
 	);
@@ -65,7 +65,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-map-marked-alt',
 			'url'     => home_url( '/institutions/district-secretariats/' ),
 			'summary' => 'தொடர்பு விவரங்கள், பிராந்திய வரைபடங்கள் மற்றும் ஒவ்வொரு மாவட்டத்திற்குமான நிர்வாக சுயவிவரங்கள் உட்பட இலங்கையின் 25 மாவட்டச் செயலகங்களின் முழுமையான அடைவை அணுகவும்.',
-			'cta'     => 'அடைவைப் பார்க்கவும்',
+			'cta'     => 'மேலும் பார்க்க',
 			'target'  => '_self',
 		),
 		array(
@@ -74,7 +74,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-sitemap',
 			'url'     => home_url( '/institutions/divisional-secretariats/' ),
 			'summary' => 'முழுமையான உத்தியோகத்தர் தகவல்கள், தொடர்புத் தரவுகள் மற்றும் நிர்வாக அதிகார வரம்பு விவரங்களுடன் அனைத்து 331 பிரதேசச் செயலகங்களையும் உலாவவும்.',
-			'cta'     => 'அடைவைப் பார்க்கவும்',
+			'cta'     => 'மேலும் பார்க்க',
 			'target'  => '_self',
 		),
 		array(
@@ -83,7 +83,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-home',
 			'url'     => home_url( '/institutions/grama-niladhari/' ),
 			'summary' => 'உத்தியோகத்தர் சுயவிவரங்கள், தொடர்பு எண்கள் மற்றும் பிராந்திய நிர்வாக எல்லைகளுடன் 14,000 க்கும் மேற்பட்ட கிராம அலுவலர் பிரிவுகளின் விரிவான வலையமைப்பை ஆராயுங்கள்.',
-			'cta'     => 'அணுகவும்',
+			'cta'     => 'மேலும் பார்க்க',
 			'target'  => '_self',
 		),
 		array(
@@ -92,7 +92,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-file-signature',
 			'url'     => 'https://www.rgd.gov.lk/web/index.php/ta/',
 			'summary' => 'பிறப்பு, இறப்பு மற்றும் திருமணப் பதிவு சேவைகள், சிவில் நிலை ஆவணங்கள் மற்றும் தொடர்புடைய பொதுச் சேவைகள் பற்றிய தகவல்களை அணுகவும்.',
-			'cta'     => 'அணுகவும்',
+			'cta'     => 'மேலும் பார்க்க',
 			'target'  => '_blank',
 		),
 	);
@@ -106,7 +106,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-map-marked-alt',
 			'url'     => home_url( '/institutions/district-secretariats/' ),
 			'summary' => 'Access the complete directory of all 25 District Secretariats across Sri Lanka, including contact details, regional maps, and administrative profiles for each district.',
-			'cta'     => 'View Directory',
+			'cta'     => 'View More',
 			'target'  => '_self',
 		),
 		array(
@@ -115,7 +115,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-sitemap',
 			'url'     => home_url( '/institutions/divisional-secretariats/' ),
 			'summary' => 'Browse all 331 Divisional Secretariats (DS Divisions) with comprehensive officer information, contact data, and administrative jurisdiction details.',
-			'cta'     => 'View Directory',
+			'cta'     => 'View More',
 			'target'  => '_self',
 		),
 		array(
@@ -124,7 +124,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-home',
 			'url'     => home_url( '/institutions/grama-niladhari/' ),
 			'summary' => 'Explore the extensive network of over 14,000 Grama Niladhari divisions with officer profiles, contact numbers, and regional administrative boundaries.',
-			'cta'     => 'Access Portal',
+			'cta'     => 'View More',
 			'target'  => '_self',
 		),
 		array(
@@ -133,7 +133,7 @@ if ( 'si' === $lang ) {
 			'icon'    => 'fa-file-signature',
 			'url'     => 'https://www.rgd.gov.lk/web/index.php/en/',
 			'summary' => 'Access information on birth, death, and marriage registration services, civil status documentation, and related public services.',
-			'cta'     => 'Access Portal',
+			'cta'     => 'View More',
 			'target'  => '_blank',
 		),
 	);
